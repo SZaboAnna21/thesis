@@ -172,9 +172,12 @@ importers:
 
   apps/web:
     dependencies:
-      '@automata-lab/automata-core':
+      '@fotoc/automata-core':
         specifier: workspace:*
         version: link:../../packages/automata-core
+      '@fotoc/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       react:
         specifier: ^19.2.8
         version: 19.3.0
