@@ -1,11 +1,14 @@
 import './App.css'
-import { hello } from "@automata-lab/automata-core";
+import { Homepage } from "./pages/Homepage";
+import { Topicpages } from "./pages/Topicpages";
+
 
 function App() {
   return (
     <div>
-      <h1>{hello()}</h1>
-    </div>
+      <Homepage />
+      < Topicpages />
+           </div>
   );
 }
 
