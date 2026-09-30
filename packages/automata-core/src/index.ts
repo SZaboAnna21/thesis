@@ -1,3 +1,2 @@
-export function hello() {
-  return "Hello from automata-core!";
-}
+export type * from "./dfa";
+export { runDfa } from "./dfa";
