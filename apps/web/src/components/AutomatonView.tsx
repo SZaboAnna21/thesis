@@ -5,15 +5,25 @@ type Props = {
   activeState?: State;
 };
 
+function stateMarker(dfa: Dfa, state: State) {
+  const isStart = state === dfa.start;
+  const isAccepting = dfa.accepting.includes(state);
+
+  if (isStart && isAccepting) return "⇆ ";
+  if (isStart) return "→ ";
+  if (isAccepting) return "← ";
+  return "";
+}
+
 // Egyelőre átmenettáblaként jeleníti meg az automatát, később gráfrajz lesz.
 export function AutomatonView({ dfa, activeState }: Props) {
   return (
     <table>
       <thead>
         <tr>
-          <th>Állapot</th>
-          {dfa.alphabet.map((symbol) => (
-            <th key={symbol}>{symbol}</th>
+          <th></th>
+          {dfa.alphabet.map((letter) => (
+            <th key={letter}>{letter}</th>
           ))}
         </tr>
       </thead>
@@ -21,12 +31,11 @@ export function AutomatonView({ dfa, activeState }: Props) {
         {dfa.states.map((state) => (
           <tr key={state} style={{ fontWeight: state === activeState ? "bold" : undefined }}>
             <td>
-              {state === dfa.start && "→ "}
+              {stateMarker(dfa, state)}
               {state}
-              {dfa.accepting.includes(state) && " *"}
             </td>
-            {dfa.alphabet.map((symbol) => (
-              <td key={symbol}>{dfa.transitions[state]?.[symbol] ?? "–"}</td>
+            {dfa.alphabet.map((letter) => (
+              <td key={letter}>{dfa.transitions[state][letter]}</td>
             ))}
           </tr>
         ))}
