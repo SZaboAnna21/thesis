@@ -1,0 +1,33 @@
+\babel@toc {hungarian}{}\relax 
+\contentsline {chapter}{\numberline {1}Bevezetés}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motiváció és problémafelvetés}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Célkitűzések}{3}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Hatókör és korlátok}{3}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Hatókör}{3}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Korlátok}{4}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Feltételezések}{4}{subsection.1.3.3}%
+\contentsline {section}{\numberline {1.4}A dolgozat fő hozzájárulásai}{4}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Felhasználói dokumentáció}{5}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Fejlesztői dokumentáció}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Követelményelemzés}{6}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}A rendszer célja és hatóköre}{6}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Hatókörön kívül eső elemek}{6}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Áttekintés}{6}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Külső interfészek}{8}{subsection.3.1.4}%
+\contentsline {subsection}{\numberline {3.1.5}Funkcionális követelmények}{8}{subsection.3.1.5}%
+\contentsline {subsection}{\numberline {3.1.6}Nem funkcionális követelmények}{9}{subsection.3.1.6}%
+\contentsline {section}{\numberline {3.2}Adatkövetelmények: a tartalommodell}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Többnyelvű szöveg}{10}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Tartalomblokkok}{11}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Matematikai jelölések}{12}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Témakörök metaadatai}{12}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Felhasználói felület modell}{13}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Használati esetek}{15}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Rendszerarchitektúra}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Technológiai választások}{16}{section.4.1}%
+\contentsline {section}{\numberline {4.2}A kódbázis felépítése}{16}{section.4.2}%
+\contentsline {section}{\numberline {4.3}A tartalomcsomag (\texttt {@fotoc/content})}{17}{section.4.3}%
+\contentsline {section}{\numberline {4.4}A webalkalmazás (\texttt {apps/web})}{18}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Útvonalak}{18}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Az elméleti anyag megjelenítése}{18}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Az automatacsomag (\texttt {@fotoc/automata-core})}{19}{section.4.5}%
