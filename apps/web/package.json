@@ -12,6 +12,7 @@
   "dependencies": {
     "@fotoc/automata-core": "workspace:*",
     "@fotoc/content": "workspace:*",
+    "katex": "^0.18.9",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4"
