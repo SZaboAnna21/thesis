@@ -13,7 +13,7 @@ export const meta: TopicMeta = {
     hu: "A DVA definíciója, működése és felismert nyelve.",
   },
 
-  lectures: [],
+  lectures: [4],
 
-  module: null,
+  module: "dfa-simulator",
 };
