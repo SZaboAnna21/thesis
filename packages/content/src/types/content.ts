@@ -56,6 +56,14 @@ export type TableBlock = {
   headers: string[];
   rows: string[][];
 };
+export type WarningBlock = {
+  type: "warning";
+  text: LocalizedText;
+};
+export type FunFactBlock = {
+  type: "funfact";
+  text: LocalizedText;
+};
 
 export type ContentBlock =
   | HeadingBlock
@@ -65,4 +73,6 @@ export type ContentBlock =
   | ExampleBlock
   | FormulaBlock
   | ListBlock
+  |FunFactBlock
+  |WarningBlock
   | TableBlock;
