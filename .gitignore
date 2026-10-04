@@ -2,3 +2,9 @@ node_modules
 dist
 .vscode
 .env
+*.aux
+*.log
+*.out
+*.toc
+node_modules
+.next
