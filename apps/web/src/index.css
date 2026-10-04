@@ -3,9 +3,11 @@
 @theme {
   --color-brand-50: #f5f0ff;
   --color-brand-100: #ebe0ff;
+  --color-brand-200: #d9c4ff;
   --color-brand-500: #8b45e6;
   --color-brand-600: #7432cc;
   --color-brand-700: #5d27a6;
+  --color-brand-900: #2e1257;
   --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -14,9 +16,9 @@
     color-scheme: light;
   }
 
-body {
-background-color: #62767a;
-}
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+  }
 
   #root {
     @apply flex min-h-svh flex-col;
