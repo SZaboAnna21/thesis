@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import katex from "katex";
 import type { ContentBlock, TheoremKind } from "@fotoc/content";
 import { MathText } from "./MathText";
@@ -15,10 +16,14 @@ const theoremLabels: Record<TheoremKind, string> = {
 
 function renderBlockasType(block: ContentBlock) {
   switch (block.type) {
-    case "heading": {
-      const Heading = `h${block.level + 1}` as "h2" | "h3" | "h4";
-      return <Heading><MathText text={block.text.hu} /></Heading>;
-    }
+    case "heading":
+      if (block.level === 1) {
+        return <h2 className="mt-16 text-3xl font-bold text-brand-700 first:mt-0"><MathText text={block.text.hu} /></h2>;
+      }
+      if (block.level === 2) {
+        return <h3 className="mt-12 text-2xl font-bold text-brand-700"><MathText text={block.text.hu} /></h3>;
+      }
+      return <h4 className="mt-6 text-xl font-bold text-brand-700"><MathText text={block.text.hu} /></h4>;
 
     case "paragraph":
       return <p><MathText text={block.text.hu} /></p>;
@@ -26,7 +31,8 @@ function renderBlockasType(block: ContentBlock) {
     case "definition":
       return (
         <p>
-          <strong>Definíció ({block.term.hu}).</strong> <MathText text={block.content.hu} />
+          <b className="font-semibold text-brand-700"><MathText text={block.term.hu} />:</b>{" "}
+          <MathText text={block.content.hu} />
         </p>
       );
 
@@ -34,15 +40,15 @@ function renderBlockasType(block: ContentBlock) {
       return (
         <div>
           <p>
-            <strong>
+            <b className="font-semibold text-brand-700">
               {theoremLabels[block.kind]}
-              {block.name && ` (${block.name.hu})`}.
-            </strong>{" "}
+              {block.name && <> (<MathText text={block.name.hu} />)</>}:
+            </b>{" "}
             <MathText text={block.statement.hu} />
           </p>
           {block.proof && (
-            <p>
-              <em>Bizonyítás.</em> <MathText text={block.proof.hu} />
+            <p className="mt-2">
+              <i>Bizonyítás.</i> <MathText text={block.proof.hu} />
             </p>
           )}
         </div>
@@ -51,14 +57,14 @@ function renderBlockasType(block: ContentBlock) {
     case "example":
       return (
         <p>
-          <strong>Példa{block.title && ` (${block.title.hu})`}.</strong>{" "}
-          <MathText text={block.content.hu} />
+          <i className="font-semibold">Példa:</i> <MathText text={block.content.hu} />
         </p>
       );
 
     case "formula":
       return (
         <div
+          className="overflow-x-auto"
           dangerouslySetInnerHTML={{
             __html: katex.renderToString(block.latex, { displayMode: true, throwOnError: false }),
           }}
@@ -69,29 +75,47 @@ function renderBlockasType(block: ContentBlock) {
       const items = block.items.map((item, index) => (
         <li key={index}><MathText text={item.hu} /></li>
       ));
-      return block.ordered ? <ol>{items}</ol> : <ul>{items}</ul>;
+      return block.ordered
+        ? <ol className="list-decimal pl-8">{items}</ol>
+        : <ul className="list-disc pl-8">{items}</ul>;
     }
+
+    case "warning":
+      return (
+        <div className="rounded border border-amber-200 bg-amber-50 px-5 py-3 text-base text-amber-900">
+          <b className="font-semibold">Vizsgacsapda:</b> <MathText text={block.text.hu} />
+        </div>
+      );
+
+    case "funfact":
+      return (
+        <p>
+          <b className="font-semibold text-brand-700">Intuíció:</b> <MathText text={block.text.hu} />
+        </p>
+      );
 
     case "table":
       return (
-        <table>
-          <thead>
-            <tr>
-              {block.headers.map((header, index) => (
-                <th key={index}><MathText text={header} /></th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {block.rows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, cellIndex) => (
-                  <td key={cellIndex}><MathText text={cell} /></td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-base">
+            <thead className="border-b-2 border-slate-300">
+              <tr>
+                {block.headers.map((header, index) => (
+                  <th key={index} className="py-2 pr-4 font-semibold text-brand-700"><MathText text={header} /></th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {block.rows.map((row, rowIndex) => (
+                <tr key={rowIndex} className="border-b border-slate-200">
+                  {row.map((cell, cellIndex) => (
+                    <td key={cellIndex} className="py-2 pr-4"><MathText text={cell} /></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
 
     default: {
@@ -104,10 +128,10 @@ function renderBlockasType(block: ContentBlock) {
 
 export function TheoryRenderer({ blocks }: Props) {
   return (
-    <>
+    <article className="flex min-w-0 flex-col gap-4 text-lg leading-loose text-slate-800 sm:text-justify">
       {blocks.map((block, index) => (
-        <div key={index}>{renderBlockasType(block)}</div>
+        <Fragment key={index}>{renderBlockasType(block)}</Fragment>
       ))}
-    </>
+    </article>
   );
 }
