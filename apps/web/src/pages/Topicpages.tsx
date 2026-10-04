@@ -17,7 +17,7 @@ export function Topicpages() {
     const renderModule = topic.meta.module ? modules[topic.meta.module] : undefined;
 
     return (
-        <div>
+        <div className="mx-auto w-full max-w-5xl px-6 py-12">
             <h1>{topic.meta.title.hu}</h1>
             <p>{topic.meta.summary.hu}</p>
             <p>Csoport: {topic.meta.group}</p>
@@ -30,5 +30,5 @@ export function Topicpages() {
                 </section>
             )}
         </div>
-    )
+)
 }
