@@ -6,11 +6,11 @@ export const meta: TopicMeta = {
   group: "foundations",
 
   title: {
-    hu: "Szavak, nyelvek, műveletek",
+    hu: "Alapok 1: ábécé, szavak, műveletek",
   },
 
   summary: {
-    hu: "Ábécé, szó, nyelv és alapvető nyelvi műveletek.",
+    hu: "Ábécé, szó, V* és V+, shortlex rendezés, konkatenáció és hatványozás.",
   },
 
   lectures: [1],
