@@ -6,12 +6,13 @@ export const theory: ContentBlock[] = [
     level: 1,
     text: {
       hu: "Alapfogalmak és jelölések",
+      en: "Basic Concepts and Notation",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Kezdjük az alapokkal: pár fogalom és jelölés, amit később folyton használni fogunk. Elsőre kicsit száraznak tűnhet, de higgy nekem, ha ezek ülnek, a nehezebb témáknál sokkal kevesebbet fogsz vakarni a fejed. Szóval csak egy kis türelem, aztán jön az érdekesebb rész :)",
+      hu: "Kezdjük az alapokkal: pár fogalom és jelölés, amit később folyton használni fog az anyag. Elsőre kicsit száraznak tűnhet, de ha ezeket érti az ember, a nehezebb témáknál sokkal kevesebbet fog gondolkodni és gyorsan érteni fogja. Szóval csak egy kis türelem, aztán jön az érdekesebb rész :)",
     },
   },
   {
@@ -26,7 +27,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Fontos, hogy itt a „betű” nem feltétlenül a magyar ábécé egy betűje. Lehet $0$ és $1$, lehet egy kártyalap, egy emoji, bármi. A lényeg, hogy véges sok legyen belőle, és legalább egy legyen.",
+      hu: "Fontos, hogy itt a „betű” nem feltétlenül a magyar ábécé egy betűje. Lehet $0$ és $1$, lehet egy szín, egy emoji, bármi. A lényeg, hogy véges sok legyen belőle, és legalább egy legyen.",
     },
   },
   {
@@ -41,7 +42,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egy $u$ szó hossza egyszerűen a betűinek a száma, jelölése $|u|$. Van egy különleges szó is: az üres szó, amiben egyetlen betű sincs. Ezt $\\varepsilon$-nal jelöljük, és persze $|\\varepsilon| = 0$. Furcsa, hogy egy „semmit” külön szónak tekintünk, de később rengeteg helyen jól fog jönni, kb. úgy, mint a $0$ a számoknál.",
+      hu: "Egy $u$ szó hossza egyszerűen a betűinek a száma, jelölése $|u|$. Van egy különleges szó is: az üres szó, amiben egyetlen betű sincs. Ezt $\\varepsilon$-nal jelöljük, és persze $|\\varepsilon| = 0$. Furcsa, lehet elsőre, de később rengeteg helyen jól fog jönni, kb. úgy, mint a $0$ a számoknál.",
     },
   },
   {
@@ -63,7 +64,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Oké, szavakat már tudunk gyártani. De mi van, ha nem egy-két konkrét szóra vagyunk kíváncsiak, hanem egyszerre az összesre? Erre van két nagyon gyakori jelölés, ezeket érdemes most bevésni, mert mindenhol ott lesznek.",
+      hu: "Oké, szavakat már tudjuk. De mi van, ha nem egy-két konkrét szóra vagyunk kíváncsiak, hanem egyszerre az összesre? Ősszes lehetségesre? Erre van két nagyon gyakori jelölés, ezeket érdemes most megjegyezni, mert mindenhol ott lesznek.",
     },
   },
   {
@@ -85,12 +86,6 @@ export const theory: ContentBlock[] = [
     },
   },
   {
-    type: "paragraph",
-    text: {
-      hu: "Kis memóriatrükk: a csillag „nullát is enged”, a plusz „legalább egyet kér”. Ugyanez a logika jön majd vissza a reguláris kifejezéseknél is.",
-    },
-  },
-  {
     type: "example",
     title: {
       hu: "Példa",
@@ -102,7 +97,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Ami elsőre meglepő lehet: hiába van csak két betűnk, a lehetséges szavakból végtelen sok van. Mindig tudsz írni egy eggyel hosszabbat. Viszont egy adott hosszúságú szóból csak véges sok van: $n$ hosszú szóból pont $|V|^n$ darab (két betűnél például $2^n$). Ezért szeretnek az automaták és az algoritmuselmélet ezekkel a halmazokkal dolgozni: végtelenek, de nagyon szépen rendezhetők.",
+      hu: "Ami elsőre meglepő lehet: hiába van csak két betűnk, a lehetséges szavakból végtelen sok van. Mindig tudsz írni egy eggyel hosszabbat. Viszont egy adott hosszúságú szóból csak véges sok van: $n$ hosszú szóból pont $|V|^n$ darab (két betűnél például $2^n$).",
     },
   },
   {
@@ -110,12 +105,6 @@ export const theory: ContentBlock[] = [
     level: 2,
     text: {
       hu: "Shortlex rendezés",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Jogos kérdés: ha végtelen sok szó van, milyen sorrendben soroljuk fel őket? Az „ahogy eszembe jut” sajnos nem matematikai módszer. Erre van a hosszlexikografikus, angolul shortlex rendezés.",
     },
   },
   {
@@ -137,12 +126,6 @@ export const theory: ContentBlock[] = [
     },
   },
   {
-    type: "paragraph",
-    text: {
-      hu: "Olyan ez, mint amikor egy hacker filmben végigpróbálgatják a jelszavakat: először az összes 1 karakterest, aztán az összes 2 karakterest, majd a 3 karaktereseket, és így tovább.",
-    },
-  },
-  {
     type: "warning",
     text: {
       hu: "Miért nem jó a sima szótári sorrend? Mert ott $a$ után $aa$ jönne, aztán $aaa$, aztán $aaaa$... és a $b$-hez soha nem érnénk el. A shortlexben viszont minden szó véges sok lépés után sorra kerül, ezért ez a jó választás.",
@@ -158,7 +141,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Jöjjön az első igazi művelet. A konkatenáció egy nagyon tudományos szó arra, hogy két szót leírunk egymás után. Tényleg ennyi.",
+      hu: "A konkatenáció egy nagyon tudományos szó arra, hogy két szót leírunk egymás után. Tényleg ennyi.",
     },
   },
   {
@@ -177,12 +160,6 @@ export const theory: ContentBlock[] = [
     },
     content: {
       hu: "Legyen $u = abb$ és $v = aaaba$. Ekkor $uv = abbaaaba$, viszont $vu = aaabaabb$. Mindkettő 8 hosszú, de nem ugyanaz a szó.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Itt jön az első csapda: általában $uv \\neq vu$. A szavak nem összeadás, ahol mindegy, hogy $2 + 3$ vagy $3 + 2$. Inkább olyan, mint a vonatkocsik: ha megcseréled a sorrendet, más vonatot kapsz.",
     },
   },
   {
