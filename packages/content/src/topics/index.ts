@@ -2,6 +2,8 @@ import type { Topic } from "../types/topics";
 
 import { meta as alapfogalmakMeta } from "./alapfogalmak/meta";
 import { theory as alapfogalmakTheory } from "./alapfogalmak/theory";
+import { meta as alapfogalmaknyelvMeta } from "./alapfogalmak2/meta";
+import { theory as alapfogalmaknyelvTheory } from "./alapfogalmak2/theory";
 import { meta as grammatikakMeta } from "./grammatikak/meta";
 import { theory as grammatikakTheory } from "./grammatikak/theory";
 import { meta as regularisGrammatikakMeta } from "./regularis-grammatikak/meta";
@@ -31,6 +33,7 @@ import { theory as kornyezetfuggoTheory } from "./kornyezetfuggo/theory";
 
 export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
+  { meta: alapfogalmaknyelvMeta, content: alapfogalmaknyelvTheory },
   { meta: grammatikakMeta, content: grammatikakTheory },
   { meta: regularisGrammatikakMeta, content: regularisGrammatikakTheory },
   { meta: regularisKifejezesekMeta, content: regularisKifejezesekTheory },
