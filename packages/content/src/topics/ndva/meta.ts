@@ -2,7 +2,7 @@ import type { TopicMeta } from "../../types/topics";
 
 export const meta: TopicMeta = {
   id: "ndva",
-  order: 6,
+  order: 7,
   group: "regular",
 
   title: {

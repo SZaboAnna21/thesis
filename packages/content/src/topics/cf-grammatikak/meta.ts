@@ -2,7 +2,7 @@ import type { TopicMeta } from "../../types/topics";
 
 export const meta: TopicMeta = {
   id: "cf-grammatikak",
-  order: 10,
+  order: 11,
   group: "context-free",
 
   title: {
