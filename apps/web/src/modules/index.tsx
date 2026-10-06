@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
-import type { Dfa } from "@fotoc/automata-core";
+import { useState, type ReactNode } from "react";
+import type { Dfa, Grammer } from "@fotoc/automata-core";
 import { DfaSimulator } from "../components/DfaSimulator";
+import { GrammarInput } from "../components/InputGrammer";
+import { GrammarDerivation } from "../components/GrammarDerivation";
 
-// Az előadás 1. DVA-példája: azokat a szavakat fogadja el,
-// amelyekben az a és b betűk paritása különbözik.
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
   alphabet: ["a", "b"],
@@ -17,7 +17,32 @@ const parityDfa: Dfa = {
   },
 };
 
-// A TopicMeta.module azonosítóihoz tartozó interaktív modulok.
+const anbnGrammar: Grammer = {
+  nonterminals: ["S"],
+  terminals: ["a", "b"],
+  rules: [
+    { from: "S", to: "aSb" },
+    { from: "S", to: "" },
+  ],
+  start: "S",
+};
+
+function GrammarModule() {
+  const [grammar, setGrammar] = useState<Grammer>(anbnGrammar);
+
+  return (
+    <div className="space-y-4">
+      <GrammarInput initial={anbnGrammar} onChange={setGrammar} />
+      <GrammarDerivation
+        key={JSON.stringify(grammar)}
+        grammer={grammar}
+        word={grammar.start}
+      />
+    </div>
+  );
+}
+
 export const modules: Record<string, () => ReactNode> = {
   "dfa-simulator": () => <DfaSimulator dfa={parityDfa} />,
+  "grammar-derivation": () => <GrammarModule />,
 };
