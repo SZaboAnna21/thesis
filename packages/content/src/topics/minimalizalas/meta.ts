@@ -2,7 +2,7 @@ import type { TopicMeta } from "../../types/topics";
 
 export const meta: TopicMeta = {
   id: "minimalizalas",
-  order: 8,
+  order: 9,
   group: "regular",
 
   title: {

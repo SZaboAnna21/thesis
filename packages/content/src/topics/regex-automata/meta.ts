@@ -2,7 +2,7 @@ import type { TopicMeta } from "../../types/topics";
 
 export const meta: TopicMeta = {
   id: "regex-automata",
-  order: 9,
+  order: 10,
   group: "regular",
 
   title: {

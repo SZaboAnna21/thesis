@@ -10,7 +10,7 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Grammatikák, levezetés, generált nyelv és a Chomsky-hierarchia.",
+    hu: "Grammatika, levezetés, generált nyelv, ekvivalens grammatikák.",
   },
 
   lectures: [],

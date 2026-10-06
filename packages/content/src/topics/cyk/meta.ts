@@ -2,7 +2,7 @@ import type { TopicMeta } from "../../types/topics";
 
 export const meta: TopicMeta = {
   id: "cyk",
-  order: 12,
+  order: 13,
   group: "context-free",
 
   title: {
