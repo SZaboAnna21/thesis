@@ -6,6 +6,8 @@ import { meta as alapfogalmaknyelvMeta } from "./alapfogalmak2/meta";
 import { theory as alapfogalmaknyelvTheory } from "./alapfogalmak2/theory";
 import { meta as grammatikakMeta } from "./grammatikak/meta";
 import { theory as grammatikakTheory } from "./grammatikak/theory";
+import { meta as chomskyMeta } from "./chomsky/meta";
+import { theory as chomskyTheory } from "./chomsky/theory";
 import { meta as regularisGrammatikakMeta } from "./regularis-grammatikak/meta";
 import { theory as regularisGrammatikakTheory } from "./regularis-grammatikak/theory";
 import { meta as regularisKifejezesekMeta } from "./regularis-kifejezesek/meta";
@@ -35,6 +37,7 @@ export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
   { meta: alapfogalmaknyelvMeta, content: alapfogalmaknyelvTheory },
   { meta: grammatikakMeta, content: grammatikakTheory },
+  { meta: chomskyMeta, content: chomskyTheory },
   { meta: regularisGrammatikakMeta, content: regularisGrammatikakTheory },
   { meta: regularisKifejezesekMeta, content: regularisKifejezesekTheory },
   { meta: dvaMeta, content: dvaTheory },
