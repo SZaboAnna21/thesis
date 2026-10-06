@@ -3,6 +3,7 @@ import type { Dfa, Grammer } from "@fotoc/automata-core";
 import { DfaSimulator } from "../components/DfaSimulator";
 import { GrammarInput } from "../components/InputGrammer";
 import { GrammarDerivation } from "../components/GrammarDerivation";
+import { WordPlayground } from "../components/WordPlayground";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -45,4 +46,5 @@ function GrammarModule() {
 export const modules: Record<string, () => ReactNode> = {
   "dfa-simulator": () => <DfaSimulator dfa={parityDfa} />,
   "grammar-derivation": () => <GrammarModule />,
+  "word-playground": () => <WordPlayground />,
 };
