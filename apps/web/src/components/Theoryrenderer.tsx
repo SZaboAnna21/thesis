@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import katex from "katex";
 import type { ContentBlock, TheoremKind } from "@fotoc/content";
 import { MathText } from "./MathText";
@@ -13,6 +13,17 @@ const theoremLabels: Record<TheoremKind, string> = {
   allitas: "Állítás",
   kovetkezmeny: "Következmény",
 };
+
+function Collapsible({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <details className="group rounded border border-slate-200 bg-slate-50 px-5 py-2">
+      <summary className="cursor-pointer select-none font-semibold text-brand-700">
+        <MathText text={title} />
+      </summary>
+      <div className="mt-2 flex flex-col gap-4">{children}</div>
+    </details>
+  );
+}
 
 function renderBlockasType(block: ContentBlock) {
   switch (block.type) {
@@ -47,11 +58,20 @@ function renderBlockasType(block: ContentBlock) {
             <MathText text={block.statement.hu} />
           </p>
           {block.proof && (
-            <p className="mt-2">
-              <i>Bizonyítás.</i> <MathText text={block.proof.hu} />
-            </p>
+            <Collapsible title="Bizonyítás">
+              <p><MathText text={block.proof.hu} /></p>
+            </Collapsible>
           )}
         </div>
+      );
+
+    case "proof":
+      return (
+        <Collapsible title={block.title ? `Bizonyítás: ${block.title.hu}` : "Bizonyítás"}>
+          {block.content.map((inner, index) => (
+            <Fragment key={index}>{renderBlockasType(inner)}</Fragment>
+          ))}
+        </Collapsible>
       );
 
     case "example":

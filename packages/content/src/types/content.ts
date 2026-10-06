@@ -65,7 +65,14 @@ export type FunFactBlock = {
   text: LocalizedText;
 };
 
+export type ProofBlock = {
+  type: "proof";
+  title?: LocalizedText;
+  content: ContentBlock[];
+};
+
 export type ContentBlock =
+  | ProofBlock
   | HeadingBlock
   | ParagraphBlock
   | DefinitionBlock
