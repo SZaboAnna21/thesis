@@ -6,14 +6,14 @@ export const meta: TopicMeta = {
   group: "regular",
 
   title: {
-    hu: "Reguláris grammatikák",
+    hu: "Lineáris grammatikák és a 3-as normálforma",
   },
 
   summary: {
-    hu: "A 3-as típusú grammatikák és normálformájuk.",
+    hu: "Bal- és jobb-lineáris grammatikák, tükrözés, a 3-as normálformára hozás lépései.",
   },
 
-  lectures: [],
+  lectures: [3],
 
   module: null,
 };

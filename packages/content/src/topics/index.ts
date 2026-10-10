@@ -4,6 +4,7 @@ import { meta as alapfogalmakMeta } from "./alapfogalmak/meta";
 import { theory as alapfogalmakTheory } from "./alapfogalmak/theory";
 import { meta as alapfogalmaknyelvMeta } from "./alapfogalmak2/meta";
 import { theory as alapfogalmaknyelvTheory } from "./alapfogalmak2/theory";
+import { quiz as alapfogalmaknyelvQuiz } from "./alapfogalmak2/quiz";
 import { meta as grammatikakMeta } from "./grammatikak/meta";
 import { theory as grammatikakTheory } from "./grammatikak/theory";
 import { meta as chomskyMeta } from "./chomsky/meta";
@@ -35,7 +36,7 @@ import { theory as kornyezetfuggoTheory } from "./kornyezetfuggo/theory";
 
 export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
-  { meta: alapfogalmaknyelvMeta, content: alapfogalmaknyelvTheory },
+  { meta: alapfogalmaknyelvMeta, content: alapfogalmaknyelvTheory, quiz: alapfogalmaknyelvQuiz },
   { meta: grammatikakMeta, content: grammatikakTheory },
   { meta: chomskyMeta, content: chomskyTheory },
   { meta: regularisGrammatikakMeta, content: regularisGrammatikakTheory },

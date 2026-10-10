@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Reguláris kifejezések szintaxisa, jelentése és azonosságai.",
+    hu: "Szintaxis, jelentés, azonosságok, Arden tétele, és miért írnak le pont reguláris nyelveket.",
   },
 
-  lectures: [],
+  lectures: [3],
 
   module: null,
 };
