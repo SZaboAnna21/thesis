@@ -16,3 +16,21 @@ export {
   properSuffixes,
   runAll,
 } from "./words";
+
+export type * from "./language";
+export {
+  shortlex,
+  parseRegex,
+  regexToString,
+  regexLetters,
+  regexToNfa,
+  nfaAccepts,
+  regexMatches,
+  nfaAcceptsPrefix,
+  nfaAcceptsSuffix,
+  concatSplits,
+  inKleeneStar,
+  findRegexCounterexample,
+  findBoundedCounterexample,
+  checkRegex,
+} from "./language";

@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [1],
 
-  module: null,
+  module: "language-explorer",
 };
