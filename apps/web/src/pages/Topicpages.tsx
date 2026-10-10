@@ -1,6 +1,7 @@
 import { getTopic, type TopicGroup } from "@fotoc/content"
 import { useParams } from "react-router-dom"
 import { TheoryRenderer } from "../components/Theoryrenderer";
+import { QuizView } from "../components/QuizView";
 import { modules } from "../modules";
 
 const groupLabels: Record<TopicGroup, string> = {
@@ -38,6 +39,12 @@ export function Topicpages() {
                 <section className="mt-16">
                     <h2 className="mb-6 text-3xl font-bold text-brand-700">Próbáld ki!</h2>
                     {renderModule()}
+                </section>
+            )}
+            {topic.quiz && topic.quiz.length > 0 && (
+                <section className="mt-16">
+                    <h2 className="mb-6 text-3xl font-bold text-brand-700">Teszteld magad!</h2>
+                    <QuizView questions={topic.quiz} />
                 </section>
             )}
         </div>

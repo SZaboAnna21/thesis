@@ -15,6 +15,14 @@ export type TrueFalseExercise = {
   explanation?: LocalizedText;
 };
 
+export type QuizQuestion = {
+  question: string;
+  answers: string[];
+  correct: number;
+  explanation: string;
+  difficulty: "easy" | "hard";
+};
+
 export type Exercise =
   | MultipleChoiceExercise
   | TrueFalseExercise;

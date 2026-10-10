@@ -1,4 +1,5 @@
 import type { LocalizedText, ContentBlock } from "./content";
+import type { QuizQuestion } from "./exercise";
 
 export type TopicGroup =
   | "foundations"
@@ -24,4 +25,5 @@ export type TopicMeta = {
 export type Topic = {
   meta: TopicMeta;
   content: ContentBlock[];
+  quiz?: QuizQuestion[];
 };
