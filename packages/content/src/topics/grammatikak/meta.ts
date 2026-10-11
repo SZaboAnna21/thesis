@@ -13,7 +13,7 @@ export const meta: TopicMeta = {
     hu: "Grammatika, levezetés, generált nyelv, ekvivalens grammatikák.",
   },
 
-  lectures: [],
+  lectures: [1,2],
 
   module: "grammar-derivation",
 };

@@ -6,6 +6,8 @@ import { GrammarDerivation } from "../components/GrammarDerivation";
 import { WordPlayground } from "../components/WordPlayground";
 import { LanguageExplorer } from "../components/LanguageExplorer";
 import { ChomskyClassifier } from "../components/ChomskyClassifier";
+import { RegexChecker } from "../components/RegexChecker";
+import { regexExercises } from "./regexExercises";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -19,8 +21,31 @@ const parityDfa: Dfa = {
     q3: { a: "q1", b: "q2" },
   },
 };
+const equalAbGrammar: Grammer = {
+  nonterminals: ["S"],
+  terminals: ["a", "b"],
+  rules: [
+    { from: "S", to: "SS" },
+    { from: "S", to: "aSb" },
+    { from: "S", to: "bSa" },
+    { from: "S", to: "" }, // ε
+  ],
+  start: "S",
+};
 
-const anbnGrammar: Grammer = {
+const anbncnGrammar: Grammer = {
+  nonterminals: ["S", "B"],
+  terminals: ["a", "b", "c"],
+  rules: [
+    { from: "S", to: "abc" },
+    { from: "S", to: "aSBc" },
+    { from: "cB", to: "Bc" },
+    { from: "bB", to: "bb" },
+  ],
+  start: "S",
+};
+
+  const anbnGrammar: Grammer = {
   nonterminals: ["S"],
   terminals: ["a", "b"],
   rules: [
@@ -30,7 +55,7 @@ const anbnGrammar: Grammer = {
   start: "S",
 };
 
-function GrammarModule() {
+function GrammarModule({ initial }: { initial: Grammer }) {
   const [grammar, setGrammar] = useState<Grammer>(anbnGrammar);
 
   return (
@@ -47,9 +72,12 @@ function GrammarModule() {
 
 export const modules: Record<string, () => ReactNode> = {
   "dfa-simulator": () => <DfaSimulator dfa={parityDfa} />,
-  "grammar-derivation": () => <GrammarModule />,
+  "grammar-derivation": () => <GrammarModule initial={anbnGrammar} />,
+  "cf-derivation": () => <GrammarModule initial={equalAbGrammar} />,
+  "cs-derivation": () => <GrammarModule initial={anbncnGrammar} />,
   "word-playground": () => <WordPlayground />,
   "language-explorer": () => <LanguageExplorer />,
   "chomsky-classifier": () => <ChomskyClassifier />,
+  "regex-checker": () => <RegexChecker exercises={regexExercises} />,
 
 };
