@@ -64,7 +64,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Oké, szavakat már tudjuk. De mi van, ha nem egy-két konkrét szóra vagyunk kíváncsiak, hanem egyszerre az összesre? Ősszes lehetségesre? Erre van két nagyon gyakori jelölés, ezeket érdemes most megjegyezni, mert mindenhol ott lesznek.",
+      hu: "Oké, szavakat már tudjuk. De mi van, ha nem egy-két konkrét szóra vagyunk kíváncsiak, hanem egyszerre az összesre? Összes lehetségesre? Erre van két nagyon gyakori jelölés, ezeket érdemes most megjegyezni, mert sok helyen előbukkannak még.",
     },
   },
   {

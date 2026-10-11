@@ -147,15 +147,6 @@ export const theory: ContentBlock[] = [
   {
     type: "example",
     title: {
-      hu: "Példa",
-    },
-    content: {
-      hu: "Legyen $V = \\{a, b\\}$, $L_1 = \\{ab, bb\\}$, $L_2 = \\{\\varepsilon, a, bba\\}$. Ekkor $L_1L_2 = \\{ab\\varepsilon, bb\\varepsilon, aba, bba, abbba, bbbba\\} = \\{ab, bb, aba, bba, abbba, bbbba\\}$.",
-    },
-  },
-  {
-    type: "example",
-    title: {
       hu: "Példa: kevesebb szó, mint várnánk",
     },
     content: {

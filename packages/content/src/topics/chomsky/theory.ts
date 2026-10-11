@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Az általános grammatika nagyon erős eszköz, talán túlságosan is: szinte semmit nem tudunk róla mondani. Ezért elkezdjük korlátozni, hogy milyen alakú szabályok lehetnek benne. Minél szigorúbb a korlátozás, annál kevesebb nyelvet tudunk leírni, cserébe annál jobban kezelhető a dolog.",
+      hu: "Az általános grammatika annyira tág fogalom, hogy elsőre szinte megfoghatatlan. Mivel szinte bármit megenged, nem sok hasznos dolgot tudunk róla állítani. Ezért elkezdjük szép lassan megszorítani a szabályait. Ahogy egyre több feltételt vezetünk be, egyre szűkebb lesz a leírható nyelvek köre, viszont cserébe egyre jobban megértjük, mivel is van dolgunk.",
     },
   },
   {
