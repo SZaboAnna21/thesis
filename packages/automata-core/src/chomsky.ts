@@ -11,6 +11,37 @@ export type Rulechecked = {
     context?: { u1: string[]; A: string; u2: string[]; v: string[] };  
 }
 
+export function tokenize(g: Grammer, text: string): string[] | null {
+  if (text === "" || text === "ε") {
+    return [];
+  }
+  const symbols = [...g.nonterminals, ...g.terminals].sort((a, b) => b.length - a.length);
+
+  const result: string[] = [];
+  let pos = 0;
+
+  while (pos < text.length) {
+    const ch = text[pos];
+    if (ch === " ") {
+      pos++;
+      continue;
+    }
+    let matched = false;
+    for (const symbol of symbols) {
+      if (text.startsWith(symbol, pos)) {
+        result.push(symbol);
+        pos += symbol.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      return null;
+    }
+  }
+  return result;
+} 
+
 export type ChomskyResult =
   | { ok: false; message: string }
   | {
@@ -23,13 +54,21 @@ export type ChomskyResult =
 export function classifyGrammer(g: Grammer): ChomskyResult {
 
     for (const rule of g.rules) {
-      const hasNonterminal = rule.from.split("")
-          .some(symbol => g.nonterminals.includes(symbol));
+      const left = tokenize(g, rule.from);
+      const right = tokenize(g, rule.to);
+
+      if (left === null || right === null) {
+        return {
+          ok: false,
+          message: `Ismeretlen szimbólum a(z) "${rule.from} → ${rule.to}" szabályban.`,
+        };
+      }
+      const hasNonterminal = left.some(symbol => g.nonterminals.includes(symbol));
       if (!hasNonterminal) {
           return {
-              ok: false,
-              message: `A(z) "${rule.from} → ${rule.to}" szabály bal oldalán nincs nemterminális.`,
-            };
+            ok: false,
+            message: `A(z) "${rule.from} → ${rule.to}" szabály bal oldalán nincs nemterminális.`,
+          };
       }
     }
     const checkedRules: Rulechecked[] = [];
@@ -43,12 +82,14 @@ export function classifyGrammer(g: Grammer): ChomskyResult {
         checkedRules.every(rule => rule.types.includes(type))
     );
 
-    const hasStartEpsilon = g.rules.some(
-        rule => rule.from === g.start && rule.to === "");
+    const hasStartEpsilon = g.rules.some(rule =>
+    rule.from === g.start && (rule.to === "" || rule.to === "ε"));
 
-    const violatingRules = hasStartEpsilon
-  ? g.rules.filter(rule => rule.to.includes(g.start))
-  : [];
+    const violatingRules = hasStartEpsilon? g.rules.filter(rule => {
+          const right = tokenize(g, rule.to);
+          return right?.includes(g.start);
+        })
+      : [];
 
     if (hasStartEpsilon && violatingRules.length > 0) {
         commonTypes = commonTypes.filter(type => type !== 1);
@@ -69,8 +110,12 @@ export function classifyGrammer(g: Grammer): ChomskyResult {
 
 
 export function checkOneRule (rule: Rule, g :Grammer): Rulechecked{
-  const leftside = rule.from.split('');
-  const rightside = rule.to.split('');
+  const leftside = tokenize(g, rule.from);
+  const rightside = tokenize(g, rule.to);
+
+  if (leftside === null || rightside === null) {
+    throw new Error("Invalid grammar rule");
+  }
   const types: ChomskyType[] = [0];
   let context: Rulechecked["context"] | undefined;
   let needsKEScheck = false;
@@ -84,10 +129,14 @@ export function checkOneRule (rule: Rule, g :Grammer): Rulechecked{
     }
   }
 
-if (rule.from === g.start && rule.to === "") {
-    types.push(1);
-    needsKEScheck = true;
-}
+  if (
+    rule.from === g.start &&
+    (rule.to === "" || rule.to === "ε")
+  ) {
+      types.push(1);
+      needsKEScheck = true;
+  }
+
 else {
   for (let i = 0; i < leftside.length; i++) {
 

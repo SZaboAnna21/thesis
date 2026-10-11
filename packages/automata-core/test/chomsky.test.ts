@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { checkOneRule, classifyGrammer, type ChomskyResult } from "../src/chomsky.ts";
+import { checkOneRule, classifyGrammer, tokenize, type ChomskyResult } from "../src/chomsky.ts";
 import type { Grammer } from "../src/grammer.ts";
 
 function grammar(rules: string[], nonterminals = ["S", "A", "B", "C"], start = "S"): Grammer {
@@ -148,7 +148,7 @@ describe("classifyGrammer", () => {
     assert.deepEqual(result.types, [0]);
   });
 
-  test("több karakteres nemterminális (Z1)", { todo: "tokenize kell a split('') helyett" }, () => {
+  test("több karakteres nemterminális (Z1)", () => {
     const g = grammar([], ["S", "Z1"]);
     // Z1 nemterminális, és nem a végén áll, tehát 2-es, de nem 3-as.
     // split('')-tel Z és 1 terminálisnak látszik, és tévesen 3-as lenne.
@@ -156,5 +156,20 @@ describe("classifyGrammer", () => {
     // Z1 → ε nem lokálisan 1-es (Z1 ≠ S); split('')-tel a bal oldal két
     // karakter lenne, és a 2-es típus is elveszne.
     assert.deepEqual(typesOf("Z1->", g), [0, 2, 3]);
+  });
+  test("tokenize: leghosszabb illeszkedés, ε, ismeretlen jel", () => {
+    const g = grammar([], ["S", "Z", "Z1"]);
+    assert.deepEqual(tokenize(g, "aZ1b"), ["a", "Z1", "b"]);
+    assert.deepEqual(tokenize(g, "aZb"), ["a", "Z", "b"]);
+    assert.deepEqual(tokenize(g, ""), []);
+    assert.deepEqual(tokenize(g, "ε"), []);
+    assert.equal(tokenize(g, "aX"), null);
+  });
+
+  test("ismeretlen szimbólum: hibaüzenet, nem kivétel", () => {
+    // gépelés közben gyakori: a diák még nem vette fel X-et a nemterminálisok közé
+    const result = classifyGrammer(grammar(["S->aX"]));
+    assert.equal(result.ok, false);
+    assert.ok(!result.ok && result.message.includes("aX"));
   });
 });
