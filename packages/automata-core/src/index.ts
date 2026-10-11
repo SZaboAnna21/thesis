@@ -34,3 +34,8 @@ export {
   findBoundedCounterexample,
   checkRegex,
 } from "./language";
+
+
+export type * from "./chomsky";
+export { classifyGrammer, checkOneRule } from "./chomsky";
+
