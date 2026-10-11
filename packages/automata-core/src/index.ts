@@ -37,5 +37,5 @@ export {
 
 
 export type * from "./chomsky";
-export { classifyGrammer, checkOneRule } from "./chomsky";
+export { classifyGrammer, checkOneRule, tokenize } from "./chomsky";
 

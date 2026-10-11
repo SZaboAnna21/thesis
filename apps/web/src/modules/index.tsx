@@ -5,6 +5,7 @@ import { GrammarInput } from "../components/InputGrammer";
 import { GrammarDerivation } from "../components/GrammarDerivation";
 import { WordPlayground } from "../components/WordPlayground";
 import { LanguageExplorer } from "../components/LanguageExplorer";
+import { ChomskyClassifier } from "../components/ChomskyClassifier";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -49,4 +50,6 @@ export const modules: Record<string, () => ReactNode> = {
   "grammar-derivation": () => <GrammarModule />,
   "word-playground": () => <WordPlayground />,
   "language-explorer": () => <LanguageExplorer />,
+  "chomsky-classifier": () => <ChomskyClassifier />,
+
 };

@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [2],
 
-  module: null,
+  module: "chomsky-classifier",
 };
