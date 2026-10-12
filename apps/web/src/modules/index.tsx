@@ -8,6 +8,7 @@ import { LanguageExplorer } from "../components/LanguageExplorer";
 import { ChomskyClassifier } from "../components/ChomskyClassifier";
 import { RegexChecker } from "../components/RegexChecker";
 import { regexExercises } from "./regexExercises";
+import { NormalForm3Visualizer } from "../components/NormalForm3Visualizer";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -45,7 +46,7 @@ const anbncnGrammar: Grammer = {
   start: "S",
 };
 
-  const anbnGrammar: Grammer = {
+const anbnGrammar: Grammer = {
   nonterminals: ["S"],
   terminals: ["a", "b"],
   rules: [
@@ -56,7 +57,7 @@ const anbncnGrammar: Grammer = {
 };
 
 function GrammarModule({ initial }: { initial: Grammer }) {
-  const [grammar, setGrammar] = useState<Grammer>(anbnGrammar);
+  const [grammar, setGrammar] = useState<Grammer>(initial);
 
   return (
     <div className="space-y-4">
@@ -79,5 +80,6 @@ export const modules: Record<string, () => ReactNode> = {
   "language-explorer": () => <LanguageExplorer />,
   "chomsky-classifier": () => <ChomskyClassifier />,
   "regex-checker": () => <RegexChecker exercises={regexExercises} />,
+  "nf3-converter": () => <NormalForm3Visualizer />,
 
 };

@@ -39,3 +39,6 @@ export {
 export type * from "./chomsky";
 export { classifyGrammer, checkOneRule, tokenize } from "./chomsky";
 
+
+export type * from "./normalform3";
+export { toNormalForm3Steps, showRule, lengthReduction, chainLayers, removeChains } from "./normalform3";

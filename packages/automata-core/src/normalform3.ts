@@ -1,5 +1,5 @@
 import type { Grammer, Rule } from "./grammer";
-import { tokenize } from "./chomsky.ts";
+import {  type ChomskyResult, classifyGrammer, tokenize } from "./chomsky.ts";
 
 export type Nf3Phase =
   | "input"          // kiinduló grammatika
@@ -179,8 +179,98 @@ export function removeChains(g: Grammer): Grammer {
   return {...g,rules: newrules,};
 }
 
-// A lejátszó ezt hívja. Akkor írjuk meg, ha a három lépés külön-külön már működik.
 export function toNormalForm3Steps(g: Grammer): Nf3Result {
-  void g;
-  return { ok: false, message: "A normálformára hozás még készül." };
+  const result: ChomskyResult = classifyGrammer(g);
+
+  if (!result.ok) {
+    return {
+      ok: false,
+      message: result.message,
+    };
+  }
+
+  if (!result.types.includes(3)) {
+    return {
+      ok: false,
+      message: "A nyelvtan nem 3-as típusú, ezért nem hozható NF3 alakra.",
+    };
+  }
+
+  const steps: Nf3Step[] = [];
+  steps.push({
+    phase: "input",
+    title: "Kiinduló nyelvtan",
+    explanation: "",
+    grammar: g,
+    added: [],
+    removed: [],
+  });
+
+ const reduced = lengthReduction(g);
+  const reducedNew = reduced.rules.filter(r => !g.rules.some(x => x.from === r.from && x.to === r.to ));
+  const reducedRemoved = g.rules.filter(r => !reduced.rules.some(x => x.from === r.from && x.to === r.to  ));
+  steps.push({
+    phase: "length",
+    title: "Hosszcsökkentés",
+    explanation: "",
+    grammar: reduced,
+    added: reducedNew,
+    removed: reducedRemoved,
+  });
+  for (const A of reduced.nonterminals){
+
+    const layers = chainLayers(reduced, A);
+    if (layers.length <= 1) {
+      continue;}
+
+    steps.push({
+    phase: "chain-closure",
+    title: `H(${A}) kiszámítása`,
+    explanation: "",
+    grammar: reduced,
+    added: [],
+    removed: [],
+    highlight: [A],
+    chainSets: {
+      [A]: layers,
+    },
+  });
+  }
+
+const final = removeChains(reduced);
+const addedRules = final.rules.filter(r => !reduced.rules.some( x => x.from === r.from && x.to === r.to));
+const inheritedGrammar: Grammer = {...reduced, rules: [...reduced.rules, ...addedRules],};
+
+steps.push({
+  phase: "chain-inherit",
+  title: "Szabályok öröklése",
+  explanation: "",
+  grammar: inheritedGrammar,
+  added: addedRules,
+  removed: [],
+});
+
+const removedRules = reduced.rules.filter(r => !final.rules.some(x => x.from === r.from && x.to === r.to ));
+
+steps.push({
+  phase: "chain-remove",
+  title: "Láncszabályok eltávolítása",
+  explanation: "",
+  grammar: final,
+  added: [],
+  removed: removedRules,
+});
+steps.push({
+  phase: "done",
+  title: "Kész",
+  explanation: "",
+  grammar: final,
+  added: [],
+  removed: [],
+});
+
+  return {
+    ok: true,
+    steps,
+  };
 }
