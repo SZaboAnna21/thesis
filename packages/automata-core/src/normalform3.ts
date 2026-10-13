@@ -200,7 +200,7 @@ export function toNormalForm3Steps(g: Grammer): Nf3Result {
   steps.push({
     phase: "input",
     title: "Kiinduló nyelvtan",
-    explanation: "",
+    explanation: "A kiinduló reguláris nyelvtan ezt fogjuk NF3 alakra alakítunk.",
     grammar: g,
     added: [],
     removed: [],
@@ -212,28 +212,31 @@ export function toNormalForm3Steps(g: Grammer): Nf3Result {
   steps.push({
     phase: "length",
     title: "Hosszcsökkentés",
-    explanation: "",
+    explanation: "Az eredményben minden szabály vagy A → aB, vagy A → a, vagy A → ε alakú.",
     grammar: reduced,
     added: reducedNew,
     removed: reducedRemoved,
   });
+
+  const allLayers: Record<string, string[][]> = {};
+
   for (const A of reduced.nonterminals){
 
     const layers = chainLayers(reduced, A);
     if (layers.length <= 1) {
       continue;}
+    
+    allLayers[A] = layers;
 
     steps.push({
     phase: "chain-closure",
     title: `H(${A}) kiszámítása`,
-    explanation: "",
+    explanation: "Kiszámítjuk H(${A}) halmazokat. Ide azok a nemterminálisok kerülnek, amelyek ${A}-ból láncszabályokon (X → Y) keresztül elérhetők.",
     grammar: reduced,
     added: [],
     removed: [],
-    highlight: [A],
-    chainSets: {
-      [A]: layers,
-    },
+    highlight: layers[layers.length - 1],
+    chainSets: { ...allLayers },
   });
   }
 
@@ -244,10 +247,12 @@ const inheritedGrammar: Grammer = {...reduced, rules: [...reduced.rules, ...adde
 steps.push({
   phase: "chain-inherit",
   title: "Szabályok öröklése",
-  explanation: "",
+  explanation: "Minden nemterminális örökli a H(A) halmazában szereplő nemterminálisok nem-lánc szabályait. Ezzel előkészítjük a láncszabályok eltávolítását.",
   grammar: inheritedGrammar,
   added: addedRules,
   removed: [],
+  chainSets: { ...allLayers },
+
 });
 
 const removedRules = reduced.rules.filter(r => !final.rules.some(x => x.from === r.from && x.to === r.to ));
@@ -255,15 +260,16 @@ const removedRules = reduced.rules.filter(r => !final.rules.some(x => x.from ===
 steps.push({
   phase: "chain-remove",
   title: "Láncszabályok eltávolítása",
-  explanation: "",
+  explanation: "Már minden szükséges szabályt megörököltünk, ezért a láncszabályok (X → Y) eltávolíthatók a nyelv megváltoztatása nélkül.",
   grammar: final,
   added: [],
   removed: removedRules,
+  chainSets: { ...allLayers },
 });
 steps.push({
   phase: "done",
   title: "Kész",
-  explanation: "",
+  explanation: "A konverzió befejeződött. A kapott nyelvtan ekvivalens az eredetivel, és megfelel a 3-as típusú normálforma követelményeinek.",
   grammar: final,
   added: [],
   removed: [],
