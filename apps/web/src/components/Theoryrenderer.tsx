@@ -41,7 +41,7 @@ function renderBlockasType(block: ContentBlock) {
 
     case "definition":
       return (
-        <p>
+        <p className="border-l-4 border-brand-700 bg-brand-50 pl-3 py-2 rounded-r">
           <b className="font-semibold text-brand-700"><MathText text={block.term.hu} />:</b>{" "}
           <MathText text={block.content.hu} />
         </p>
@@ -139,7 +139,6 @@ function renderBlockasType(block: ContentBlock) {
       );
 
     default: {
-      // Ha új blokktípus kerül a ContentBlock-ba, itt fordítási hiba jelez.
       const unhandled: never = block;
       return unhandled;
     }

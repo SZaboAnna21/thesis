@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [3],
 
-  module: null,
+  module: "nf3-converter",
 };
