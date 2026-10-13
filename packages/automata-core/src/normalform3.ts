@@ -200,7 +200,7 @@ export function toNormalForm3Steps(g: Grammer): Nf3Result {
   steps.push({
     phase: "input",
     title: "Kiinduló nyelvtan",
-    explanation: "A kiinduló reguláris nyelvtan ezt fogjuk NF3 alakra alakítunk.",
+    explanation: "Ez a kiinduló reguláris nyelvtan ezt fogjuk NF3 alakra alakítunk.",
     grammar: g,
     added: [],
     removed: [],
@@ -231,7 +231,7 @@ export function toNormalForm3Steps(g: Grammer): Nf3Result {
     steps.push({
     phase: "chain-closure",
     title: `H(${A}) kiszámítása`,
-    explanation: "Kiszámítjuk H(${A}) halmazokat. Ide azok a nemterminálisok kerülnek, amelyek ${A}-ból láncszabályokon (X → Y) keresztül elérhetők.",
+    explanation: `Kiszámítjuk H(${A}) halmazokat. Ide azok a nemterminálisok kerülnek, amelyek ${A}-ból láncszabályokon (X → Y) keresztül elérhetők.`,
     grammar: reduced,
     added: [],
     removed: [],
