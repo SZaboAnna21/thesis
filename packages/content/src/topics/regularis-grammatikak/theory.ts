@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A 3-as típusú grammatikáról eddig annyit tudunk, hogy a szabályok jobb oldalán legfeljebb egy nemterminális lehet, és az is csak a legvégén. Most megnézzük, mi van, ha ezt a szabályt lazítjuk: hova kerülhet az az egy nemterminális, és mit nyerünk vagy veszítünk vele.",
+      hu: "A 3-as típusnál a jobb oldalon legfeljebb egy nemterminális lehet, és az is a legvégén ül, mindig. Most megnézzük, mi történik, ha leülhet máshova is.",
     },
   },
   {
@@ -20,20 +20,14 @@ export const theory: ContentBlock[] = [
       hu: "Lineáris grammatika",
     },
     content: {
-      hu: "Egy $G = \\langle N, \\Sigma, P, S \\rangle$ környezetfüggetlen grammatika lineáris, ha minden szabálya vagy $A \\to u$ alakú ($u \\in \\Sigma^*$), vagy $A \\to u_1Bu_2$ alakú, ahol $A, B \\in N$ és $u_1, u_2 \\in \\Sigma^*$. $G$ bal-lineáris, ha minden második típusú szabályában $u_1 = \\varepsilon$ (a nemterminális a bal szélen áll), és jobb-lineáris, ha mindegyikben $u_2 = \\varepsilon$ (a nemterminális a jobb szélen áll).",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Emberi nyelven: minden mondatformában legfeljebb egy nemterminális van, egy „kurzor”, ami körül épül a szó. Lineárisnál a kurzor bárhol lehet, bal-lineárisnál a szó elején ül és balra írunk elé, jobb-lineárisnál a végén ül és jobbra írunk utána.",
+      hu: "Egy $G = \\langle N, \\Sigma, P, S \\rangle$ környezetfüggetlen grammatika lineáris, ha minden szabálya $A \\to u$ vagy $A \\to u_1Bu_2$ alakú ($A, B \\in N$, $u, u_1, u_2 \\in \\Sigma^*$). Bal-lineáris, ha mindig $u_1 = \\varepsilon$, jobb-lineáris, ha mindig $u_2 = \\varepsilon$.",
     },
   },
   {
     type: "table",
     headers: ["Grammatika", "Típus"],
     rows: [
-      ["$S \\to aSb \\mid \\varepsilon$", "lineáris, de se nem bal-, se nem jobb-lineáris"],
+      ["$S \\to aSb \\mid \\varepsilon$", "lineáris (a nemterminális középen trónol)"],
       ["$S \\to Saa \\mid b$", "bal-lineáris"],
       ["$S \\to aS \\mid bbS \\mid c$", "jobb-lineáris"],
     ],
@@ -41,13 +35,13 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Vedd észre: a jobb-lineáris grammatika pont a 3-as típusú grammatika, csak más néven. Ugyanígy a jobb-lineáris nyelvek pontosan a reguláris nyelvek. Egy nyelv lineáris, bal-lineáris, illetve jobb-lineáris, ha van ilyen grammatika, ami generálja.",
+      hu: "Spoiler: a jobb-lineáris grammatika pontosan a 3-as típusú grammatika, csak felvett egy másik nevet is.",
     },
   },
   {
     type: "warning",
     text: {
-      hu: "Ne keverd a kettőt egy grammatikán belül! Ha egyes szabályok bal-, mások jobb-lineárisak, akkor a grammatika csak lineáris, és már nem garantált, hogy reguláris nyelvet generál. Például $S \\to aA \\mid \\varepsilon$ (jobb-lineáris) és $A \\to Sb$ (bal-lineáris) együtt az $\\{a^nb^n \\mid n \\ge 0\\}$ nyelvet adja, ami nem reguláris.",
+      hu: "Bal- és jobb-lineárist egy grammatikán belül keverni tilos, vagyis szabad, csak akkor elszáll a regularitás. $S \\to aA \\mid \\varepsilon$, $A \\to Sb$ együtt $\\{a^nb^n\\}$-t adja, ami egyáltalán nem reguláris.",
     },
   },
   {
@@ -61,24 +55,18 @@ export const theory: ContentBlock[] = [
     type: "theorem",
     kind: "tetel",
     statement: {
-      hu: "Minden bal-lineáris grammatika reguláris (3-as típusú) nyelvet generál.",
+      hu: "Minden bal-lineáris grammatika reguláris nyelvet generál.",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Az ötlet: egy bal-lineáris levezetés jobbról balra építi a szót. A végén áll az első legenerált darab, az elején az utolsó. Ha a levezetést megfordítjuk, és a szót balról jobbra építjük, pont egy jobb-lineáris levezetést kapunk. A nemterminálisok „láncát” kell csak fordított irányban bejárni.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Legyen $G$ bal-lineáris, $N = \\{S, A_1, \\dots, A_n\\}$. Feltehetjük, hogy $S$ egyetlen jobb oldalon sem szerepel (ha mégis, nevezzük át ott $S'$-re, és vegyük fel az $S \\to S'$ szabályt). Az új, jobb-lineáris $G'$ szabályai a régiekből így jönnek ($u \\in \\Sigma^*$):",
+      hu: "A bal-lineáris grammatika hátrafelé írja a szót, jobbról balra. Ha a levezetést egyszerűen visszafelé tekerjük, pont egy jobb-lineárisat kapunk. Feltesszük, hogy $S$ nincs jobb oldalon (ha mégis, jön egy $S \\to S'$ és megoldottuk). Az átírás:",
     },
   },
   {
     type: "table",
-    headers: ["Ha $G$-ben van…", "akkor $G'$-be ezt tesszük"],
+    headers: ["Bal-lineáris $G$", "Jobb-lineáris $G'$"],
     rows: [
       ["$S \\to u$", "$S \\to u$"],
       ["$A_k \\to u$", "$S \\to uA_k$"],
@@ -89,63 +77,17 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Megjegyezni így érdemes: a szerepek megfordulnak. Ami $G$-ben a levezetés vége volt ($A_k \\to u$, nincs több nemterminális), az $G'$-ben az eleje lesz (közvetlenül $S$-ből indul). Ami $G$-ben az eleje volt ($S \\to A_ju$), az $G'$-ben a vége. A középső szabályoknál pedig a nyíl „megfordul”: $A_k$-ból $A_j$-be ment, most $A_j$-ből megy $A_k$-ba.",
-    },
-  },
-  {
-    type: "proof",
-    title: {
-      hu: "Miért ugyanaz a nyelv?",
-    },
-    content: [
-      {
-        type: "paragraph",
-        text: {
-          hu: "Ha $S \\to w \\in P$, akkor $S \\to w \\in P'$, kész. Különben $w$-nek van egy $S \\Rightarrow A_{i_1}w_1 \\Rightarrow A_{i_2}w_2w_1 \\Rightarrow \\dots \\Rightarrow A_{i_{m-1}}w_{m-1} \\cdots w_1 \\Rightarrow w_m w_{m-1} \\cdots w_1 = w$ levezetése $G$-ben. A táblázat alapján ehhez $G'$-ben tartozik az $S \\Rightarrow w_mA_{i_{m-1}} \\Rightarrow w_mw_{m-1}A_{i_{m-2}} \\Rightarrow \\dots \\Rightarrow w_m \\cdots w_2A_{i_1} \\Rightarrow w_m \\cdots w_1 = w$ levezetés. Ugyanaz a lánc, csak visszafelé járjuk be. A másik irány szimmetrikus.",
-        },
-      },
-    ],
-  },
-  {
-    type: "example",
-    title: {
-      hu: "Átalakítás lépésről lépésre",
-    },
-    content: {
-      hu: "Az $L = \\{a^nb^k \\mid n, k \\ge 0\\}$ nyelvet generálja a bal-lineáris $S \\to \\varepsilon \\mid A_1b \\mid A_2a$, $A_1 \\to A_1b \\mid A_2$, $A_2 \\to A_2a \\mid \\varepsilon$. A táblázat szerint a jobb-lineáris változat: $S \\to \\varepsilon \\mid A_2$, $A_1 \\to b \\mid bA_1$, $A_2 \\to a \\mid aA_2 \\mid A_1$. Nézzük az $ab$ szót. Az eredetiben: $S \\Rightarrow A_1b \\Rightarrow A_2b \\Rightarrow A_2ab \\Rightarrow ab$. Az újban: $S \\Rightarrow A_2 \\Rightarrow aA_2 \\Rightarrow aA_1 \\Rightarrow ab$. Ugyanazokon a nemterminálisokon megyünk át, csak fordított sorrendben.",
-    },
-  },
-  {
-    type: "heading",
-    level: 2,
-    text: {
-      hu: "Tükrözés",
-    },
-  },
-  {
-    type: "theorem",
-    kind: "allitas",
-    statement: {
-      hu: "Minden jobb-lineáris $G$ grammatikához van olyan bal-lineáris $G'$, ami $L(G)$ tükörképét generálja.",
-    },
-    proof: {
-      hu: "Fordítsunk meg minden jobb oldalt: $A \\to u$ helyett $A \\to u^R$, $A \\to uB$ helyett $A \\to Bu^R$. Ahol eddig jobbra írtunk, most balra írunk, és pont a tükörkép jön ki.",
+      hu: "Memóriatrükk: minden fordítva van. Ami eddig a vég volt, most a kezdet ($S$-ből indul), ami a kezdet volt, most a vég, a középen lévő nyilak pedig megfordulnak.",
     },
   },
   {
     type: "theorem",
     kind: "kovetkezmeny",
     statement: {
-      hu: "1. $\\mathcal{L}_3$ zárt a tükrözésre. 2. Minden reguláris nyelv generálható bal-lineáris grammatikával.",
+      hu: "$\\mathcal{L}_3$ zárt a tükrözésre, és minden reguláris nyelv generálható bal-lineáris grammatikával.",
     },
     proof: {
-      hu: "1. Ha $L \\in \\mathcal{L}_3$, akkor az állítás szerint $L^R$-et generálja egy bal-lineáris grammatika, a tétel szerint tehát $L^R \\in \\mathcal{L}_3$. 2. Ha $L \\in \\mathcal{L}_3$, akkor az 1. pont miatt $L^R$ is az, vagyis van rá jobb-lineáris grammatika. Az állítást erre alkalmazva $(L^R)^R = L$-et egy bal-lineáris grammatika generálja.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Összefoglalva: a reguláris nyelveket mindegy, hogy bal- vagy jobb-lineáris grammatikával írod le, ugyanazt az osztályt kapod. Csak a kettőt ne keverd.",
+      hu: "Jobb-lineáris grammatikában fordítsunk meg minden jobb oldalt ($A \\to uB$ helyett $A \\to Bu^R$, $A \\to u$ helyett $A \\to u^R$), így bal-lineáris grammatikát kapunk a tükörképre. A tétel szerint ez is reguláris. Kétszer tükrözve visszakapjuk az eredeti nyelvet, most már bal-lineárisan.",
     },
   },
   {
@@ -156,24 +98,18 @@ export const theory: ContentBlock[] = [
     },
   },
   {
-    type: "paragraph",
-    text: {
-      hu: "Egy 3-as típusú grammatika szabályai elég vadak lehetnek: $A \\to abbaB$, $A \\to B$, $A \\to aab$. Bizonyításokhoz (és később a véges automatákhoz) sokkal kényelmesebb, ha minden lépés pontosan egy betűt ír ki. Erre való a normálforma.",
-    },
-  },
-  {
     type: "definition",
     term: {
       hu: "3-as normálforma",
     },
     content: {
-      hu: "A $G = \\langle N, \\Sigma, P, S \\rangle$ grammatika 3-as normálformájú, ha minden szabálya $X \\to aY$ ($X, Y \\in N$, $a \\in \\Sigma$) vagy $X \\to \\varepsilon$ ($X \\in N$) alakú.",
+      hu: "$G$ 3-as normálformájú, ha minden szabálya $X \\to aY$ ($X, Y \\in N$, $a \\in \\Sigma$) vagy $X \\to \\varepsilon$ alakú.",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Vagyis: vagy kiírunk egy betűt és továbblépünk egy nemterminálisba, vagy megállunk. Ha ez ismerősen hangzik, nem véletlen: pont így működik egy véges automata is (állapot, betű, új állapot, elfogadó állapot).",
+      hu: "Vagyis lépésenként pontosan egy betű, se több, se kevesebb. Ez gyanúsan hasonlít egy véges automatára, látni fogod később.",
     },
   },
   {
@@ -181,12 +117,6 @@ export const theory: ContentBlock[] = [
     kind: "tetel",
     statement: {
       hu: "Minden reguláris nyelv generálható 3-as normálformájú grammatikával.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Az átalakítás két lépésből áll. A kiinduló szabályok $A \\to uB$ vagy $A \\to u$ alakúak ($u \\in \\Sigma^*$).",
     },
   },
   {
@@ -200,20 +130,14 @@ export const theory: ContentBlock[] = [
     type: "list",
     ordered: false,
     items: [
-      { hu: "$A \\to a_1 \\cdots a_nB$, $n \\ge 2$: szedjük szét betűnként új, csak ehhez a szabályhoz tartozó $Z_1, \\dots, Z_{n-1}$ nemterminálisokkal: $A \\to a_1Z_1,\\ Z_1 \\to a_2Z_2,\\ \\dots,\\ Z_{n-1} \\to a_nB$." },
-      { hu: "$A \\to a_1 \\cdots a_m$, $m \\ge 1$: ugyanígy, csak a végén egy közös $E$ nemterminálisba futunk, amiből leállunk: $A \\to a_1Y_1,\\ \\dots,\\ Y_{m-1} \\to a_mE$, és $E \\to \\varepsilon$. Az $E$-ből elég egy darab az egész grammatikára." },
+      { hu: "$A \\to a_1 \\cdots a_nB$ ($n \\ge 2$): felszeleteljük, mint a szalámit, friss nemterminálisokkal: $A \\to a_1Z_1,\\ Z_1 \\to a_2Z_2,\\ \\dots,\\ Z_{n-1} \\to a_nB$." },
+      { hu: "$A \\to a_1 \\cdots a_m$ ($m \\ge 1$): ugyanígy, de a végén egy közös $E$-be futunk, és $E \\to \\varepsilon$." },
     ],
   },
   {
     type: "paragraph",
     text: {
-      hu: "Ez nem változtat a nyelven: a régi hosszú szabályt eljátsszuk a rövidekkel. Mivel a $Z_i$-k szabályonként egyediek, nem lehet „összekeverni” két hosszú szabály darabjait, így új szó sem keletkezik.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Ezután minden szabály $X \\to aY$, $X \\to \\varepsilon$ vagy $X \\to Y$ alakú. Az utolsó a láncszabály, ezektől kell még megszabadulni.",
+      hu: "A $Z_i$-k minden szabályhoz újak, így két szalámi szeletei nem keveredhetnek. Ami ezután még kilóg, az az $X \\to Y$ láncszabály.",
     },
   },
   {
@@ -226,7 +150,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Minden $A$-ra kiszámoljuk, hova juthatunk el belőle csak láncszabályokkal: $H(A) = \\{B \\in N \\mid A \\Rightarrow^* B\\}$. Ezt rétegenként építjük:",
+      hu: "Minden $A$-ra összegyűjtjük, hova lehet eljutni belőle csak láncon: $H(A) = \\{B \\mid A \\Rightarrow^* B\\}$.",
     },
   },
   {
@@ -236,13 +160,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A sorozat nő, de $N$ véges, így egyszer megáll. Ez lesz $H(A)$. Ezután a láncszabályokat kidobjuk, és mindenki örökli azoknak a nem-lánc szabályait, akiket láncon el tud érni: $P' = \\{A \\to w \\mid \\exists B \\in H(A) : B \\to w \\in P\\} \\setminus \\{\\text{láncszabályok}\\}$.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Egy levezetésben a láncszabályok sorozatát ($A \\Rightarrow^* B$) és az utána jövő $B \\to w$ lépést most egyetlen $A \\to w$ lépés helyettesíti. Visszafelé ugyanez: minden új szabály egy lánc plusz egy régi szabály. A nyelv tehát nem változik.",
+      hu: "Ha már nem nő, kész. Ezután a láncszabályok mennek a kukába, és $A$ megörökli minden $B \\in H(A)$ nem-lánc szabályát: ha $B \\to w$, akkor $A \\to w$.",
     },
   },
   {
@@ -251,19 +169,13 @@ export const theory: ContentBlock[] = [
       hu: "Teljes példa",
     },
     content: {
-      hu: "Kiindulás: $S \\to abS \\mid B$, $B \\to bB \\mid V$, $V \\to aa \\mid b$. Hosszredukció után: $S \\to aZ_1 \\mid B$, $Z_1 \\to bS$, $B \\to bB \\mid V$, $V \\to aZ_2 \\mid bE$, $Z_2 \\to aE$, $E \\to \\varepsilon$. A láncok: $H(S) = \\{S, B, V\\}$, $H(B) = \\{B, V\\}$, a többinél csak önmaga. Láncmentesítés után: $S \\to aZ_1 \\mid bB \\mid aZ_2 \\mid bE$, $B \\to bB \\mid aZ_2 \\mid bE$, $V \\to aZ_2 \\mid bE$, $Z_1 \\to bS$, $Z_2 \\to aE$, $E \\to \\varepsilon$. Minden szabály $X \\to aY$ vagy $X \\to \\varepsilon$ alakú.",
+      hu: "$S \\to abS \\mid B$, $B \\to bB \\mid V$, $V \\to aa \\mid b$. Hosszredukció: $S \\to aZ_1 \\mid B$, $Z_1 \\to bS$, $V \\to aZ_2 \\mid bE$, $Z_2 \\to aE$, $E \\to \\varepsilon$ ($B$ szabályai maradnak). Láncok: $H(S) = \\{S, B, V\\}$, $H(B) = \\{B, V\\}$. Eredmény: $S \\to aZ_1 \\mid bB \\mid aZ_2 \\mid bE$, $B \\to bB \\mid aZ_2 \\mid bE$, $V \\to aZ_2 \\mid bE$, $Z_1 \\to bS$, $Z_2 \\to aE$, $E \\to \\varepsilon$.",
     },
   },
   {
     type: "warning",
     text: {
-      hu: "Ne felejtsd el: a láncszabályokat ki kell dobni, nem elég az új szabályokat hozzáadni! Láncmentesítés után egyes nemterminálisok elérhetetlenné válhatnak (a példában a $V$-be már semmi nem visz). Ezeket el lehet hagyni, de nem kötelező, a nyelv nem változik tőlük.",
-    },
-  },
-  {
-    type: "funfact",
-    text: {
-      hu: "A gyakorlatban a reguláris grammatikák leginkább a fordítóprogramok lexikális elemzőjében (lexer) bukkannak fel: azonosítók, számok, kulcsszavak felismerésére. Ott persze senki nem ír kézzel 3-as normálformát, hanem reguláris kifejezést, amiből egy eszköz automatát gyárt. Hogy ez miért működik, az a következő témák lényege.",
+      hu: "A láncszabályokat ki kell dobni, nem elég az újakat mellé pakolni! Ha közben valaki elérhetetlen lesz (itt a $V$), nyugodtan ott maradhat, csak árválkodik.",
     },
   },
 ];
