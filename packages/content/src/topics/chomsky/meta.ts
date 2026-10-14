@@ -10,7 +10,7 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Grammatikák és nyelvek osztályozása, álterminálisok, zártsági tulajdonságok.",
+    hu: "Grammatikák és nyelvek Chomsky-féle osztályozása, KES.",
   },
 
   lectures: [2],

@@ -71,7 +71,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Mivel a nyelvek halmazok, minden, amit halmazokkal csinálni szoktunk, itt is érvényes. Legyenek $L_1, L_2 \\subseteq V^*$.",
+      hu: "Mivel a nyelvek halmazok, minden, amit halmazokkal csinálni szoktunk, itt is érvényes. Lássuk is őket: Legyenek $L_1, L_2 \\subseteq V^*$.",
     },
   },
   {
@@ -174,12 +174,7 @@ export const theory: ContentBlock[] = [
       hu: "A konkatenáció asszociatív: $L_1(L_2L_3) = (L_1L_2)L_3$, de (ahogy a szavaknál) nem kommutatív. Az egységelem a $\\{\\varepsilon\\}$ nyelv: $\\{\\varepsilon\\}L = L\\{\\varepsilon\\} = L$ minden $L$-re.",
     },
   },
-  {
-    type: "funfact",
-    text: {
-      hu: "Algebrai nyelven: egy adott ábécé feletti nyelvek a konkatenációra nézve egységelemes félcsoportot (monoidot) alkotnak, melynek $\\{\\varepsilon\\}$ az egységeleme. És vajon mi történik az üres nyelvvel? $\\emptyset L = L\\emptyset = \\emptyset$, hiszen nincs kit kivel párosítani. Ez úgy viselkedik, mint a $0$ a szorzásnál.",
-    },
-  },
+ 
   {
     type: "heading",
     level: 2,
@@ -347,7 +342,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A homomorfizmus egy „betűcserélő” leképezés: minden betűt lecserélünk egy szóra, és ezt végigcsináljuk a szó összes betűjén.",
+      hu: 'A homomorfizmus egy „betűcserélő” leképezés: minden betűt a nyelvben lecserélünk egy a másik nyelvben lévő "megfelelőjére", és ezt végigcsináljuk a szó összes betűjén.',
     },
   },
   {

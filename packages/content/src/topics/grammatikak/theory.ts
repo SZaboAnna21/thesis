@@ -51,12 +51,7 @@ export const theory: ContentBlock[] = [
       hu: "$G_1 = \\langle \\{S, A, B\\}, \\{a, b, c\\}, \\{S \\to c,\\ S \\to AB,\\ A \\to aA,\\ B \\to \\varepsilon,\\ abb \\to aSb\\}, S \\rangle$ nem grammatika, mert az $abb \\to aSb$ szabály bal oldalán nincs nemterminális.",
     },
   },
-  {
-    type: "example",
-    content: {
-      hu: "$G_2 = \\langle \\{S, A, B, C\\}, \\{a, b, c\\}, \\{S \\to a,\\ S \\to AB,\\ A \\to Ab,\\ B \\to \\varepsilon,\\ aCA \\to aSc\\}, S \\rangle$ viszont grammatika. Az $aCA \\to aSc$ furcsán néz ki, de a bal oldalán ott a $C$ (meg az $A$), szóval rendben van.",
-    },
-  },
+
   {
     type: "paragraph",
     text: {
@@ -240,12 +235,6 @@ export const theory: ContentBlock[] = [
     },
     content: {
       hu: "Az $L_1$ és $L_2$ nyelvek gyengén ekvivalensek, ha legfeljebb az $\\varepsilon$-ban térnek el: $(L_1 - L_2) \\cup (L_2 - L_1) \\subseteq \\{\\varepsilon\\}$. Két grammatika gyengén ekvivalens, ha gyengén ekvivalens nyelveket generál.",
-    },
-  },
-  {
-    type: "paragraph",
-    text: {
-      hu: "Hogy miért kell külön fogalom arra, ha csak az $\\varepsilon$-ban térnek el? Mert az $\\varepsilon$ sok helyen kilóg a sorból (lásd a Chomsky-osztályozásnál a korlátozott $\\varepsilon$-szabályt), és gyakran kényelmesebb azt mondani, hogy „az $\\varepsilon$-t most hagyjuk, majd a végén külön kezeljük”.",
     },
   },
   {
