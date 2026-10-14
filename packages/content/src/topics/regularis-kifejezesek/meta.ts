@@ -10,7 +10,7 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Szintaxis, jelentés, azonosságok, Arden tétele, és miért írnak le pont reguláris nyelveket.",
+    hu: "Szintaxis, jelentés, azonosságok, Arden tétele, egyenletrendszerek, Kleene tétele.",
   },
 
   lectures: [3],

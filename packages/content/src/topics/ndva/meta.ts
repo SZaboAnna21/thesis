@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "NDVA, ε-átmenetek és determinizálás.",
+    hu: "NVDA, kapcsolat a 3-as normálformával, determinizálás, ε-átmenetek.",
   },
 
-  lectures: [],
+  lectures: [4],
 
   module: null,
 };

@@ -95,6 +95,12 @@ export const theory: ContentBlock[] = [
     latex: "L(A) = \\{ u \\in \\Sigma^* \\mid \\hat{\\delta}(q_0, u) \\in F \\}",
   },
   {
+    type: "paragraph",
+    text: {
+      hu: "Ugyanez redukcióval: $L(A) = \\{u \\in \\Sigma^* \\mid q_0u \\Rightarrow_A^* p$ valamely $p \\in F$-re$\\}$. Mivel minden $q_0u$ pontosan egyféleképp redukálható egy $p \\in Q$-ra, a két definíció ugyanazt adja: ha $p \\in F$, $A$ elfogadja $u$-t, különben elutasítja.",
+    },
+  },
+  {
     type: "heading",
     level: 1,
     text: {
