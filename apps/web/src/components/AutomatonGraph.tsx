@@ -15,16 +15,25 @@ import {
   type NodeChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { Dfa, Letter, State } from "@fotoc/automata-core";
+import { EPS, type Letter, type Nfa, type State } from "@fotoc/automata-core";
 
 const R = 28;
 
 type Status = "active" | "visited" | "idle";
 
-type StateData = { label: State; start: boolean; accepting: boolean; loopAngle: number; status?: Status };
+export type GraphTransition = { from: State; to: State; letter: Letter };
+
+type StateData = {
+  label: State;
+  start: boolean;
+  accepting: boolean;
+  loopAngle: number;
+  status?: Status;
+  viaEps?: boolean;
+};
 type StateNode = Node<StateData, "state">;
 
-type TransitionData = { letters: Letter[]; activeLetter?: Letter; status: Status; bend: boolean };
+type TransitionData = { letters: Letter[]; activeLetters: Letter[]; status: Status; bend: boolean };
 type TransitionEdge = Edge<TransitionData, "transition">;
 
 const EDGE_STYLE: Record<Status, { color: string; width: number }> = {
@@ -39,11 +48,11 @@ const NODE_STYLE: Record<Status, string> = {
   idle: "border-gray-500 bg-white text-gray-900",
 };
 
-function circleLayout(dfa: Dfa): StateNode[] {
-  const n = dfa.states.length;
+function circleLayout(automaton: Nfa): StateNode[] {
+  const n = automaton.states.length;
   const radius = n <= 1 ? 0 : Math.max(120, n * 45);
 
-  return dfa.states.map((state, k) => {
+  return automaton.states.map((state, k) => {
     const angle = -Math.PI / 2 + (2 * Math.PI * k) / n;
     return {
       id: state,
@@ -51,32 +60,33 @@ function circleLayout(dfa: Dfa): StateNode[] {
       position: { x: radius * Math.cos(angle) - R, y: radius * Math.sin(angle) - R },
       data: {
         label: state,
-        start: state === dfa.start,
-        accepting: dfa.accepting.includes(state),
+        start: automaton.starts.includes(state),
+        accepting: automaton.accepting.includes(state),
         loopAngle: n <= 1 ? -Math.PI / 2 : angle,
       },
     };
   });
 }
 
-function buildEdges(dfa: Dfa, path: State[], word: string): TransitionEdge[] {
+const edgeId = (from: State, to: State) => `${from}->${to}`;
+
+function buildEdges(automaton: Nfa, taken: GraphTransition[], takenBefore: GraphTransition[]): TransitionEdge[] {
   const grouped = new Map<string, { from: State; to: State; letters: Letter[] }>();
-  for (const from of dfa.states) {
-    for (const letter of dfa.alphabet) {
-      const to = dfa.transitions[from]?.[letter];
-      if (to === undefined) continue;
-      const id = `${from}->${to}`;
-      if (!grouped.has(id)) grouped.set(id, { from, to, letters: [] });
-      grouped.get(id)!.letters.push(letter);
+  for (const from of automaton.states) {
+    for (const letter of [...automaton.alphabet, EPS]) {
+      for (const to of automaton.transitions[from]?.[letter] ?? []) {
+        const id = edgeId(from, to);
+        if (!grouped.has(id)) grouped.set(id, { from, to, letters: [] });
+        grouped.get(id)!.letters.push(letter);
+      }
     }
   }
 
-  const last = path.length - 1;
-  const visited = new Set(path.slice(1).map((to, k) => `${path[k]}->${to}`));
-  const activeId = last > 0 ? `${path[last - 1]}->${path[last]}` : undefined;
+  const before = new Set(takenBefore.map((t) => edgeId(t.from, t.to)));
 
   return [...grouped.entries()].map(([id, { from, to, letters }]) => {
-    const status: Status = id === activeId ? "active" : visited.has(id) ? "visited" : "idle";
+    const activeLetters = taken.filter((t) => edgeId(t.from, t.to) === id).map((t) => t.letter);
+    const status: Status = activeLetters.length > 0 ? "active" : before.has(id) ? "visited" : "idle";
     return {
       id,
       type: "transition",
@@ -84,31 +94,29 @@ function buildEdges(dfa: Dfa, path: State[], word: string): TransitionEdge[] {
       target: to,
       markerEnd: { type: MarkerType.ArrowClosed, color: EDGE_STYLE[status].color, width: 16, height: 16 },
       zIndex: status === "active" ? 2 : status === "visited" ? 1 : 0,
-      data: {
-        letters,
-        activeLetter: status === "active" ? word[last - 1] : undefined,
-        status,
-        bend: from !== to && grouped.has(`${to}->${from}`),
-      },
+      data: { letters, activeLetters, status, bend: from !== to && grouped.has(edgeId(to, from)) },
     };
   });
 }
 
 type Props = {
-  dfa: Dfa;
-  path: State[];
-  word: string;
+  automaton: Nfa;
+  active: State[];
+  visited?: State[];
+  viaEps?: State[];
+  taken?: GraphTransition[];
+  takenBefore?: GraphTransition[];
 };
 
-export function DfaGraph({ dfa, path, word }: Props) {
-  const [nodes, setNodes] = useState(() => circleLayout(dfa));
-  const current = path[path.length - 1];
+export function AutomatonGraph({ automaton, active, visited = [], viaEps = [], taken = [], takenBefore = [] }: Props) {
+  const [nodes, setNodes] = useState(() => circleLayout(automaton));
 
   const shownNodes = nodes.map((node) => ({
     ...node,
     data: {
       ...node.data,
-      status: (node.id === current ? "active" : path.includes(node.id) ? "visited" : "idle") as Status,
+      status: (active.includes(node.id) ? "active" : visited.includes(node.id) ? "visited" : "idle") as Status,
+      viaEps: viaEps.includes(node.id),
     },
   }));
 
@@ -116,7 +124,7 @@ export function DfaGraph({ dfa, path, word }: Props) {
     <div className="h-96 rounded border bg-gray-50">
       <ReactFlow
         nodes={shownNodes}
-        edges={buildEdges(dfa, path, word)}
+        edges={buildEdges(automaton, taken, takenBefore)}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodesChange={(changes: NodeChange<StateNode>[]) => setNodes((ns) => applyNodeChanges(changes, ns))}
@@ -150,6 +158,9 @@ function StateNodeView({ data }: NodeProps<StateNode>) {
         {data.accepting && <div className="absolute inset-1 rounded-full border-2 border-current opacity-70" />}
         {data.label}
       </div>
+      {data.viaEps && (
+        <span className="absolute -top-1 -right-1 rounded bg-brand-900 px-1 text-xs text-white">ε</span>
+      )}
       <Handle type="source" position={Position.Top} className="invisible" />
       <Handle type="target" position={Position.Top} className="invisible" />
     </div>
@@ -197,10 +208,15 @@ function TransitionEdgeView({ source, target, data, markerEnd }: EdgeProps<Trans
   }
 
   const { color, width } = EDGE_STYLE[data.status];
+  const onlyEps = data.letters.every((letter) => letter === EPS);
 
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} style={{ stroke: color, strokeWidth: width }} />
+      <BaseEdge
+        path={path}
+        markerEnd={markerEnd}
+        style={{ stroke: color, strokeWidth: width, strokeDasharray: onlyEps ? "6 4" : undefined }}
+      />
       <EdgeLabelRenderer>
         <div
           style={{ transform: `translate(-50%, -50%) translate(${label.x}px, ${label.y}px)`, borderColor: color }}
@@ -209,7 +225,7 @@ function TransitionEdgeView({ source, target, data, markerEnd }: EdgeProps<Trans
           {data.letters.map((letter, k) => (
             <span key={letter}>
               {k > 0 && ", "}
-              <span className={letter === data.activeLetter ? "font-bold text-brand-600" : ""}>{letter}</span>
+              <span className={data.activeLetters.includes(letter) ? "font-bold text-brand-600" : ""}>{letter}</span>
             </span>
           ))}
         </div>

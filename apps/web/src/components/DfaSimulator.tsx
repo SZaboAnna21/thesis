@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { runDfa, type Dfa } from "@fotoc/automata-core";
-import { DfaGraph } from "./DfaGraph";
+import { dfaToNfa, runDfa, type Dfa } from "@fotoc/automata-core";
+import { AutomatonGraph } from "./AutomatonGraph";
 import { PlayerControls } from "./PlayerControls";
 import { showSet } from "./showSet";
 import { usePlayer } from "./usePlayer";
@@ -12,12 +12,14 @@ type Props = {
 
 export function DfaSimulator({ dfa, initialWord = "" }: Props) {
   const [word, setWord] = useState(initialWord);
+  const automaton = useMemo(() => dfaToNfa(dfa), [dfa]);
   const run = useMemo(() => runDfa(dfa, word), [dfa, word]);
   const player = usePlayer(run.steps.length);
   const index = player.index;
   const path = run.steps.slice(0, index + 1).map((s) => s.state);
   const state = path[index];
   const isLast = index === run.steps.length - 1;
+  const taken = path.slice(1).map((to, k) => ({ from: path[k], to, letter: word[k] }));
 
   function changeWord(value: string) {
     setWord(value);
@@ -47,7 +49,13 @@ export function DfaSimulator({ dfa, initialWord = "" }: Props) {
         <>
           <WordButtons word={word} position={index} onPick={(k) => player.go(k + 1)} />
 
-          <DfaGraph dfa={dfa} path={path} word={word} />
+          <AutomatonGraph
+            automaton={automaton}
+            active={[state]}
+            visited={path}
+            taken={taken.slice(-1)}
+            takenBefore={taken.slice(0, -1)}
+          />
 
           <div className="rounded border border-brand-200 bg-brand-50 p-3 text-sm">
             {index === 0 ? (

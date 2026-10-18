@@ -1,3 +1,5 @@
+import type { Nfa } from "./nfa";
+
 export type State = string;
 export type Letter = string;
 
@@ -40,4 +42,19 @@ export function runDfa(dfa: Dfa, input: string): DfaRun {
   }
 
   return { steps, accepted: dfa.accepting.includes(current) };
+}
+
+export function dfaToNfa(dfa: Dfa): Nfa {
+  return {
+    states: dfa.states,
+    alphabet: dfa.alphabet,
+    starts: [dfa.start],
+    accepting: dfa.accepting,
+    transitions: Object.fromEntries(
+      dfa.states.map((state) => [
+        state,
+        Object.fromEntries(Object.entries(dfa.transitions[state] ?? {}).map(([letter, to]) => [letter, [to]])),
+      ]),
+    ),
+  };
 }
