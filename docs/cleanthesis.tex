@@ -1,0 +1,377 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[hungarian]{babel}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    showstringspaces=false,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ö}{{\"o}}1
+             {ő}{{\H{o}}}1 {ú}{{\'u}}1 {ü}{{\"u}}1 {ű}{{\H{u}}}1
+             {Á}{{\'A}}1 {É}{{\'E}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+}
+
+\title{Interaktív webalkalmazás a Számításelmélet alapjai I–II tárgyhoz}
+\author{Szabó Anna}
+\date{2026}
+
+\begin{document}
+\maketitle
+\includepdf{temabejelento.pdf}
+\tableofcontents
+
+\part{Bevezetés}
+
+\chapter{Motiváció és problémafelvetés}
+
+Az egyetemi évek alatt számos olyan tárgyat tanulunk, amelyek megértése
+jelentős absztrakciós képességet igényel, és sokszor nagyon elvontnak,
+nehezen megfoghatónak tűnnek. Hallgatóként én is többször találkoztam olyan
+tananyaggal, ahol a fogalmak és folyamatok elsőre nehezen voltak értelmezhetők.
+Különösen igaz ez azokra a témákra, amelyekben egy rendszer működésének megértéséhez
+több egymásra épülő állapotot vagy lépést kell végigkövetni.
+Az ilyen absztrakt gondolatmenetek papíron gyakran nehezen követhetők,
+hiszen egy folyamat vagy modell működését látni egészen más élmény,
+mint pusztán olvasni róla.
+
+Erre jó példa a Számításelmélet alapjai I--II. tárgy,
+amely olyan témaköröket dolgoz fel, mint a formális nyelvek,
+a grammatikák, a véges automaták, a reguláris kifejezések,
+a veremautomaták vagy a Turing-gépek.
+Ezek a fogalmak a hallgatók számára gyakran nehezen értelmezhetők, mivel
+működésük és viselkedésük hagyományos tananyagok segítségével nem mindig
+szemléltethető egyszerűen.
+A tananyag elsajátításához általában előadásanyagok, prezentációk és
+órai jegyzetek állnak rendelkezésünkre. Bár ezek fontos szerepet
+töltenek be az oktatásban, és ezek adják a tudásunk alapját, a
+mélyebb megértés sokszor a gyakorlatokra, illetve az önálló otthoni
+tanulásra hárul.
+
+Saját tapasztalatom szerint ezeknél a témáknál a megértés kulcsa
+éppen az, hogy az ember minden állapotot és lépést végigkövet. Papíron
+ez azonban lassú: gyakran minden állapotot külön le kell rajzolni, egy
+elrontott lépés után pedig elölről kell kezdeni. Ezért az ilyen
+témáknál mi, hallgatók gyakran nagyon sok időt töltünk az anyag önálló
+feldolgozásával.
+
+A szakdolgozat erre a problémára kíván megoldást nyújtani egy olyan
+webalapú oktatási rendszer fejlesztésével, amely a tantárgy
+legfontosabb témaköreit interaktív, vizualizációra épülő formában
+dolgozza fel. A rendszer a témakörökhöz elméleti összefoglalót,
+lépésenként követhető szimulációkat (például determinisztikus véges
+automata, grammatikai levezetés) és önellenőrző feladatokat kínál,
+így a lépésenkénti követés gyorssá és hibatűrővé válik.
+% TODO: a felsorolt példákat a végén egyeztetni az elkészült modulokkal
+
+\chapter{Célkitűzések}
+A szakdolgozat célja egy interaktív és vizualizációs oktatási webalkalmazás
+tervezése és fejlesztése, amely támogatja a hallgatókat a Számításelmélet
+alapjai I--II. tantárgy témaköreinek elsajátításában.
+A fejlesztés során olyan rendszer létrehozása a cél,
+amely egyetlen felületen egyesíti az elméleti háttéranyagot, a vizuális
+szemléltetést és az interaktív gyakorlási lehetőségeket. A hallgatók így
+nem csupán olvashatnak az egyes modellekről és algoritmusokról, hanem
+működésüket lépésről lépésre követhetik, és saját bemenetek segítségével
+ki is próbálhatják.
+A rendszer fontos célja továbbá, hogy támogassa az önálló tanulást,
+valamint segítséget nyújtson a gyakorlásban és a vizsgákra való
+felkészülés során.
+A kitűzött célok az alábbiakban foglalhatók össze:
+
+\begin{itemize}
+    \item a Számításelmélet alapjai I--II. főbb témaköreinek feldolgozása;
+    \item elméleti összefoglaló a tárgy jelöléseivel, matematikai képletekkel;
+    \item saját felhasználói bemenetre működő, lépésenként követhető szimulációk;
+    \item azonnali visszajelzés és önellenőrzés: kvízek, feladatok;
+    \item böngészőből, telepítés nélkül elérhető felület;
+    \item bővíthető, moduláris alkalmazásarchitektúra kialakítása.
+\end{itemize}
+
+\chapter{Hatókör és korlátok}
+
+\section{Hatókör}
+
+% TODO: a számokat és a modullistát a végén egyeztetni a kóddal
+% (packages/content/src/topics, apps/web/src/modules/index.tsx)
+A szakdolgozat egy webalapú, egyfelhasználós oktatási alkalmazás
+tervezését és megvalósítását foglalja magában, amely a Számításelmélet
+alapjai I--II. tárgy témakörét dolgozza fel Minden témakörhöz elméleti összefoglaló
+tartozik, amelyet több helyen interaktív modul egészít ki.
+
+rendszer összesen x témakört dolgoz fel, amelyek xx nagyobb csoportba sorolhatók: 
+alapfogalmak, reguláris nyelvek, környezetfüggetlen nyelvek és környezetfüggő nyelvek...
+ Az egyes témakörökhöz elméleti összefoglalók, valamint interaktív modulok tartoznak, 
+ amelyek lehetővé teszik a modellek és algoritmusok működésének lépésről lépésre történő megfigyelését.
+ 
+A megvalósított modulok közé tartozik többek között a DVA-szimulátor, a grammatikalevezető, a Chomsky-osztályozó, a 3-as normálforma vizualizáló, a reguláris kifejezés ellenőrző, a nyelvfelfedező, a szójáték és a kvízrendszer.
+
+% TODO: NDVA-szimulátor elkészült? Ha igen, kerüljön a fenti listába
+% TODO: ha a témakör-táblázat bekerül a fejlesztői dokumentációba, ide hivatkozás:
+% A témakörök és modulok részletes áttekintését a \ref{tab:temakorok}.~táblázat tartalmazza.
+
+A dolgozat része a fejlesztői dokumentáció, vagyis
+a rendszer architektúrájának bemutatása, a tervezés
+dokumentálása, az implementáció ismertetése, valamint a megvalósított
+funkciók tesztelése és értékelése. Végül egy felhasználói dokumentáció
+is készül, amely a rendszer használatát segíti.
+
+\section{Korlátok}
+
+A dolgozat keretében megvalósított rendszer oktatási célú
+prototípusnak tekinthető. Bár alkalmas a tanulás támogatására, nem
+célja egy teljes körű e-learning vagy tanulmányi rendszer kiváltása.
+A rendelkezésre álló idő és fejlesztési kapacitás miatt a tantárgy teljes
+ tananyagának részletes feldolgozása nem valósul meg. 
+ A rendszer elsősorban azokra a témakörökre összpontosít, amelyek különösen jól támogathatók vizualizációval
+  és interaktív szimulációkkal.
+A Számításelmélet alapjai II. tárgy csak részben kerül feldolgozásra.
+A szimulációk kisméretű, véges bemenetekre lettek tervezve.
+Nincs felhasználókezelés, a haladás nem tárolódik központilag.
+
+\section{Feltételezések}
+
+A rendszer használata modern webböngésző meglétét feltételezi. A
+felhasználók rendelkeznek alapvető informatikai ismeretekkel, valamint
+a Számításelmélet alapjai I--II. tárgy követéséhez szükséges
+előismeretekkel. Mivel a tananyag az előadásokra épül, azokat nem
+helyettesíti, hanem kiegészíti. A tervezés során feltételezem, hogy a webes
+technológiák és a kliensoldali vizualizációs megoldások elegendő
+teljesítményt biztosítanak az interaktív modulok futtatásához.
+
+\chapter{A dolgozat fő eredményei}
+
+\begin{itemize}
+    \item egy interaktív, webalapú oktatási rendszer tervezése és
+          megvalósítása a Számításelmélet alapjai I--II. tárgy támogatására;
+    \item olyan interaktív vizualizációs és szimulációs eszközök fejlesztése, amelyek
+     lehetővé teszik a hallgatók számára a számításelméleti modellek működésének lépésről 
+     lépésre történő követését;
+    \item a tananyag egységes, típusos, blokkalapú tartalommodellbe
+          szervezése;
+    \item moduláris és bővíthető szoftverarchitektúra kialakítása;
+    \item interaktív szimulációs és kiértékelő mechanizmusok fejlesztése;
+    \item a rendszer tervezésének, implementációjának és tesztelésének
+          dokumentálása.
+\end{itemize}
+
+A dolgozat eredménye egy olyan oktatási segédeszköz, amely a
+hagyományos tananyagokat kiegészítve támogatja az önálló tanulást, a
+szemléletesebb megértést és a gyakorlati tapasztalatszerzést.
+
+\chapter{A dolgozat felépítése}
+A dolgozat két fő részre tagolódik.
+A felhasználói dokumentáció a rendszer felépítését és használatát
+ismerteti a végfelhasználó szemszögéből. Ez kiterjed az egyes modulok
+bemutatására és az interaktív, szimulációs eszközök használatára
+példákon keresztül.
+
+A fejlesztői dokumentáció a műszaki hátteret mutatja be. Itt kap helyet
+a követelményelemzés, a tervezési döntések indoklása, az architektúra
+ismertetése és az implementáció bemutatása. Ezenkívül ez a rész tér ki
+a tesztelési folyamatokra, valamint a jövőbeni fejlesztési irányokra
+és bővítési lehetőségekre is.
+A dolgozatot egy rövid értékelés zárja.
+
+%=========================================
+\part{Felhasználói dokumentáció}
+%======================================================================
+
+% ha már nagyjából kész!
+TODO
+
+%======================================================================
+\part{Fejlesztői dokumentáció}
+%======================================================================
+
+\chapter{Követelményelemzés és specifikáció}
+
+A fejlesztés és kód írás megkezdése előtt fontos egy rövid felmérést, kutatást
+végeznünk és bizonyos szempontok alapján meg kell vizsgálnunk a feladatot.
+A rendszer fejlesztésének első lépése a követelmények meghatározása és dokumentálása.
+A specifikáció elkészítése.
+ A követelményelemzés során tisztázzuk felhasználói igényeket, a rendszerrel szemben támasztott elvárásainkat,
+valamint azokat a korlátokat és feltételeket, amelyek a fejlesztést befolyásolják.
+ 
+   
+A fejezet a specifikáció és követelménymenedzsment során alkalmazott
+lépéseket követi. Ennek megfelelően először a rendszer megvalósíthatóságát
+  vizsgálom, majd a követelmények feltárását és elemzését végzem el. 
+Ezután bemutatom a funkcionális és nem funkcionális követelményeket, 
+ismertetem a rendszer alap modelljeit, végül pedig felvázolom azokat a feltételeket, amelyeket,
+ha a rendszer teljesít, akkor elfogadható.
+
+%----------------------------------------------------------------------
+\section{Megvalósíthatósági elemzés}
+%----------------------------------------------------------------------
+% ea02, 4. dia: erőforrások, költség/időtartam, üzemeltetés/karbantartás
+% - humán: egy fejlesztő (én), a tárgyat elvégzett hallgatóként ismerem az anyagot
+% - hardver: nincs szükség szerverre, minden a böngészőben fut
+% - szoftver: csak ingyenes, nyílt forrású eszközök (TypeScript, React, Vite, pnpm)
+% - technikai: a számítások kis, korlátos bemenetekre készülnek
+%   (shortlex felsorolás, ellenpélda-keresés hosszkorlátos) -> böngészőben is azonnaliak
+% - időtartam: egy félév; ami nem fér bele -> Prioritizálás szakasz
+% - üzemeltetés: statikus GitHub Pages, ingyenes; karbantartás = a tananyag TS-fájljainak frissítése
+Itt vizsgálom a rednszer, a szoftver és a fejlesztés megvalósíthatóságát,
+ figyelembe véve a rendelkezésre álló erőforrásokat, a költségeket és a rendelkezésre álló időtartamot,
+  valamint az üzemeltetés és karbantartás kéréseit.
+
+A rendszer fejlesztését egyetlen fejlesztő végzi, nincs szükség külső erőforrás bevonására.
+ A fejlesztés közvetlen költsége gyakorlatilag nulla, mivel a projekt kizárólag ingyenesen elérhető,
+nyílt forráskódú technológiákra épül.
+Hardverigény szempontjából a rendszer kedvező helyzetben van, mivel minden számítás a felhasználó
+böngészőjében fut le, így nincs szükség külön szerver infrastruktúrára vagy felhőszolgáltatásra.
+Az alkalmazás statikus weboldalként publikálható, például GitHub Pages szolgáltatáson keresztül,
+amely ingyenes üzemeltetést tesz lehetővé.
+
+A rendszer által végzett algoritmusok viszonylag kis méretű véges bemeneteken dolgoznak, ez által
+ azok átlagos felhasználói eszközökön is gyorsan végrehajthatók.
+
+A fejlesztés időkeretét egy egyetemi félév adja. Ennek megfelelően a funkciók prioritások szerint 
+kerülnek megvalósításra, és az alacsonyabb prioritású elemek szükség esetén későbbi bővítésként kezelhetők.
+
+A karbantartása egyszerű, ezt támogatja a, moduláris felépítés. 
+Az üzleti logika  UI elkülönítése, React által biztosított komponensalapú architektúra. 
+Így új funkciók hozzáadása vagy meglévő funkciók módosítása nem igényli a teljes rendszer
+átírását. A karbantartást tovább segíti a Git alapú verziókezelés.
+
+%----------------------------------------------------------------------
+\section{Követelmények feltárása}
+%----------------------------------------------------------------------
+
+\subsection{Források és célcsoport}
+A oldal tartalma, az előadások anyagára, órai jegyzetekre, valamit saját hallgatói tapasztalatra épül elsősorban.
+
+ A célcsoport a Számításelmélet alapjai I--II. tárgy hallgatói, vizsgára készülők, 
+ valamit az anyag mélyebb megértésére törekvő hallgatók.
+% előadásdiák (a tartalommodell ezek elemzéséből készült),
+% saját hallgatói tapasztalat; TODO: kérdeztél évfolyamtársakat? ha igen, ide
+
+\subsection{Hatókör}
+% thesis.tex: "A rendszer célja és hatóköre" szöveg + tab:in_scope
+% JAVÍTANDÓ: nincs grafikus automataszerkesztő; a táblázat oszlopdefiníciója {l X} legyen
+% + ide jön a témakör–modul táblázat (tab:temakorok)
+A szakdolgozat hatókörébe egy webalapú, oktatást támogató alkalmazás
+tervezése és megvalósítása tartozik, amely a Számításelmélet
+alapjai I--II. tárgy egyes témaköreinek megértését segíti interaktív
+és vizuális eszközökkel. A~\ref{tab:in_scope}.~táblázat a hatókörbe
+tartozó funkciókat foglalja össze.
+
+\begin{table}[htbp] 
+      \centering 
+      \begin{tabularx}{\textwidth}{l X} 
+            \toprule 
+            \textbf{Funkció} & \textbf{Leírás} \\ 
+            \midrule 
+            Elméleti tartalomkezelés & 
+                  Témakörönként strukturált, blokkalapú tananyag a Számításelmélet 
+                  alapjai I--II. tananyagából: definíciók, tételek, lemmák, bizonyítások,
+                  példák, képletek, táblázatok és figyelmeztetések stb. \\ 
+                  \addlinespace
+            Interaktív algoritmusok &
+                  A hallgató különböző bemenetek megadásával futtathatja a tananyagban szereplő algoritmusokat. 
+                  A rendszer a végrehajtás eredményét és köztes állapotait is megjeleníti. \\
+                  \addlinespace
+            Folyamatok vizualizációja &
+                  Az alkalmazás grafikus elemek segítségével szemlélteti a számításelméleti folyamatokat, 
+                  ezáltal támogatva az absztrakt fogalmak megértését. \\
+                  \addlinespace
+            Önellenőrzés &
+                  A rendszer gyakorló feladatokat és kvízeket biztosít az elsajátított ismeretek ellenőrzésére. \\
+            Egységes tanulási környezet &
+                  A rendszer egy helyen fogja össze a tananyagot, a vizualizációkat és az interaktív eszközöket, 
+                  támogatva az önálló felkészülést. \\
+                  \addlinespace
+            \bottomrule
+      \end{tabularx}
+      \caption{A rendszer hatókörébe tartozó fő funkciók}
+      \label{tab:in_scope}
+\end{table}
+
+
+\subsection{Hatókörön kívül eső elemek}
+% thesis.tex: tab:out_of_scope (változatlanul átvehető)
+
+\subsection{Prioritizálás}
+% ea02, 5. dia: fontossági sorrend, megvalósíthatatlan követelmények elhagyása
+% - kötelező: témakörök + elméleti anyag, DVA-szimulátor
+% - fontos: grammatika-levezetés, Chomsky-osztályozó, 3NF, regex-ellenőrző, kvíz
+% - ha belefér: NDVA-szimulátor, veremautomata
+% - nem készül el (indoklással): Turing-gép, logikai modul -> eltérés a témabejelentőtől
+% TODO: a témavezetővel egyeztetni
+
+%----------------------------------------------------------------------
+\section{Funkcionális követelmények}
+%----------------------------------------------------------------------
+% thesis.tex: FK-1 ... FK-10, csak ami teljesül
+% + használati eset diagram (thesis.tex: "Használati esetek" szakasz, fig:usecase)
+
+\subsection{Felhasználói történetek}
+% ea02, 36-39. dia: given-when-then; a többi modulhoz is hasonlót
+
+
+%----------------------------------------------------------------------
+\section{Nem funkcionális követelmények}
+%----------------------------------------------------------------------
+% ea02, 7-11. dia kategóriái szerint; a thesis.tex NFK-1 ... NFK-8 ide sorolandó
+
+\subsection{Termékkövetelmények}
+% - hatékonyság: azonnali válasz; hosszkorlátos felsorolás/ellenpélda-keresés
+% - megbízhatóság: hibás bemenetre hibaüzenet (pl. nem ábécébeli betű, hibás regex)
+% - biztonság: nem tárol felhasználói adatot, ezért nem szempont
+% - hordozhatóság: modern böngésző, telepítés nélkül
+% - felhasználhatóság: kézikönyv nélkül, magyarul, a tárgy jelöléseivel
+% TODO: reszponzivitás (NFK-3) ellenőrizni
+
+\subsection{Menedzselési követelmények}
+% - környezeti: böngésző, szerver nélkül; KaTeX a képletekhez
+%   (thesis.tex "Külső interfészek" táblázata ide olvad be)
+% - működési: egy felhasználó; félév közben és vizsgaidőszakban
+% - fejlesztési: TypeScript, React, pnpm monorepo, Git
+
+\subsection{Külső követelmények}
+% - nincs adatgyűjtés -> adatvédelmi kérdés nem merül fel
+% - a tananyag az előadásokra épül -> a forrás megjelölése
+
+%----------------------------------------------------------------------
+\section{Rendszermodellek}
+%----------------------------------------------------------------------
+% ea02, 6. és 42. dia: felület terv, adatformátum leírás
+
+\subsection{A felhasználói felület modellje}
+% thesis.tex: "Felhasználói felület modell" (fig:homepage, fig:module)
+% TODO: hiányzó képek: img.png, img_1.png
+
+\subsection{Adatformátum: a tartalommodell}
+\label{sec:data}
+% thesis.tex: "Adatkövetelmények: a tartalommodell" teljes szakasza
+% JAVÍTANDÓ: blokktípus-táblázatba warning, funfact, proof; "14 témakör váza" -> 16, kitöltve
+
+%----------------------------------------------------------------------
+\section{A követelmények validációja}
+%----------------------------------------------------------------------
+% ea02, 40. dia: prototípus + tesztesetek
+% - a fejlesztés iteratív prototípusokban haladt
+% - a felhasználói történetekből lesznek a funkcionális tesztesetek -> Tesztelés fejezet
+
+%======================================================================
+% Következő fejezet: Tervezés
+% ide megy át a thesis.tex "Áttekintés" (3 csomag + modulregiszter)
+% és a "Rendszerarchitektúra" fejezet
+%======================================================================
+
+\end{document}
