@@ -1,4 +1,3 @@
-// Az ε-átmenetek kulcsa a transitions-ben: transitions["q0"][EPS] = ["q1"]
 export const EPS = "ε";
 
 export type Nfa = {
@@ -22,40 +21,108 @@ export type SubsetStep = {
 };
 
 // 1. lecke: ε-lezárt.
-// Azok az állapotok, ahová a megadottakból csak ε-átmenetekkel el lehet jutni (önmaguk is benne vannak).
 export function epsilonClosure(nfa: Nfa, states: string[]): string[] {
-  // TODO
-  void nfa;
-  return states;
+  const toReturnStates: string[] = [...states];
+  const toProcessStates: string[] = [...states];
+
+  while (toProcessStates.length > 0) {
+    const currentState = toProcessStates.pop()!;
+    const epsilonTransitions = nfa.transitions[currentState]?.[EPS] || [];
+
+    for (const nextState of epsilonTransitions) {
+      if (!toReturnStates.includes(nextState)) {
+        toReturnStates.push(nextState);
+        toProcessStates.push(nextState);
+      }
+    }
+  }
+
+  return normalize(nfa, toReturnStates);
 }
 
-// Egy lépés a futásban: melyik betűt olvastuk (az elején null), és mely állapotok aktívak utána.
+function onestep(nfa: Nfa, states: string[], letter: string): string[] {
+  const nextStates: string[] = [];
+  for (const state of states) {
+    const transitionsformletter = nfa.transitions[state]?.[letter] || [];
+    for (const nextState of transitionsformletter) {
+      if (!nextStates.includes(nextState)) {
+        nextStates.push(nextState);
+      }
+    }
+  }
+
+  return nextStates;
+}
+
 export type NfaRunStep = {
   letter: string | null;
   active: string[];
 };
 
-// 1. lecke: futtatás lépésenként.
-// Az első lépés: letter = null, active = a kezdőállapotok ε-lezártja.
-// Utána betűnként: az aktív állapotokból a betűvel elérhetők, majd ezek ε-lezártja.
 export function runNfa(nfa: Nfa, word: string): NfaRunStep[] {
-  // TODO
-  void nfa;
-  void word;
-  return [];
+  const steps: NfaRunStep[] = [];
+  let activestates = epsilonClosure(nfa, nfa.starts);
+  steps.push({ letter: null, active: activestates });
+  for (const character of word) {
+    activestates = epsilonClosure(nfa, onestep(nfa, activestates, character));
+    steps.push({ letter: character, active: activestates });
+  }
+  return steps;
 }
 
-// Elfogadja-e a szót: a futás végén van-e aktív elfogadó állapot.
 export function acceptsWord(nfa: Nfa, word: string): boolean {
-  // TODO
-  void nfa;
-  void word;
+  const steps = runNfa(nfa, word);
+  const lastStep = steps[steps.length - 1];
+  for (const state of lastStep.active) {
+    if (nfa.accepting.includes(state)) {
+      return true;
+    }
+  }
   return false;
 }
 
 // 2. lecke: determinizálás (részhalmaz-konstrukció) lépésenként.
 export function determinize(nfa: Nfa): SubsetStep[] {
-  // TODO
-  void nfa;
-  return [];
+  const startStates = epsilonClosure(nfa, nfa.starts);
+  const seen: Set<string> = new Set([setKey(startStates)]);
+  const queue: string[][] = [startStates];
+  const steps: SubsetStep[] = [];
+  while (queue.length > 0) {
+    const currentSet = queue.shift()!;
+    const next: Record<string, string[]> = {};
+    for (const letter of nfa.alphabet) {
+      const destination = epsilonClosure(nfa, onestep(nfa, currentSet, letter));
+      if (!seen.has(setKey(destination))) {
+        seen.add(setKey(destination));
+        queue.push(destination);
+      }
+      next[letter] = destination;
+    }
+    steps.push({
+      row: {
+        set: currentSet,
+        next,
+        isStart: steps.length === 0,
+        isAccepting: currentSet.some((state) => nfa.accepting.includes(state)),
+      },
+      queue: [...queue],
+    });
+  }
+  return steps;
 }
+
+export function normalize(nfa: Nfa, states: string[]): string[] {
+  const uniqueAndOrdered: string[] = [];
+
+  for (const state of nfa.states) {
+    if (states.includes(state) && !uniqueAndOrdered.includes(state)) {
+      uniqueAndOrdered.push(state);
+    }
+  }
+  return uniqueAndOrdered;
+}
+
+function setKey(states: string[]): string {
+  return states.join(",");
+}
+

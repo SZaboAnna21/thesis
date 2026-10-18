@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { EPS, acceptsWord, epsilonClosure, runNfa, type Nfa } from "../src/nfa.ts";
+import { EPS, acceptsWord, determinize, epsilonClosure, runNfa, type Nfa } from "../src/nfa.ts";
 
 const sorted = (xs: string[]) => [...xs].sort();
 
@@ -112,5 +112,41 @@ describe("acceptsWord", () => {
     assert.ok(acceptsWord(epsCycle, "b"));
     assert.ok(!acceptsWord(epsCycle, ""));
     assert.ok(!acceptsWord(epsCycle, "bb"));
+  });
+});
+
+describe("determinize", () => {
+  test("ab-re végződő szavak: három halmaz", () => {
+    const steps = determinize(endsWithAb);
+    assert.deepEqual(steps.map((s) => s.row.set), [["q0"], ["q0", "q1"], ["q0", "q2"]]);
+    assert.deepEqual(steps[1].row.next, { a: ["q0", "q1"], b: ["q0", "q2"] });
+    assert.deepEqual(steps.map((s) => s.row.isStart), [true, false, false]);
+    assert.deepEqual(steps.map((s) => s.row.isAccepting), [false, false, true]);
+  });
+
+  test("a sor a lépés utáni állapotot mutatja, a végén üres", () => {
+    const steps = determinize(endsWithAb);
+    assert.deepEqual(steps[0].queue, [["q0", "q1"]]);
+    assert.deepEqual(steps[steps.length - 1].queue, []);
+  });
+
+  test("a kezdőhalmaz ε-lezárt", () => {
+    assert.deepEqual(determinize(epsChain)[0].row.set, ["p0", "p1", "p2"]);
+  });
+
+  test("az üres halmaz csapdaállapotként megjelenik", () => {
+    const steps = determinize(epsCycle);
+    assert.deepEqual(steps.map((s) => s.row.set), [["r0", "r1"], ["r2"], []]);
+    assert.deepEqual(steps[2].row.next, { b: [] });
+  });
+
+  test("ugyanazt a nyelvet fogadja el, mint az NDVA", () => {
+    const steps = determinize(endsWithAb);
+    const rows = new Map(steps.map((s) => [s.row.set.join(","), s.row]));
+    for (const w of ["", "a", "b", "ab", "ba", "aab", "aba", "abab", "bbab"]) {
+      let row = steps[0].row;
+      for (const letter of w) row = rows.get(row.next[letter].join(","))!;
+      assert.equal(row.isAccepting, acceptsWord(endsWithAb, w), w);
+    }
   });
 });
