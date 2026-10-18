@@ -4,12 +4,14 @@ export type NfaExample = {
   id: string;
   title: string;
   description: string;
+  sampleWord: string;
   nfa: Nfa;
 };
 
 export const nfaExamples: NfaExample[] = [
   {
     id: "ends-with-ab",
+    sampleWord: "abab",
     title: "ab-re végződő szavak",
     description: "q0-ban várunk, és egy a-nál „megsejtjük”, hogy innen már csak b jön.",
     nfa: {
@@ -26,6 +28,7 @@ export const nfaExamples: NfaExample[] = [
   },
   {
     id: "lecture-determinize",
+    sampleWord: "bab",
     title: "Jegyzet: determinizálás",
     description: "Két kezdőállapot, és több helyen üres halmaz: ebből lesz a csapda.",
     nfa: {
@@ -42,6 +45,7 @@ export const nfaExamples: NfaExample[] = [
   },
   {
     id: "lecture-3nf",
+    sampleWord: "abab",
     title: "Jegyzet: 3NF-ből NVDA",
     description: "S → aA | aB | bB | ε, A → bS | bB, B → aS | aA | ε",
     nfa: {
@@ -58,6 +62,7 @@ export const nfaExamples: NfaExample[] = [
   },
   {
     id: "eps-a-star-b-star",
+    sampleWord: "aabb",
     title: "ε-átmenettel: a*b*",
     description: "Az a-k után ε-nal „átsétálunk” a b-k állapotába, betű olvasása nélkül.",
     nfa: {
