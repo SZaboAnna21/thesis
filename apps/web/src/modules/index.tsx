@@ -74,7 +74,7 @@ function GrammarModule({ initial }: { initial: Grammer }) {
 }
 
 export const modules: Record<string, () => ReactNode> = {
-  "dfa-simulator": () => <DfaSimulator dfa={parityDfa} />,
+  "dfa-simulator": () => <DfaSimulator dfa={parityDfa} initialWord="abba" />,
   "grammar-derivation": () => <GrammarModule initial={anbnGrammar} />,
   "cf-derivation": () => <GrammarModule initial={equalAbGrammar} />,
   "cs-derivation": () => <GrammarModule initial={anbncnGrammar} />,
