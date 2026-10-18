@@ -1,0 +1,107 @@
+0. Előbb el kell dönteni: eltérés a témabejelentőtől
+A bírálók és a témavezető a témabejelentőt fogják a dolgozat mellé tenni, ezért ezt kell előre tisztázni.
+
+Témabejelentő	Kód jelenleg
+Cím: „Interaktív webalkalmazás a Számításelmélet alapjai I–II tárgyhoz”	A tex címe más: „Interaktív és vizualizációs oktatási felület…” → javítsd a bejelentett címre
+Logika modul (igazságtáblák)	nincs
+Véges és veremautomaták szimulációja, animációval	DVA és NDVA van, veremautomata nincs; az animáció táblázatos lépkedés
+Turing-gép modul, többszalagos → egyszalagos	nincs
+localStorage a beállításokhoz és adatokhoz	nincs a kódban
+React Flow a vizualizációhoz	nincs, az automata táblázatként jelenik meg
+reszponzív UI	nem tudom, ellenőrizni kell
+Van viszont a kódban olyan, ami nincs a bejelentőben: grammatikák és levezetés, Chomsky-osztályozás, 3-as normálforma, reguláris kifejezések, nyelvfelfedező, kvíz.
+
+A bejelentő a modulokat „Például:” felsorolással adja meg, tehát van mozgástér. A Bevezetésben viszont ki kell mondani, mi lett belőlük és miért. Ezt két helyen tudod kezelni:
+
+a Hatókör szakaszban: mely témakörök készültek el;
+a Korlátok szakaszban: mi maradt ki, és miért (például „a Turing-gép modul a II. rész anyaga, továbbfejlesztési irány”).
+Ha a Turing-gépet vagy a React Flow-t már biztosan nem csinálod meg, ezt érdemes a témavezetővel egyeztetni, mielőtt leírod.
+
+
+
+//tovabb feljesztesi otletek pont esetleg!
+//doksi egyes fobb pontokrol kb mi kell,
+
+// program tervesi resz UI mockup / usecase diagramm  elemzes terv!!
+// tervezes miertek, miert ezeket a donteseket hoztam, nyelv architectura
+
+katex--latex fix
+// programkodot nezik, resztetbe belekerdeznek, esetleg keszulni elore ha nem ok kerdeznek konkretan
+// kod is legyen szep kommentek header
+// fejlesztesi munkaterv fazisok 
+// szoftware hardw kovetlemeny, elinditas, alt user szempotjabol, 
+// odal max 100 (40 - 100)
+
+// 2 het letiszt dok, a tananyag temakat felvinni, es algoritmusok automatak logikaja
+
+// doksi ne legyen tul sok matek
+
+
+
+leirni, hogy milyen temakorok es vizualizacio: abevezetesben MAJD
+
+
+
+
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+        \hline
+        \multicolumn{2}{|l|}{\textit{Mint}} & hallgató \ \hline
+        \multicolumn{2}{|l|}{\textit{Szeretném}} &
+            egy DVA működését lépésenként követni egy saját szón \ \hline
+        1 & \textit{Amennyiben} & a DVA-szimulátor oldalán vagyok, \ \cline{2-3}
+          & \textit{ha}         & az ábécé betűiből álló szót írok be, és az
+                                  \emph{Előre} gombbal végiglépkedek, \ \cline{2-3}
+          & \textit{akkor}      & minden lépésben kiemelődik az aktuális állapot,
+                                  megjelenik a konfigurációk sorozata, a végén pedig
+                                  az, hogy az automata elfogadja-e a szót. \ \hline
+        2 & \textit{Amennyiben} & a DVA-szimulátor oldalán vagyok, \ \cline{2-3}
+          & \textit{ha}         & olyan betűt írok be, amely nem eleme az ábécének, \ \cline{2-3}
+          & \textit{akkor}      & a rendszer jelzi, hogy a betű nem eleme az ábécének. \ \hline
+        3 & \textit{Amennyiben} & a szimuláció közben vagyok, \ \cline{2-3}
+          & \textit{ha}         & a \emph{Vissza} gombra kattintok, \ \cline{2-3}
+          & \textit{akkor}      & a szimuláció az előző konfigurációra lép; a kezdő
+                                  konfigurációnál a gomb nem aktív. \ \hline
+        4 & \textit{Amennyiben} & a szimuláció közben vagyok, \ \cline{2-3}
+          & \textit{ha}         & módosítom a bemeneti szót, \ \cline{2-3}
+          & \textit{akkor}      & a szimuláció a kezdő konfigurációról indul újra. \ \hline
+\end{tabularx}
+    \caption{Felhasználói történet: DVA szimulációja}
+    \label{tab:story-dfa}
+\end{table}
+
+
+felhasznaloi tortenetek
+
+
+
+--- 2026.10.15.
+fejezetek kerdeses, lehet egyel lejebb tolni, 
+megnezni a mintat
+
+szabad e fejezetkent def?, inkabb section chapter
+
+utana nezni hol van az AI doksi
+
+nagyobb architectura, es nehany erdekesebb backend logika ami a fejezetekhez van.
+
+-fontosabb todo!
+tesztelesi terv todo, hasonlo programokat hogyan tesztelnek
+fontosabb! 
+
+
+felhasznaloi doksi 
+
+esetleg minden temahoz, bemenet
+a kulonbozo interaktiv reszek hogyan mukodnek
+
+jelolesek mit jelentenek pl epszilonnal
+
+forrasok eddig kb mik voltak es gyujteni tovabb.
+jovoheten is meeting
+
+     
+
