@@ -1,7 +1,6 @@
 export type State = string;
 export type Letter = string;
 
-// A = ⟨Q, Σ, δ, q0, F⟩, ahol δ : Q × Σ → Q teljes függvény.
 export type Dfa = {
   states: State[];
   alphabet: Letter[];
@@ -12,18 +11,15 @@ export type Dfa = {
 
 export type DfaStep = {
   state: State;
-  // hány betűt olvasott már be az automata
   position: number;
 };
 
 export type DfaRun = {
   steps: DfaStep[];
   accepted: boolean;
-  // az első olyan betű a szóban, amely nem eleme Σ-nak
   invalidLetter?: Letter;
 };
 
-// DVA esetén δ értelmezési tartománya a teljes Q × Σ.
 export function isComplete(dfa: Dfa): boolean {
   return dfa.states.every((state) =>
     dfa.alphabet.every((letter) => dfa.states.includes(dfa.transitions[state]?.[letter])),

@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [4],
 
-  module: null,
+  module: "nfa-lab",
 };
