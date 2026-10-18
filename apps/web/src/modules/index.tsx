@@ -9,6 +9,8 @@ import { ChomskyClassifier } from "../components/ChomskyClassifier";
 import { RegexChecker } from "../components/RegexChecker";
 import { regexExercises } from "./regexExercises";
 import { NormalForm3Visualizer } from "../components/NormalForm3Visualizer";
+import { NfaLab } from "../components/NfaLab";
+import { nfaExamples } from "./nfaExamples";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -81,5 +83,5 @@ export const modules: Record<string, () => ReactNode> = {
   "chomsky-classifier": () => <ChomskyClassifier />,
   "regex-checker": () => <RegexChecker exercises={regexExercises} />,
   "nf3-converter": () => <NormalForm3Visualizer />,
-
+  "nfa-lab": () => <NfaLab examples={nfaExamples} />,
 };
