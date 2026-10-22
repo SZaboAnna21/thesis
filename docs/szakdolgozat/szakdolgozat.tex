@@ -1,0 +1,87 @@
+\documentclass[
+	%parspace, % Add vertical space between paragraphs
+	%noindent, % No indentation of first lines in each paragraph
+	%nohyp, % No hyphenation of words
+	%twoside, % Double sided format
+	%draft, % Quicker draft compilation without rendering images
+	%final, % Set final to hide todos
+]{elteikthesis}[2024/04/26]
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+
+\lstset{
+    float=false,
+    numbers=none,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ö}{{\"o}}1
+             {ő}{{\H{o}}}1 {ú}{{\'u}}1 {ü}{{\"u}}1 {ű}{{\H{u}}}1
+             {Á}{{\'A}}1 {É}{{\'E}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+}
+
+\newcommand{\kep}[2][]{%
+  \IfFileExists{images/#2}%
+    {\includegraphics[#1]{#2}}%
+    {\fbox{\parbox[c][4cm][c]{0.8\textwidth}{\centering Hiányzó kép: \texttt{\detokenize{#2}}}}}%
+}
+
+\title{Interaktív webalkalmazás a Számításelmélet alapjai I--II tárgyhoz}
+\date{2026}
+
+\author{Szabó Anna}
+\degree{programtervező informatikus BSc}
+
+\supervisor{Tichler Krisztián}
+\affiliation{egyetemi adjunktus}
+
+\university{Eötvös Loránd Tudományegyetem}
+\faculty{Informatikai Kar}
+\department{Algoritmusok és Alkalmazásaik Tanszék}
+\city{Budapest}
+\logo{elte_cimer_szines}
+
+\addbibresource{szakdolgozat.bib}
+
+\begin{document}
+
+\documentlang{hungarian}
+
+%\listoftodos[\todolabel]
+
+\maketitle
+\includepdf{temabejelento.pdf}
+%\includepdf{mi_nyilatkozat.pdf}
+
+\tableofcontents
+\cleardoublepage
+
+\input{fejezetek/bevezetes.tex}
+\cleardoublepage
+
+\input{fejezetek/felhasznaloi.tex}
+\cleardoublepage
+
+\input{fejezetek/fejlesztoi.tex}
+\cleardoublepage
+
+\input{fejezetek/osszegzes.tex}
+\cleardoublepage
+
+\nocite{*}
+\phantomsection
+\addcontentsline{toc}{chapter}{\biblabel}
+\printbibliography[title=\biblabel]
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstfigurelabel}
+\listoffigures
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\lsttablelabel}
+\listoftables
+\cleardoublepage
+
+\end{document}

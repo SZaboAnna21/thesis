@@ -1,0 +1,521 @@
+\chapter{Fejlesztői dokumentáció}
+\label{ch:impl}
+
+\section{Követelményelemzés és specifikáció}
+
+A fejlesztés és kód írás megkezdése előtt fontos egy rövid felmérést, kutatást
+végeznünk és bizonyos szempontok alapján meg kell vizsgálnunk a feladatot.
+A rendszer fejlesztésének első lépése a követelmények meghatározása és dokumentálása.
+A specifikáció elkészítése.
+ A követelményelemzés során tisztázzuk felhasználói igényeket, a rendszerrel szemben támasztott elvárásainkat,
+valamint azokat a korlátokat és feltételeket, amelyek a fejlesztést befolyásolják.
+ 
+   
+A fejezet a specifikáció és követelménymenedzsment során alkalmazott
+lépéseket követi. Ennek megfelelően először a rendszer megvalósíthatóságát
+  vizsgálom, majd a követelmények feltárását és elemzését végzem el. 
+Ezután bemutatom a funkcionális és nem funkcionális követelményeket, 
+ismertetem a rendszer alap modelljeit, végül pedig felvázolom azokat a feltételeket, amelyeket,
+ha a rendszer teljesít, akkor elfogadható.
+
+%----------------------------------------------------------------------
+\subsection{Megvalósíthatósági elemzés}
+%----------------------------------------------------------------------
+% ea02, 4. dia: erőforrások, költség/időtartam, üzemeltetés/karbantartás
+% - humán: egy fejlesztő (én), a tárgyat elvégzett hallgatóként ismerem az anyagot
+% - hardver: nincs szükség szerverre, minden a böngészőben fut
+% - szoftver: csak ingyenes, nyílt forrású eszközök (TypeScript, React, Vite, pnpm)
+% - technikai: a számítások kis, korlátos bemenetekre készülnek
+%   (shortlex felsorolás, ellenpélda-keresés hosszkorlátos) -> böngészőben is azonnaliak
+% - időtartam: egy félév; ami nem fér bele -> Prioritizálás szakasz
+% - üzemeltetés: statikus GitHub Pages, ingyenes; karbantartás = a tananyag TS-fájljainak frissítése
+Itt vizsgálom a rednszer, a szoftver és a fejlesztés megvalósíthatóságát,
+ figyelembe véve a rendelkezésre álló erőforrásokat, a költségeket és a rendelkezésre álló időtartamot,
+  valamint az üzemeltetés és karbantartás kéréseit.
+
+A rendszer fejlesztését egyetlen fejlesztő végzi, nincs szükség külső erőforrás bevonására.
+ A fejlesztés közvetlen költsége gyakorlatilag nulla, mivel a projekt kizárólag ingyenesen elérhető,
+nyílt forráskódú technológiákra épül.
+Hardverigény szempontjából a rendszer kedvező helyzetben van, mivel minden számítás a felhasználó
+böngészőjében fut le, így nincs szükség külön szerver infrastruktúrára vagy felhőszolgáltatásra.
+Az alkalmazás statikus weboldalként publikálható, például GitHub Pages szolgáltatáson keresztül,
+amely ingyenes üzemeltetést tesz lehetővé.
+
+A rendszer által végzett algoritmusok viszonylag kis méretű véges bemeneteken dolgoznak, ez által
+ azok átlagos felhasználói eszközökön is gyorsan végrehajthatók.
+
+A fejlesztés időkeretét egy egyetemi félév adja. Ennek megfelelően a funkciók prioritások szerint 
+kerülnek megvalósításra, és az alacsonyabb prioritású elemek szükség esetén későbbi bővítésként kezelhetők.
+
+A karbantartása egyszerű, ezt támogatja a, moduláris felépítés. 
+Az üzleti logika  UI elkülönítése, React által biztosított komponensalapú architektúra. 
+Így új funkciók hozzáadása vagy meglévő funkciók módosítása nem igényli a teljes rendszer
+átírását. A karbantartást tovább segíti a Git alapú verziókezelés.
+
+%----------------------------------------------------------------------
+\subsection{Követelmények feltárása}
+%----------------------------------------------------------------------
+
+\subsubsection{Források és célcsoport}
+A oldal tartalma, az előadások anyagára, órai jegyzetekre, valamit saját hallgatói tapasztalatra épül elsősorban.
+
+ A célcsoport a Számításelmélet alapjai I--II. tárgy hallgatói, vizsgára készülők, 
+ valamit az anyag mélyebb megértésére törekvő hallgatók.
+% előadásdiák (a tartalommodell ezek elemzéséből készült),
+% saját hallgatói tapasztalat; TODO: kérdeztél évfolyamtársakat? ha igen, ide
+
+\subsubsection{Hatókör}
+% thesis.tex: "A rendszer célja és hatóköre" szöveg + tab:in_scope
+% JAVÍTANDÓ: nincs grafikus automataszerkesztő; a táblázat oszlopdefiníciója {l X} legyen
+% + ide jön a témakör–modul táblázat (tab:temakorok)
+A szakdolgozat hatókörébe egy webalapú, oktatást támogató alkalmazás
+tervezése és megvalósítása tartozik, amely a Számításelmélet
+alapjai I--II. tárgy egyes témaköreinek megértését segíti interaktív
+és vizuális eszközökkel. A~\ref{tab:in_scope}.~táblázat a hatókörbe
+tartozó funkciókat foglalja össze.
+
+\begin{table}[htbp] 
+      \centering 
+      \begin{tabularx}{\textwidth}{l X} 
+            \toprule 
+            \textbf{Funkció} & \textbf{Leírás} \\ 
+            \midrule 
+            Elméleti tartalomkezelés & 
+                  Témakörönként strukturált, blokkalapú tananyag a Számításelmélet 
+                  alapjai I--II. tananyagából: definíciók, tételek, lemmák, bizonyítások,
+                  példák, képletek, táblázatok és figyelmeztetések stb. \\ 
+                  \addlinespace
+            Interaktív algoritmusok &
+                  A hallgató különböző bemenetek megadásával futtathatja a tananyagban szereplő algoritmusokat. 
+                  A rendszer a végrehajtás eredményét és köztes állapotait is megjeleníti. \\
+                  \addlinespace
+            Folyamatok vizualizációja &
+                  Az alkalmazás grafikus elemek segítségével szemlélteti a számításelméleti folyamatokat, 
+                  ezáltal támogatva az absztrakt fogalmak megértését. \\
+                  \addlinespace
+            Önellenőrzés &
+                  A rendszer gyakorló feladatokat és kvízeket biztosít az elsajátított ismeretek ellenőrzésére. \\
+            Egységes tanulási környezet &
+                  A rendszer egy helyen fogja össze a tananyagot, a vizualizációkat és az interaktív eszközöket, 
+                  támogatva az önálló felkészülést. \\
+                  \addlinespace
+            \bottomrule
+      \end{tabularx}
+      \caption{A rendszer hatókörébe tartozó fő funkciók}
+      \label{tab:in_scope}
+\end{table}
+
+
+\subsubsection{Hatókörön kívül eső elemek}
+A hatókörön kívül eső funkciók a rendszer céljainak és 
+erőforrásainak megfelelően kerültek meghatározásra. 
+Ezek a funkciók nem részei a szakdolgozat keretein belül 
+megvalósuló rendszernek, és a~\ref{tab:out_of_scope}.~táblázat foglalja össze őket.
+% thesis.tex: tab:out_of_scope (változatlanul átvehető)
+\begin{table}[htbp] 
+      \centering 
+      \begin{tabularx}{\textwidth}{l X X} 
+            \toprule 
+            \textbf{Funkció} & \textbf{Leírás} & \textbf{Ratinale} \\ 
+            \midrule
+            Teljes oktatási keretrendszer &
+            Az alkalmazás nem helyettesíti az egyetemi oktatási
+            rendszereket, az előadásokat, a gyakorlatokat vagy az oktatói
+            magyarázatokat. A teljeskörű tananyag feldolgozás nem része és nem is célja a szakdolgozat keretein belül megvalósuló munkának.
+            & Egy teljes oktatási keretrendszer kialakítása jelentősen túlmutat a szakdolgozat célkitűzésein és rendelkezésre álló erőforrásain. \\
+                  \addlinespace
+            Felhasználókezelés &
+            Az alkalmazás nem tartalmaz regisztrációs, bejelentkezési vagy
+            profilkezelési funkciókat. & A rendszer működése nem igényel felhasználóspecifikus adatok tárolását vagy azonosítását. A felhasználókezelés bevezetése így nem nyújtana érdemi többletértéket, ugyanakkor növelné a rendszer komplexitását.  \\
+                  \addlinespace
+            Mobilalkalmazás &
+            A rendszer böngészőn keresztül használható, natív
+            mobilalkalmazás nem készül.  & A rendszer böngészőalapú webalkalmazásként készül, így külön telepítés nélkül több platformon is használható. A natív mobilalkalmazás fejlesztése jelentős többletmunkát jelentene a szakdolgozat kereteihez képest.\\ \addlinespace
+                  \addlinespace
+            Valós idejű együttműködés &
+            A rendszer nem támogatja több felhasználó egyidejű munkáját
+            vagy a közös szerkesztést. & A rendszer elsődlegesen önálló tanulás támogatására készült. A többfelhasználós szinkronizációs platform kialalkítása, egy másik alapötlet és nem ez \\
+            \addlinespace
+            \bottomrule
+      \end{tabularx}
+      \caption{A rendszer hatókörén kívül eső funkciók}
+      \label{tab:out_of_scope}
+\end{table}
+
+\subsubsection{Prioritizálás}
+% ea02, 5. dia: fontossági sorrend; minden elkészül, a prioritás a fejlesztési sorrendet adja
+% - kötelező: témakörök + elméleti anyag, DVA-szimulátor
+% - fontos: grammatika-levezetés, Chomsky-osztályozó, 3NF, regex-ellenőrző, kvíz, NDVA
+% - utolsó kör: veremautomata, Turing-gép, logikai modul, localStorage
+A fejlesztés során a funkciók az itt meghatározott prioritási sorrend
+szerint készülnek el. A prioritás nem a funkciók fontosságát vagy
+elhagyhatóságát jelöli, hanem a megvalósítás tervezett sorrendjét.
+
+Elsőként az alkalmazás alapstruktúrája készül el: a navigáció, valamint
+a tananyag tárolására szolgáló tartalomtípusok és a témakörök váza.
+Ezek teszik lehetővé, hogy új tananyag a meglévő kód módosítása nélkül
+legyen felvehető.
+
+Ezt követően a fejlesztés témakörönként halad, a tárgy tematikus
+sorrendjét követve. Minden témakörnél először az elméleti anyag kerül
+feldolgozásra, majd az ehhez kapcsolódó algoritmus logikája és
+interaktív, vizualizációs modulja. Így minden lépés végén egy működő,
+kipróbálható állapot jön létre. Elsőként a Számításelmélet alapjai I.
+tárgy témakörei készülnek el, mivel ezek alkotják a tárgy alapját,
+és a II. rész is ezekre épül.
+
+A témakörök és a hozzájuk tartozó modulok elkészültével a rendszer
+eléri a kitűzött célokat: ez a változat önmagában is teljes értékű,
+használható tanulási eszköz. Csak ezt követően kerülnek sorra a
+tanulást kiegészítő funkciók, valamint az opcionális, továbbfejlesztett
+képességek. Így ha a rendelkezésre álló idő nem elegendő mindenre,
+a rendszer akkor is működőképes állapotban zárható le.
+
+
+%----------------------------------------------------------------------
+\subsection{Funkcionális követelmények}
+%--bevezesres kicsi szoveg
+%----------------------------------------------------------------------
+% TODO: FK-3 ("minden témakörhöz") a végén ellenőrizni
+\begin{description}
+    \item[FK-1] A rendszer biztosítsa a Számításelmélet alapjai I--II.
+          tárgy témaköreinek elérését és kiválasztását, a tárgy
+          tematikus sorrendjében.
+    \item[FK-2] Minden témakörhöz tartozzon elméleti összefoglaló, amely
+          a tárgyban használt jelöléseket és képleteket alkalmazza.
+    \item[FK-3] Minden témakörhöz kapcsolódjon vizualizációs vagy
+          interaktív modul vagy gyakorló feladat.
+    \item[FK-4] A vizualizációs és interaktív modulok jelenítsék meg a
+          számítási folyamatok és algoritmusok lépéseit, és tegyék
+          lehetővé a lépések közötti előre- és visszalépést.
+    \item[FK-5] A felhasználó adhasson meg saját bemenetet (szót,
+          grammatikát, reguláris kifejezést, automatát) az ezt támogató
+          modulok számára a rendszer dolgozza ezeket fel, és az eredményt
+          egyértelműen jelenítse meg.
+    \item[FK-6] Hibás vagy nem értelmezhető bemenet esetén a rendszer
+          jelezze a hiba okát, és a modul maradjon használható.
+    \item[FK-7] A rendszer biztosítson önellenőrző feladatokat (kvízeket),
+          amelyekre a felhasználó azonnali visszajelzést kap.
+    \item[FK-8] A rendszer a felhasználó haladását és beállításait a
+          böngészőben helyben megőrizze.
+\end{description}
+
+
+A rendszer elsődleges szereplője a \textbf{Hallgató}, aki a webes
+felületen keresztül éri el a tárgy tanulását támogató felületet. A
+hallgató kiválaszthatja a számára érdekes témakört, megtekintheti az
+elméleti összefoglalót, használhatja a vizualizációkat, és interaktív
+feladatokon keresztül gyakorolhatja a tanultakat.
+
+A vizualizációk segítségével a hallgató lépésről lépésre követheti az
+egyes algoritmusok és modellek működését. Az interaktív feladatoknál
+saját bemenetet adhat meg, amelyre a rendszer automatikusan
+kiértékelést és visszajelzést ad.
+
+A~\ref{fig:usecase}.~ábra a rendszer fő használati eseteit és azok
+kapcsolatait mutatja be.
+
+\begin{figure}[htbp]
+    \centering
+    \kep[width=0.75\textwidth]{use-case-diagrmm.png}
+    \caption{A rendszer használati esetei}
+    \label{fig:usecase}
+\end{figure}
+
+\subsection{Nem funkcionális követelmények}
+%----------------------------------------------------------------------
+% ea02, 7-11. dia kategóriái szerint lehetne csoportosítani
+% TODO: NFK-3 reszponzivitás ellenőrizni
+
+\begin{description} \item[NFK-1 (Teljesítmény)] A felhasználói bemenetek kiértékelése és a vizualizációk egy lépésének kiszámítása átlagos asztali környezetben 1 másodpercen belül történjen meg, a potenciálisan nem termináló
+számítások (pl. Turing-gép futtatása, szavak felsorolása)
+lépés- vagy hosszkorláttal fussanak. 
+\item[NFK-2 (Megbízhatóság)] 
+Hibás vagy nem értelmezhető bemenet esetén a rendszer ne 
+álljon le, hanem egyértelmű hibaüzenetet jelenítsen meg, 
+miközben a funkcionalitás továbbra is használható marad. 
+\item[NFK-3 (Hordozhatóság)] 
+Az alkalmazás telepítés nélkül fusson a modern böngészők 
+(Google Chrome, Microsoft Edge és Mozilla Firefox) aktuális 
+verzióin. 
+\item[NFK-4 (Használhatóság)] 
+A rendszer felülete magyar nyelvű legyen, és a Számításelmélet
+ alapjai I--II. tárgyban használt jelölésrendszert alkalmazza.
+  \item[NFK-5 (Karbantarthatóság)]
+  Az algoritmusok megvalósítása elkülönüljön a felhasználói
+   felülettől, lehetővé téve új tananyagok és modulok 
+   hozzáadását a meglévő rendszer jelentős módosítása nélkül. 
+\end{description}
+
+
+A rendszer nem kommunikál szerveroldali komponenssel, 
+adatbázissal vagy külső szolgáltatással, minden számítás a 
+böngészőben történik. 
+Külső interfészei ezért a következőkre korlátozódnak:
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{p{4.2cm} X}
+        \toprule
+        \textbf{Interfész} & \textbf{Leírás} \\
+        \midrule
+        Felhasználói felület &
+        A felhasználó webböngészőben, egérrel és billentyűzettel
+        kezeli a rendszert. \\
+        Böngésző tárhelye &
+        A haladás és a beállítások a böngésző helyi tárolójában
+        (localStorage) őrződnek meg. \\
+        Kiszolgálás &
+        Az alkalmazás statikus fájlokként kerül kiszolgálásra
+        (pl.\ GitHub Pages). \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A rendszer külső interfészei}
+    \label{tab:interfaces}
+\end{table}
+
+
+%----------------------------------------------------------------------
+\subsection{Rendszermodellek}
+%----------------------------------------------------------------------
+% ea02, 6. és 42. dia: felület terv, adatformátum leírás
+
+\subsubsection{A felhasználói felület modellje}
+% TODO: hiányzó képek: img.png, img_1.png
+A felhasználói felület tervezésénél a fő szempont az áttekinthetőség
+és a könnyű navigáció volt.
+
+\begin{figure}[htbp]
+    \centering
+    \kep[
+        width=0.9\textwidth,
+        height=0.75\textheight,
+        keepaspectratio
+    ]{img.png}
+    \caption{A főoldal vázlata}
+    \label{fig:homepage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \kep[width=0.85\textwidth]{img_1.png}
+    \caption{Egy témakör oldalának vázlata}
+    \label{fig:module}
+\end{figure}
+\clearpage
+
+\subsubsection{Adatformátum: a tartalommodell}
+\label{sec:data}
+
+A tervezés fő szempontjai a következők voltak:
+
+\begin{itemize}
+    \item a tartalom legyen független a megjelenítéstől a UI-tól;
+    \item a tananyag legyen könnyen bővíthető;
+    \item a teljes tananyag egységes formátumban tárolódjon;
+    \item az interaktív modulok (DVA, NDVA, veremautomata stb.)
+          ráépíthetők legyenek.
+\end{itemize}
+
+A tananyag egymásba ágyazott egységekből álljon: a témakörök
+csoportokba tartoznak, minden témakör elméleti anyaga tartalomblokkok
+sorozatából épül fel, tartozhatnak hozzá kvízkérdések, illetve interaktív
+modul. A felhasználó haladása ettől függetlenül, a böngészőben
+tárolódik. Az egyes egységeket a~\ref{tab:data-logical}.~táblázat
+mutatja be.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{l X X}
+        \toprule
+        \textbf{Egység} & \textbf{Mit tartalmaz} & \textbf{Példa} \\
+        \midrule
+        Témakörcsoport & a tárgy egy nagyobb része
+                       & Reguláris nyelvek \\
+        Témakör        & cím, rövid összefoglaló, kapcsolódó előadások,
+                         kapcsolódó interaktív modul
+                       & Determinisztikus véges automaták, a hozzá
+                         tartozó DVA-szimulátorral \\
+        Tartalomblokk  & magának az elméleti anyag egy eleme (definíció, tétel,
+                         bizonyítás, példa, képlet, táblázat \ldots)
+                       & a DVA definíciója \\
+        Kvízkérdés     & kérdés, válaszlehetőségek, helyes válasz,
+                         magyarázat
+                       & „Elfogadja-e az automata az \emph{abba} szót?” \\
+        Haladás        & a megoldott feladatok és a beállítások, megtekintett témakörök
+                       & melyik kvíz lett már kitöltve \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A tananyag felépítése}
+    \label{tab:data-logical}
+\end{table}
+
+
+%----------------------------------------------------------------------
+\subsection{A követelmények validációja}
+%----------------------------------------------------------------------
+% ea02, 40. dia: prototípus + tesztesetek
+% - a fejlesztés iteratív prototípusokban haladt
+% - a felhasználói történetekből lesznek a funkcionális tesztesetek -> Tesztelés fejezet
+A fejezetben kifejtett követelmények validálásának célja annak ellenőrzése,
+ hogy a megfogalmazott követelmények megvalósíthatók, egymással összhangban
+  állnak-e, valamint lefedik a rendszer célkitűzéseit.
+   A követelmények összevetésre kerültek a projekt céljaival és a 
+   meghatározott hatókörökkel. 
+   Ennek eredményeként minden célkitűzéshez kapcsolódik legalább 
+   egy funkcionális követelmény, továbbá nem szerepel olyan követelmény, 
+   amely ellentmondana a hatókörön kívül eső funkcióknak. 
+   A követelmények teljesülésének ellenőrzése a fejlesztés során 
+   egységtesztek, manuális tesztesetek és a rendszer gyakorlati 
+   kipróbálása segítségével történik.
+    A részletes tesztelési eredményeket a Tesztelés fejezet ismerteti később.
+    %======================================================================
+\section{Tervezés}
+%======================================================================
+% TODO: ide megy át a thesis.tex "Áttekintés" (3 csomag + modulregiszter)
+% és a "Rendszerarchitektúra" fejezet
+
+\subsection{A tartalommodell}
+\label{sec:content-design}
+
+A blokkalapú modell előnye, hogy minden témakör ugyanazzal a
+megjelenítő komponenssel rajzolható ki, új tartalom felvétele egyszerű,
+és egy későbbi export (például PDF vagy nyomtatható nézet) is könnyen
+megoldható.
+
+A tananyagot TypeScript-modulokban tárolom. A szerkezet JSON-kompatibilis
+(csak objektumokat, tömböket, szövegeket és számokat használ), de a
+TypeScript-típusok miatt a fordító már szerkesztés közben jelzi, ha
+egy blokk hiányos vagy hibás.
+
+\subsubsection{Többnyelvű szöveg}
+
+Minden megjelenő szöveg \texttt{LocalizedText} típusú. A magyar
+változat kötelező, az angol opcionális, így a fordítás a meglévő
+tartalom módosítása nélkül, fokozatosan pótolható.
+
+\begin{lstlisting}
+type LocalizedText = {
+  hu: string;
+  en?: string;
+};
+\end{lstlisting}
+
+\subsubsection{Tartalomblokkok}
+
+Egy témakör elméleti anyaga \texttt{ContentBlock} elemek sorozata.
+A \texttt{ContentBlock} ún.\ diszkriminált unió (\emph{discriminated
+union}): minden blokknak van egy \texttt{type} mezője, amely alapján a
+fordító és a megjelenítő is el tudja dönteni, milyen további mezői
+vannak. A jelenleg definiált blokktípusokat
+a~\ref{tab:blocks}.~táblázat mutatja.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{l p{4.6cm} X}
+        \toprule
+        \textbf{\texttt{type}} & \textbf{Mezők} & \textbf{Szerep} \\
+        \midrule
+        \texttt{heading}    & \texttt{level} (1--3), \texttt{text}
+                            & Fejezet- vagy szakaszcím \\
+        \texttt{paragraph}  & \texttt{text}
+                            & Folyó szöveg \\
+        \texttt{definition} & \texttt{term}, \texttt{content}
+                            & Fogalom definíciója \\
+        \texttt{theorem}    & \texttt{kind}, \texttt{name?},
+                              \texttt{statement}, \texttt{proof?}
+                            & Tétel, lemma, állítás vagy következmény \\
+        \texttt{proof}      & \texttt{title?}, \texttt{content}
+                            & Bizonyítás, maga is blokkok sorozata \\
+        \texttt{example}    & \texttt{title?}, \texttt{content}
+                            & Kidolgozott példa \\
+        \texttt{formula}    & \texttt{latex}
+                            & Kiemelt képlet \\
+        \texttt{list}       & \texttt{ordered}, \texttt{items}
+                            & Számozott vagy felsorolásos lista \\
+        \texttt{table}      & \texttt{headers}, \texttt{rows}
+                            & Táblázat (pl.\ átmenettáblázat) \\
+        \texttt{warning}    & \texttt{text}
+                            & Figyelmeztetés tipikus hibára \\
+        \texttt{funfact}    & \texttt{text}
+                            & Érdekesség, kiegészítő megjegyzés \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A tartalomblokkok típusai (a \texttt{?} opcionális mezőt jelöl)}
+    \label{tab:blocks}
+\end{table}
+
+A \texttt{theorem} blokk \texttt{kind} mezője a
+\texttt{tetel}, \texttt{lemma}, \texttt{allitas} és
+\texttt{kovetkezmeny} értékek egyikét veheti fel. Egy definíció például
+így néz ki:
+
+\begin{lstlisting}
+{
+  type: "definition",
+  term: { hu: "Determinisztikus véges automata" },
+  content: { hu: "Az $A = \\langle Q, \\Sigma, \\delta, q_0, F \\rangle$ rendezett ötös, ahol ..." },
+}
+\end{lstlisting}
+
+\subsubsection{Matematikai jelölések}
+
+A tárgy anyaga sok matematikai jelölést tartalmaz (automaták
+definíciói, grammatikák, pumpálási lemmák, a CYK algoritmus stb.),
+ezért a képleteket egységesen \LaTeX{} szintaxissal tárolom:
+
+\begin{itemize}
+    \item szövegen belüli képlet: \verb|$...$| a szövegmezőben;
+    \item kiemelt képlet: külön \texttt{formula} blokk;
+    \item a sztringekben a \verb|\| karaktert duplán kell írni
+          (\verb|\\|).
+\end{itemize}
+
+\subsubsection{Témakörök metaadatai}
+
+A tartalom és a navigáció szétválasztása érdekében minden témakörhöz
+külön metaadat (\texttt{TopicMeta}) tartozik. Ez szolgál a
+navigációhoz, a sorrendezéshez, a csoportosításhoz, az előadásokhoz
+kötéshez, és ezen keresztül kapcsolódik a témakörhöz az
+interaktív modul. Egy témakör (\texttt{Topic}) a metaadatokból, a
+tartalomblokkok listájából és opcionálisan kvízkérdésekből áll.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{l l X}
+        \toprule
+        \textbf{Mező} & \textbf{Típus} & \textbf{Jelentés} \\
+        \midrule
+        \texttt{id}       & \texttt{string}        & Egyedi azonosító, az URL-ben is ez szerepel \\
+        \texttt{order}    & \texttt{number}        & Megjelenési sorrend \\
+        \texttt{group}    & \texttt{TopicGroup}    & Témakörcsoport \\
+        \texttt{title}    & \texttt{LocalizedText} & Cím \\
+        \texttt{summary}  & \texttt{LocalizedText} & Rövid összefoglaló \\
+        \texttt{lectures} & \texttt{number[]}      & Kapcsolódó előadások sorszáma \\
+        \texttt{module}   & \texttt{string | null} & A kapcsolódó interaktív modul azonosítója \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A \texttt{TopicMeta} mezői}
+    \label{tab:topicmeta}
+\end{table}
+
+A témakörök a tárgy logikai felosztását követve öt csoportba
+(\texttt{TopicGroup}) sorolódnak:
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Azonosító} & \textbf{Jelentés} \\
+        \midrule
+        \texttt{foundations}       & Alapfogalmak \\
+        \texttt{regular}           & Reguláris nyelvek \\
+        \texttt{context-free}      & Környezetfüggetlen nyelvek \\
+        \texttt{context-sensitive} & Környezetfüggő és 0-típusú nyelvek \\
+        \texttt{computability}     & Kiszámíthatóság (II. rész) \\
+        \bottomrule
+    \end{tabular}
+    \caption{Témakörcsoportok}
+    \label{tab:groups}
+\end{table}
+
+% TODO: témakörök száma és listája a végén (most 16 mappa a topics/ alatt)

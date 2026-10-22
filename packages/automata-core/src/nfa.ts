@@ -81,7 +81,6 @@ export function acceptsWord(nfa: Nfa, word: string): boolean {
   return false;
 }
 
-// 2. lecke: determinizálás (részhalmaz-konstrukció) lépésenként.
 export function determinize(nfa: Nfa): SubsetStep[] {
   const startStates = epsilonClosure(nfa, nfa.starts);
   const seen: Set<string> = new Set([setKey(startStates)]);

@@ -1,0 +1,152 @@
+\chapter{Bevezetés}
+\label{ch:intro}
+
+\section{Motiváció és problémafelvetés}
+
+Az egyetemi évek alatt számos olyan tárgyat tanulunk, amelyek megértése
+jelentős absztrakciós képességet igényel, és sokszor nagyon elvontnak,
+nehezen megfoghatónak tűnnek. Hallgatóként én is többször találkoztam olyan
+tananyaggal, ahol a fogalmak és folyamatok elsőre nehezen voltak értelmezhetők.
+Különösen igaz ez azokra a témákra, amelyekben egy rendszer működésének megértéséhez
+több egymásra épülő állapotot vagy lépést kell végigkövetni.
+Az ilyen absztrakt gondolatmenetek papíron gyakran nehezen követhetők,
+hiszen egy folyamat vagy modell működését látni egészen más élmény,
+mint pusztán olvasni róla.
+
+Erre jó példa a Számításelmélet alapjai I--II. tárgy,
+amely olyan témaköröket dolgoz fel, mint a formális nyelvek,
+a grammatikák, a véges automaták, a reguláris kifejezések,
+a veremautomaták vagy a Turing-gépek.
+Ezek a fogalmak a hallgatók számára gyakran nehezen értelmezhetők, mivel
+működésük és viselkedésük hagyományos tananyagok segítségével nem mindig
+szemléltethető egyszerűen.
+A tananyag elsajátításához általában előadásanyagok, prezentációk és
+órai jegyzetek állnak rendelkezésünkre. Bár ezek fontos szerepet
+töltenek be az oktatásban, és ezek adják a tudásunk alapját, a
+mélyebb megértés sokszor a gyakorlatokra, illetve az önálló otthoni
+tanulásra hárul.
+
+Saját tapasztalatom szerint ezeknél a témáknál a megértés kulcsa
+éppen az, hogy az ember minden állapotot és lépést végigkövet. Papíron
+ez azonban lassú: gyakran minden állapotot külön le kell rajzolni, egy
+elrontott lépés után pedig elölről kell kezdeni. Ezért az ilyen
+témáknál mi, hallgatók gyakran nagyon sok időt töltünk az anyag önálló
+feldolgozásával.
+
+A szakdolgozat erre a problémára kíván megoldást nyújtani egy olyan
+webalapú oktatási rendszer fejlesztésével, amely a tantárgy
+legfontosabb témaköreit interaktív, vizualizációra épülő formában
+dolgozza fel. A rendszer a témakörökhöz elméleti összefoglalót,
+lépésenként követhető szimulációkat (például determinisztikus véges
+automata, grammatikai levezetés) és önellenőrző feladatokat kínál,
+így a lépésenkénti követés gyorssá és hibatűrővé válik.
+% TODO: a felsorolt példákat a végén egyeztetni az elkészült modulokkal
+
+\section{Célkitűzések}
+A szakdolgozat célja egy interaktív és vizualizációs oktatási webalkalmazás
+tervezése és fejlesztése, amely támogatja a hallgatókat a Számításelmélet
+alapjai I--II. tantárgy témaköreinek elsajátításában.
+A fejlesztés során olyan rendszer létrehozása a cél,
+amely egyetlen felületen egyesíti az elméleti háttéranyagot, a vizuális
+szemléltetést és az interaktív gyakorlási lehetőségeket. A hallgatók így
+nem csupán olvashatnak az egyes modellekről és algoritmusokról, hanem
+működésüket lépésről lépésre követhetik, és saját bemenetek segítségével
+ki is próbálhatják.
+A rendszer fontos célja továbbá, hogy támogassa az önálló tanulást,
+valamint segítséget nyújtson a gyakorlásban és a vizsgákra való
+felkészülés során.
+A kitűzött célok az alábbiakban foglalhatók össze:
+
+\begin{itemize}
+    \item a Számításelmélet alapjai I--II. főbb témaköreinek feldolgozása;
+    \item elméleti összefoglaló a tárgy jelöléseivel, matematikai képletekkel;
+    \item saját felhasználói bemenetre működő, lépésenként követhető szimulációk;
+    \item azonnali visszajelzés és önellenőrzés: kvízek, feladatok;
+    \item böngészőből, telepítés nélkül elérhető felület;
+    \item bővíthető, moduláris alkalmazásarchitektúra kialakítása.
+\end{itemize}
+
+\section{Hatókör és korlátok}
+
+\subsection{Hatókör}
+
+% TODO: a számokat és a modullistát a végén egyeztetni a kóddal
+% (packages/content/src/topics, apps/web/src/modules/index.tsx)
+A szakdolgozat egy webalapú, egyfelhasználós oktatási alkalmazás
+tervezését és megvalósítását foglalja magában, amely a Számításelmélet
+alapjai I--II. tárgy témakörét dolgozza fel Minden témakörhöz elméleti összefoglaló
+tartozik, amelyet több helyen interaktív modul egészít ki.
+
+rendszer összesen x témakört dolgoz fel, amelyek xx nagyobb csoportba sorolhatók: 
+alapfogalmak, reguláris nyelvek, környezetfüggetlen nyelvek és környezetfüggő nyelvek...
+ Az egyes témakörökhöz elméleti összefoglalók, valamint interaktív modulok tartoznak, 
+ amelyek lehetővé teszik a modellek és algoritmusok működésének lépésről lépésre történő megfigyelését.
+ 
+A megvalósított modulok közé tartozik többek között a DVA-szimulátor, a grammatikalevezető, a Chomsky-osztályozó, a 3-as normálforma vizualizáló, a reguláris kifejezés ellenőrző, a nyelvfelfedező, a szójáték és a kvízrendszer.
+
+% TODO: NDVA-szimulátor elkészült? Ha igen, kerüljön a fenti listába
+% TODO: ha a témakör-táblázat bekerül a fejlesztői dokumentációba, ide hivatkozás:
+% A témakörök és modulok részletes áttekintését a \ref{tab:temakorok}.~táblázat tartalmazza.
+
+A dolgozat része a fejlesztői dokumentáció, vagyis
+a rendszer architektúrájának bemutatása, a tervezés
+dokumentálása, az implementáció ismertetése, valamint a megvalósított
+funkciók tesztelése és értékelése. Végül egy felhasználói dokumentáció
+is készül, amely a rendszer használatát segíti.
+
+\subsection{Korlátok}
+
+A dolgozat keretében megvalósított rendszer oktatási célú
+prototípusnak tekinthető. Bár alkalmas a tanulás támogatására, nem
+célja egy teljes körű e-learning vagy tanulmányi rendszer kiváltása.
+A rendelkezésre álló idő és fejlesztési kapacitás miatt a tantárgy teljes
+ tananyagának részletes feldolgozása nem valósul meg. 
+ A rendszer elsősorban azokra a témakörökre összpontosít, amelyek különösen jól támogathatók vizualizációval
+  és interaktív szimulációkkal.
+A Számításelmélet alapjai II. tárgy csak részben kerül feldolgozásra.
+A szimulációk kisméretű, véges bemenetekre lettek tervezve.
+Nincs felhasználókezelés, a haladás nem tárolódik központilag.
+
+\subsection{Feltételezések}
+
+A rendszer használata modern webböngésző meglétét feltételezi. A
+felhasználók rendelkeznek alapvető informatikai ismeretekkel, valamint
+a Számításelmélet alapjai I--II. tárgy követéséhez szükséges
+előismeretekkel. Mivel a tananyag az előadásokra épül, azokat nem
+helyettesíti, hanem kiegészíti. A tervezés során feltételezem, hogy a webes
+technológiák és a kliensoldali vizualizációs megoldások elegendő
+teljesítményt biztosítanak az interaktív modulok futtatásához.
+
+\section{A dolgozat fő eredményei}
+
+\begin{itemize}
+    \item egy interaktív, webalapú oktatási rendszer tervezése és
+          megvalósítása a Számításelmélet alapjai I--II. tárgy támogatására;
+    \item olyan interaktív vizualizációs és szimulációs eszközök fejlesztése, amelyek
+     lehetővé teszik a hallgatók számára a számításelméleti modellek működésének lépésről 
+     lépésre történő követését;
+    \item a tananyag egységes, típusos, blokkalapú tartalommodellbe
+          szervezése;
+    \item moduláris és bővíthető szoftverarchitektúra kialakítása;
+    \item interaktív szimulációs és kiértékelő mechanizmusok fejlesztése;
+    \item a rendszer tervezésének, implementációjának és tesztelésének
+          dokumentálása.
+\end{itemize}
+
+A dolgozat eredménye egy olyan oktatási segédeszköz, amely a
+hagyományos tananyagokat kiegészítve támogatja az önálló tanulást, a
+szemléletesebb megértést és a gyakorlati tapasztalatszerzést.
+
+\section{A dolgozat felépítése}
+A dolgozat két fő részre tagolódik.
+A felhasználói dokumentáció a rendszer felépítését és használatát
+ismerteti a végfelhasználó szemszögéből. Ez kiterjed az egyes modulok
+bemutatására és az interaktív, szimulációs eszközök használatára
+példákon keresztül.
+
+A fejlesztői dokumentáció a műszaki hátteret mutatja be. Itt kap helyet
+a követelményelemzés, a tervezési döntések indoklása, az architektúra
+ismertetése és az implementáció bemutatása. Ezenkívül ez a rész tér ki
+a tesztelési folyamatokra, valamint a jövőbeni fejlesztési irányokra
+és bővítési lehetőségekre is.
+A dolgozatot egy rövid értékelés zárja.
