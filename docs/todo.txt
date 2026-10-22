@@ -103,5 +103,87 @@ jelolesek mit jelentenek pl epszilonnal
 forrasok eddig kb mik voltak es gyujteni tovabb.
 jovoheten is meeting
 
+
+
+------------------
+A témabejelentőhöz képest kimaradó részek, indoklással. Ez a legfontosabb, mert a bíráló a bejelentőt teszi a dolgozat mellé:
+Turing-gép modul;
+logika modul (igazságtáblák);
+veremautomata-szimuláció, ha nem készül el. Az indoklás mindegyiknél rövid lehet, például „a II. rész anyaga, továbbfejlesztési irány”.
+Haladás mentése / localStorage: a bejelentőben szerepel, a kódban nincs (grep nem talált rá).
+Tetszőleges automata grafikus szerkesztése: ha a React Flow csak megjelenít, és nem lehet vele szerkeszteni.
      
 
+
+======================================================================
+--- 2026.10.22. KÖTELEZŐ RÉSZEK ELLENŐRZÉSE (cleanthesis.tex alapján)
+======================================================================
+
+1. BEVEZETÉS
+[x] témaválasztás indoklása -> Motiváció és problémafelvetés (kész)
+[~] a feladat rövid, közérthető leírása -> Célkitűzések + Hatókör megvan, DE:
+    - Hatókör: "x témakört", "xx nagyobb csoportba" helyére a valós számok
+      (topics/ alatt 16 mappa, 5 TopicGroup), és a "Feladat Minden" hiányzó pont
+    - modullista egyeztetése a kóddal (NDVA bekerüljön-e)
+    - Korlátok: kimaradt bejelentő-elemek (Turing-gép, logika, veremautomata,
+      localStorage) indoklással
+    - "A dolgozat felépítése": fejezetcímeket a végén egyeztetni
+
+2. FELHASZNÁLÓI DOKUMENTÁCIÓ  -- SEMMI NINCS MEG (csak "TODO")
+[ ] a megoldott probléma rövid megfogalmazása (1-2 bekezdés)
+[ ] a felhasznált módszerek rövid leírása (mit szimulál a program, közérthetően,
+    nem túl sok matek)
+[ ] a program használatához szükséges ÖSSZES információ:
+    [ ] rendszerkövetelmények (szoftver/hardver, támogatott böngészők)
+    [ ] elindítás / elérés (URL, ill. lokális futtatás: pnpm install, pnpm dev)
+    [ ] felület áttekintése: főoldal, navigáció, témakör oldal (képernyőképek!)
+    [ ] modulonként: mit kell beírni (bemenet formátuma), gombok, mit mutat,
+        példa futtatás képernyőképpel
+        (DVA, NDVA, grammatika-levezető, Chomsky-osztályozó, 3NF, regex,
+         nyelvfelfedező, szójáték, kvíz)
+    [ ] jelölések magyarázata (pl. epszilon beírása, ábécé, nyilak)
+    [ ] hibaüzenetek, mit jelentenek / mit tegyen a felhasználó
+
+3. FEJLESZTŐI DOKUMENTÁCIÓ
+[x] a probléma részletes specifikációja -> Követelményelemzés: megvalósíthatóság,
+    hatókör, FK-1..FK-8, NFK-1..NFK-5, külső interfészek, validáció (megvan)
+    - javítani: FK-8 és a külső interfész táblázat localStorage-ot ígér, a kódban
+      nincs -> vagy megcsinálni, vagy kivenni
+    - "Ratinale" elírás a táblázatfejlécben, valós idejű együttműködés sor
+      indoklása befejezetlen
+    - NFK-3 reszponzivitás ellenőrzése
+    - felhasználói történetek (a DVA-s táblázat itt a todo-ban) bekerüljenek
+[ ] a felhasznált módszerek leírása, a használt fogalmak definíciója
+    - NINCS: külön szakasz a fogalmakról (DVA, NDVA, grammatika, Chomsky-osztályok,
+      3NF, reguláris kifejezés stb.) röviden + az algoritmusok, amiket a kód
+      megvalósít (pl. NDVA szimuláció állapothalmazzal, levezetés, osztályozás,
+      shortlex felsorolás, ellenpélda-keresés)
+    - tervezési döntések indoklása (miért TypeScript/React/Vite, monorepo, KaTeX)
+[~] a szoftver logikai és fizikai szerkezete, architektúra, komponensek, modell
+    [x] tartalommodell / adatszerkezet (Tervezés fejezet, kész)
+    [x] use case diagram (fig:usecase) - DE a kép (use-case-diagrmm.png) nincs a docs/ mappában
+    [~] UI terv: van szakasz, de img.png, img_1.png képek hiányoznak
+    [ ] architektúra: a thesis.tex-ből ÁTHOZNI ("Rendszerarchitektúra":
+        technológiai választások, kódbázis felépítése, @fotoc/content,
+        apps/web útvonalak, @fotoc/automata-core) - a cleanthesis-ben nincs
+    [ ] komponens/modul diagram (csomagok és függőségeik) + osztály/típus diagram
+        az automata-core-hoz (UML)
+    [ ] implementáció: néhány érdekesebb algoritmus/backend logika kódrészlettel
+    [ ] fejlesztési munkaterv, fázisok
+[ ] a tesztelési terv és a tesztelés eredményei -- SEMMI NINCS MEG
+    [ ] tesztelési terv: mit, hogyan (egységtesztek Vitest-tel az automata-core-ra,
+        manuális tesztesetek a UI-ra a felhasználói történetekből)
+    [ ] egységtesztek felsorolása/táblázat (meglévők: chomsky, language, nfa,
+        normalform3 .test.ts) + eredmény (hány teszt, mind zöld) - DVA, grammatika,
+        regex tesztek pótlása?
+    [ ] manuális tesztesetek táblázata: lépések, elvárt eredmény, tényleges eredmény
+    [ ] böngészőtesztek (Chrome, Edge, Firefox) NFK-3-hoz
+
+4. EGYÉB (nem a listában, de kell)
+[ ] Összegzés / értékelés fejezet + továbbfejlesztési lehetőségek
+    ("A dolgozat felépítése" ígéri)
+[ ] Irodalomjegyzék (thesis.tex-ben volt thebibliography, cleanthesis-ből hiányzik)
+[ ] \part vs \chapter szerkezet véglegesítése (minta alapján)
+[ ] MI-nyilatkozat PDF -> szakdolgozat/mi_nyilatkozat.pdf, és a szakdolgozat.tex-ben kivenni a % jelet
+[ ] képek (use-case-diagrmm.png, img.png, img_1.png) -> szakdolgozat/images/ mappába
+[ ] innentől a szakdolgozat/ mappában szerkeszteni, a cleanthesis.tex régi
