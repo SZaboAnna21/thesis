@@ -1,0 +1,45 @@
+\begin{tikzpicture}[
+    wf,
+    uc/.style={draw=black!70, ellipse, fill=black!4, minimum width=3.9cm,
+               minimum height=1.25cm, align=center, inner sep=1pt},
+    rel/.style={->, >=stealth, densely dashed, black!70},
+    lbl/.style={font=\sffamily\scriptsize, fill=white, inner sep=1pt},
+  ]
+  \draw[black!70, line width=0.8pt] (2.2,-1.0) rectangle (14.6,11.4);
+  \node[anchor=north west, font=\sffamily\footnotesize\bfseries] at (2.3,11.35) {Webes felület};
+
+  \begin{scope}[shift={(0.8,4.4)}, black!80, line width=0.8pt]
+    \draw (0,1.05) circle (0.25);
+    \draw (0,0.8) -- (0,0.05);
+    \draw (-0.45,0.55) -- (0.45,0.55);
+    \draw (0,0.05) -- (-0.35,-0.5);
+    \draw (0,0.05) -- (0.35,-0.5);
+    \node[anchor=north] at (0,-0.55) {Hallgató};
+  \end{scope}
+  \coordinate (actor) at (1.25,4.95);
+
+  \node[uc] (tema)  at (5.5,10.0) {Témakör\\kiválasztása};
+  \node[uc] (elm)   at (5.5,8.0)  {Elméleti anyag\\megtekintése};
+  \node[uc] (viz)   at (5.5,6.0)  {Vizualizáció\\futtatása};
+  \node[uc] (fel)   at (5.5,4.0)  {Interaktív feladat\\megoldása};
+  \node[uc] (kviz)  at (5.5,2.0)  {Kvíz kitöltése};
+  \node[uc] (nyelv) at (5.5,0.0)  {Nyelv választása\\(HU / EN)};
+
+  \node[uc] (hiba)  at (11.8,8.4) {Hibaüzenet\\megtekintése};
+  \node[uc] (bem)   at (11.8,5.4) {Saját bemenet\\megadása};
+  \node[uc] (vissz) at (11.8,2.4) {Visszajelzés\\megtekintése};
+  \node[uc] (ment)  at (11.8,-0.2) {Haladás és beállítások\\mentése};
+
+  \foreach \u in {tema, elm, viz, fel, kviz, nyelv}
+    \draw[black!70] (actor) -- (\u.west);
+
+  \draw[rel] (tema) -- node[lbl, right=2pt] {«precedes»} (elm);
+  \draw[rel] (viz)  -- node[lbl, sloped] {«include»} (bem);
+  \draw[rel] (fel)  -- node[lbl, sloped] {«include»} (bem);
+  \draw[rel] (fel)  -- node[lbl, sloped] {«include»} (vissz);
+  \draw[rel] (kviz) -- node[lbl, sloped] {«include»} (vissz);
+  \draw[rel] (hiba) -- node[lbl, right] {«extend»} (bem);
+  \draw[rel] (kviz) -- node[lbl, sloped] {«invokes»} (ment);
+  \draw[rel] (nyelv) -- node[lbl, sloped] {«invokes»} (ment);
+  \draw[rel] (tema.east) -- node[lbl, pos=0.5] {«invokes»} (14.2,10.0) -- (14.2,-0.2) -- (ment.east);
+\end{tikzpicture}

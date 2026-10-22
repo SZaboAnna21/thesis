@@ -1,0 +1,45 @@
+\begin{tikzpicture}[wf]
+  \draw[wf frame] (0,0) rectangle (10,11);
+
+  \draw[wf bar] (0,10.1) rectangle (10,11);
+  \draw[black!70, line width=0.7pt] (0.35,10.35) -- (0.35,10.65) -- (0.55,10.85)
+      -- (0.75,10.65) -- (0.75,10.35) -- cycle;
+  \node[wf btn] (m1) at (2.65,10.55) {Számításelmélet I $\vee$};
+  \node[wf btn] at (6.45,10.55) {Számításelmélet II $\vee$};
+  \node[wf mark] at (9.5,10.55) {1};
+
+  \node[wf box, anchor=west, font=\sffamily\scriptsize] at (0.6,9.3)
+      {SZÁMÍTÁSELMÉLET ALAPJAI I--II};
+  \node[anchor=west, font=\sffamily\large\bfseries] at (0.5,8.3)
+      {Interaktív vizualizációs platform};
+  \foreach \y/\l in {7.3/8.6, 6.85/8.2, 6.4/8.8, 5.95/5.0}
+    \draw[wf line] (0.65,\y) -- (\l,\y);
+  \foreach \y/\l in {5.1/8.4, 4.65/6.2}
+    \draw[wf line] (0.65,\y) -- (\l,\y);
+  \node[wf mark] at (9.5,8.3) {2};
+
+  \draw[wf bar] (0,0) rectangle (10,1.3);
+  \node[anchor=west, align=left] at (0.5,0.65)
+      {Készítette: Szabó Anna\\ ELTE Informatikai Kar $\cdot$ 2026};
+  \node[wf mark] at (9.5,0.65) {3};
+
+  \begin{scope}[shift={(10.6,4.4)}]
+    \node[anchor=south west, font=\sffamily\footnotesize\itshape] at (0,5.75)
+        {Lenyíló témakörlista};
+    \draw[wf frame, rounded corners=3pt] (0,0) rectangle (4.4,5.7);
+    \fill[black!10, rounded corners=2pt] (0.1,2.1) rectangle (4.3,2.6);
+    \foreach \t [count=\i] in {
+        {Alapok 1: ábécé, szavak, \ldots},
+        {Alapok 2: nyelvek és \ldots},
+        Generatív grammatikák,
+        Chomsky-hierarchia,
+        Lineáris grammatikák \ldots,
+        Determinisztikus véges a.,
+        Nemdeterminisztikus v.\ a.,
+        Reguláris kifejezések,
+        \vdots}
+      \node[anchor=west, font=\sffamily\scriptsize] at (0.2,5.95-0.6*\i) {\t};
+    \node[wf mark] at (4.4,5.7) {4};
+  \end{scope}
+  \draw[densely dashed, black!50, ->] (m1.south east) to[out=-20, in=180] (10.6,9.6);
+\end{tikzpicture}
