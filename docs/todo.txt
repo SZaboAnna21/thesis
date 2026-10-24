@@ -187,3 +187,7 @@ Tetszőleges automata grafikus szerkesztése: ha a React Flow csak megjelenít, 
 [ ] MI-nyilatkozat PDF -> szakdolgozat/mi_nyilatkozat.pdf, és a szakdolgozat.tex-ben kivenni a % jelet
 [ ] képek (use-case-diagrmm.png, img.png, img_1.png) -> szakdolgozat/images/ mappába
 [ ] innentől a szakdolgozat/ mappában szerkeszteni, a cleanthesis.tex régi
+
+
+
+grammatika hasonlo mint az automata szebb ui    

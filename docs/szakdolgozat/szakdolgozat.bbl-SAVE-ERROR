@@ -1,0 +1,59 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{icons}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=769b4ed167351673edd41ae8eef0ed0b}{%
+           family={seanyasno},
+           familyi={s\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {DEV Community}%
+      }
+      \strng{namehash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{fullhash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{fullhashraw}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{bibnamehash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{authorbibnamehash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{authornamehash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{authorfullhash}{769b4ed167351673edd41ae8eef0ed0b}
+      \strng{authorfullhashraw}{769b4ed167351673edd41ae8eef0ed0b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Handling icons in React: best practices}
+      \field{urlday}{1}
+      \field{urlmonth}{10}
+      \field{urlyear}{2026}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://dev.to/seanyasno/handling-icons-in-react-best-practices-22c5
+      \endverb
+      \verb{url}
+      \verb https://dev.to/seanyasno/handling-icons-in-react-best-practices-22c5
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

@@ -224,20 +224,9 @@ egyes algoritmusok és modellek működését. Az interaktív feladatoknál
 saját bemenetet adhat meg, amelyre a rendszer automatikusan
 kiértékelést és visszajelzést ad.
 
-A~\ref{fig:usecase}.~ábra a rendszer fő használati eseteit és azok
-kapcsolatait mutatja be. Az \emph{«include»} kapcsolat azt jelöli, hogy
-egy eset mindig magában foglal egy másikat: a vizualizáció és az
-interaktív feladat is saját bemenettel indul, a feladat és a kvíz pedig
-mindig visszajelzéssel zárul. Az \emph{«extend»} kapcsolat egy csak
-bizonyos feltétel mellett bekövetkező esetet jelöl: hibás bemenetnél a
-rendszer hibaüzenetet jelenít meg. A \emph{«precedes»} kapcsolat
-előfeltételt fejez ki: a témakör kiválasztása megelőzi az elméleti anyag
-és a hozzá tartozó modulok használatát. Az \emph{«invokes»} kapcsolat
-rákövetkezést jelöl: egy témakör megnyitása, a kvíz kitöltése és a
-nyelv választása után a rendszer automatikusan elmenti a haladást,
-illetve a beállításokat a böngésző helyi tárolójába. A megnyitott
-témaköröket a navigációs menü pipával jelöli, és kiírja, hogy a
-félév témaköreiből eddig hányat nyitott meg a hallgató.
+A témaköröknél, ahol elérhetőek, a hallgató kvíz fomrában és kérdésekkel tudja ellenőrizni tudását.
+A felhasználónak lehetősége van a böngészőben helyben megőrizni a haladását és a beállításait, így a későbbi látogatáskor folytathatja a tanulást.
+Az oldal a magyar mellett angol nyelvet is támogathat de nem teljeskörűen.
 
 \begin{figure}[H]
     \centering
@@ -378,8 +367,47 @@ A fejezetben kifejtett követelmények validálásának célja annak ellenőrzé
    kipróbálása segítségével történik.
     A részletes tesztelési eredményeket a Tesztelés fejezet ismerteti később.
     %======================================================================
+%======================================================================
+\section{A felhasznált módszerek és fogalmak}
 \section{Tervezés}
 \iffalse
+%======================================================================
+% Csak a ténylegesen használt fogalmak, röviden, kevés matekkal.
+
+\subsection{Formális nyelvek alapfogalmai}
+% Ábécé, szó, üres szó ($\varepsilon$), nyelv, műveletek.
+\mbox{}
+
+\subsection{Véges automaták}
+% DVA, NDVA, konfiguráció, elfogadás, részhalmaz-konstrukció.
+\mbox{}
+
+\subsection{Grammatikák és a Chomsky-hierarchia}
+% Generatív grammatika, levezetés, a négy típus, 3-as normálforma.
+\mbox{}
+
+\subsection{Reguláris kifejezések}
+% Szintaxis, a kapcsolat a véges automatákkal.
+\mbox{}
+
+\subsection{Szavak felsorolása és ellenpélda-keresés}
+% Shortlex sorrend, hosszkorlát, miért elég kis bemenetekre.
+\mbox{}
+
+\fi
+\iffalse
+
+
+\subsection{Technológiai döntések}
+% Pro/kontra táblázat alternatívákkal: TypeScript, React, Vite, pnpm monorepo, KaTeX, React Flow, Tailwind.
+\mbox{}
+
+\subsection{Architektúra}
+% A három csomag (content, automata-core, web) és függőségeik, modul/komponensdiagram. Szöveg: régi thesis.tex.
+\mbox{}
+
+% A tartalommodell kész szövege lent egy \textbackslash iffalse blokkban van elrejtve.
+
 %======================================================================
 % TODO: ide megy át a thesis.tex "Áttekintés" (3 csomag + modulregiszter)
 % és a "Rendszerarchitektúra" fejezet
@@ -528,4 +556,418 @@ A témakörök a tárgy logikai felosztását követve öt csoportba
     \label{tab:groups}
 \end{table}
 
-% TODO: témakörök száma és listája a végén (most 16 mappa a topics/ alatt)  \fi
+% TODO: témakörök száma és listája a végén (most 16 mappa a topics/ alatt)
+\fi
+\subsection{Technológiai döntések}
+A fejlesztéshez használt technológiák kiválasztását a feladat jellege,
+a \ref{sec:...}. szakaszban megfogalmazott követelmények és célok, továbbá a
+rendelkezésre álló erőforrások határozták meg nagyrészt. Az alábbiakban
+felsorolom a döntési szempontokat, ezután minden területen a választott
+megoldást.
+
+A döntéseknél a következő szempontokat vettem figyelembe:
+\begin{compactitem}
+    \item a rendszer szerver nélkül, a böngészőben fusson,
+          és statikus oldalként ingyenesen üzemeltethető legyen
+    \item Fontos típusbiztos könnyen bővíthető kód az algoritmusokra és a tartalomra (NFK-1, NFK-5);
+    \item a matematikai jelölések a tárgyban megszokott formában
+          jelenjenek meg (NFK-4);
+    \item csak ingyenes, nyílt forráskódú, széles körben használt és jól
+          dokumentált eszközöket használjak.
+      \item a felhasznált technológiák ne legyenek teljesen idegenek
+\end{compactitem}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{3cm}|X|}
+        \hline
+        \textbf{Terület} & \textbf{Választás} & \textbf{Alternatívák} & \textbf{Indoklás} \\ \hline
+        Architektúra & kliensoldali alkalmazás & kliens--szerver (pl. Node.js, Django) &
+            Minden számítás kis sőt véges! bemenetre fut, ezért nincs szükség szerverre; statikusan, ingyen üzemeltethető. \\ \hline
+        Nyelv & TypeScript & JavaScript &
+            A típusok már szerkesztés közben jelzik a hibás tananyagblokkot vagy automatát. \\ \hline
+        Felület keretrendszere & React & Vue, Angular, Svelte &
+            Komponensalapú, a modulok egymástól függetlenül fejleszthetők; a legnagyobb ökoszisztéma (React Flow, KaTeX-integráció). \\ \hline
+        Építőeszköz & Vite & Create React App, webpack &
+            Gyors fejlesztői szerver, minimális beállítás; már ismert; (a CRA már nem karbantartott.) \\ \hline
+        Kódszervezés & pnpm monorepo & egyetlen projekt &
+            Az algoritmusok, a tananyag és a felület külön csomagban, így az algoritmusok a felülettől függetlenül tesztelhetők, feljeszthetőek. \\ \hline
+        Képletek & KaTeX & MathJax &
+            Gyorsabb megjelenítés, \LaTeX{} szintaxis, ami megegyezik a tárgy jegyzeteivel (ppt). \\ \hline
+        Gráfok & React Flow & D3.js, Cytoscape.js &
+            React-komponensként illeszkedik, kész csomópont/él kezelés; a D3 sokkal több kézi munkát igényelne. \\ \hline
+        Stílus & Tailwind CSS & sima CSS, Bootstrap &
+            A stílus a komponens mellett marad, egységes megjelenés minimális saját CSS-sel. \\ \hline
+        Tesztelés & Node.js beépített tesztfuttató & Jest, Vitest &
+            Nem igényel külön függőséget, az algoritmuscsomag tesztjeihez elegendő. \\ \hline
+    \end{tabularx}
+    \caption{Technológiai döntések és alternatíváik}
+    \label{tab:tech}
+\end{table}
+
+\mbox{}
+
+\subsection{Architektúra}
+\label{sec:arch}
+
+A következő fejezet a rendszer logikai felépítését, archtiektúráját kívánja bemutatni.
+Milyen nagyobb egységekből épül fel, ezek az egységek, hogyan jellemezhetőek, mi a felelőségi körük, és nem utolsó sorban,
+hogyan csatlakoznak egymáshoz.
+
+ Az architektúra szemléltetése a C4-modell első három szintjén történik:
+
+először a rendszert a környezetében (rendszerkörnyezet), majd a fő
+építőelemeit (csomagok és rétegek), végül egy kiválasztott egység belső
+felépítését (komponensek) mutatom be.
+
+\subsubsection{Architekturális stílus}
+
+A rendszer \emph{kliensoldali, egyoldalas webalkalmazás} (SPA). A
+forráskód TypeScript nyelvű, ezt a Vite építéskor JavaScriptre fordítja, a böngésző ezt a fogja futtatni.
+ A böngésző egyszer letölti a lefordított HTML-, JavaScript- és CSS-fájlokat,
+  ezután minden számítás és minden oldalváltás a böngészőben történik.
+Szerveroldali logika és adatbázis nincs.
+
+Ez a döntés közvetlenül a követelményekből következik. A tananyag
+statikus, az alkalmazással együtt szállítható, felhasználókezelés nincs
+(\ref{tab:out_of_scope}.~táblázat), az algoritmusok pedig kis, véges
+bemeneteken futnak, így egy átlagos gép böngészője is gyorsan elvégzi
+őket (NFK-1). Egy tipikus háromrétegű kliens--szerver--adatbázis felépítés ezért
+csak extra bonyolultságot, költséget és hibalehetőséget hozna, előnyt nem sokat. A
+statikus kiszolgálás ingyenes (pl.\ GitHub Pages), és telepítés nélkül
+működik a modern böngészőkben (NFK-3).
+
+
+\subsubsection{Rendszerkörnyezet}
+
+A~\ref{fig:arch-context}.~ábra a rendszert és a vele kapcsolatban álló környezetet írja le. 
+Egyetlen felhasználói szerepkör van, a
+\textbf{Hallgató}, az oldal látogatója. 
+A rendszer két külső elemmel érintkezik: a statikus
+tárhellyel, amely a lefordított fájlokat kiszolgálja, és a böngésző helyi
+tárolójával, amelyben a haladás/beállítások megőrződnek (FK-8). Más külső
+szolgáltatást, hálózati API-t a rendszer nem használ, az első betöltés
+után a böngészőben futó alkalmazás már nem kommunikál a hálózattal.
+
+\begin{figure}[H]
+    \centering
+    \resizebox{\textwidth}{!}{\input{fejezetek/abrak/arch-kontextus.tex}}
+    \caption{A rendszer környezete (C4, 1.~szint)}
+    \label{fig:arch-context}
+\end{figure}
+
+\subsubsection{Csomagok és rétegek}
+A kódbázis egy pnpm-munkaterületen belül három csomagból áll (\ref{fig:arch-packages}.~ábra). 
+Mindhárom csomag TypeScript nyelvű.
+ A csomagok az exportált típusaikon és függvényeiken keresztül kommunikálnak egymással.
+  A rendszer több csomagra bontása lehetővé teszi a felelősségi körök elkülönítését, így az alkalmazáslogika,
+   a felhasználói felület és a tartalom külön csomagokba szervezhető.
+
+\begin{figure}[H]
+    \centering
+    \resizebox{\textwidth}{!}{\input{fejezetek/abrak/arch-csomagok.tex}}
+    \caption{A csomagok, a rétegek és a függőségek iránya (C4, 2.~szint)}
+    \label{fig:arch-packages}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{4.4cm}|X|}
+        \hline
+        \textbf{Réteg} & \textbf{Csomag} & \textbf{Felelősség} \\ \hline
+        Megjelenítési & \texttt{apps/web} &
+            Útvonalkezelés, oldalak és komponensek, a tananyag kirajzolása,
+            a felhasználói bemenetek fogadása és ellenőrzése, az algoritmuslépések megjelenítése, a haladás tárolása. Csak ez a csomag függ a
+            React-től és a böngészőtől. \\ \hline
+        Tartalmi & \texttt{@fotoc/content} &
+            A tananyag típusai és adatai: témakörök metaadatai,
+            tartalomblokkok, kvízkérdések. Nem tartalmaz megjelenítési
+            kódot, csak típusbiztos adatok és a lekérdezéshez szükséges
+            exportokat (\texttt{topics}, \texttt{getTopic}). \\ \hline
+            Algoritmikus & \texttt{@fotoc/automata-core} & A tárgy számítási modelljei (véges automaták, grammatikák, reguláris kifejezések)
+             és a rajtuk dolgozó algoritmusok. Nem függ a felhasználói felülettől vagy a böngészőtől. \\ \hline
+    \end{tabularx}
+    \caption{A rétegek és csomagok felelőssége}
+    \label{tab:arch-layers}
+\end{table}
+
+A felosztást a következő szabályok tartják egyben:
+\begin{compactitem}
+    \item a függőség iránya mindig a megjelenítési rétegtől a másik kettő
+          felé mutat, a \texttt{content} és az \texttt{automata-core} nem
+          ismeri a webalkalmazást anyíl 1 irányú csak;
+    \item a \texttt{content} és az \texttt{automata-core} is
+          függetlenek egymástól, a tananyag csak egy szöveges azonosítóval hivatkozik a
+          hozzá tartozó interaktív modulra (lásd később);
+    \item az \texttt{automata-core} kizárólag a számításokért felelős: 
+    a kapott bemenet alapján előállítja az eredmény(eke)t, amelyet adatstruktúrák
+     formájában ad vissza a felhasználói felület számára, onnan pedig a ui azt csinal vele amit akar.
+    \item a böngésző tárolóját egyetlen modul (\texttt{progress}) kezeli,
+          a komponensek ezen keresztül érik el.
+\end{compactitem}
+\clearpage
+
+\subsubsection{Egy témakör oldalának felépítése}
+
+A rendszer legfontosabb összeillesztési pontja a témakör oldal, mert itt
+találkozik mindhárom réteg. A~\ref{fig:arch-topic}.~ábra ezt mutatja
+architectúra szinten.
+
+\begin{figure}[H]
+    \centering
+    \resizebox{\textwidth}{!}{\input{fejezetek/abrak/arch-temakor.tex}}
+    \caption{A témakör oldalának komponensei és kapcsolataik (C4, 3.~szint)}
+    \label{fig:arch-topic}
+\end{figure}
+
+Egy oldal megnyitása a következő lépésekből áll:
+\begin{compactenum}
+    \item Az útvonalkezelő (router) a címből (\texttt{\#/topics/:topicID})
+          kiolvassa a témakör ID-ját, és megjeleníti a
+          \texttt{Topicpages} oldalt.
+    \item Az oldal a \texttt{getTopic} függvénnyel lekéri a témakört a
+          tartalomcsomagból ID alapján.
+    \item A különböző tartalomblokkokat a témakörhöz a \texttt{TheoryRenderer} rajzolja ki, a
+          képleteket a \texttt{MathText} komponens KaTeX segítségével jeleníti meg.
+    \item Ha a témakör metaadataiban van modulazonosító, vagyis a témakörhöz tartozik interaktív modul
+          (\texttt{meta.module}), az oldal a \emph{modulregiszterből}
+          kikeresi a hozzá tartozó komponenst, és beilleszti a
+          \emph{Próbáld ki!} szakaszba.
+    \item Ha a témakörhöz tartozik kvíz, azt a \texttt{QuizView} jeleníti meg.
+    \item Az oldal a témakört megtekintettként jelöli meg, ami a böngésző
+          tárolójába kerül.
+\end{compactenum}
+
+A legtöbb interaktív modulok működése ugyanazt a mintát követi: a
+komponens a felhasználó bemenetét ellenőrzi és átadja az
+\texttt{automata-core} megfelelő függvényének, amely a teljes futást
+előre kiszámítja és lépések listájaként adja vissza. A lejátszás
+(előre, vissza, automatikus léptetés) ezután már csak egy indexet mozgat
+ezen a listán (\texttt{usePlayer}), az algoritmust nem futtatja újra.
+Ez teszi lehetővé a visszalépést (FK-4), és ezért elegendő az
+algoritmusokat egyszer, a felülettől függetlenül tesztelni.
+
+\subsubsection{Bővíthetőség}
+
+A rétegzés célja, hogy a rendszer a meglévő kód jelentős módosítása
+nélkül bővíthető legyen (NFK-5). A két leggyakoribb bővítés:
+
+\begin{description}
+    \item[Új témakör.] A tartalomcsomagban új mappa készül
+          \texttt{meta.ts} és \texttt{theory.ts} fájllal, majd a témakör
+          bekerül a \texttt{topics/index.ts} gyűjtőlistájába. A fejléc
+          menüje és az útvonal ebből automatikusan elkészül, a
+          webalkalmazáshoz nem kell hozzányúlni.
+    \item[Új interaktív modul.] Az algoritmus az \texttt{automata-core}
+          csomagba kerül egységtesztekkel együtt, a megjelenítő komponens a
+          webalkalmazásba a korábban már említett app/web/components mappába,
+           végül egy új bejegyzés a modulregiszterbe. A
+          témakörhöz végül \texttt{meta.module} mezőjében megadott azonosítóval kötjük be.
+\end{description}
+
+\subsubsection{Alkalmazott tervezési minták}
+
+A felépítésben néhány ismert tervezési minta jelenik meg. Ezeket nem
+öncélúan használtam, hanem mert egy-egy konkrét problémát oldottak meg
+(\ref{tab:arch-patterns}.~táblázat).
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{3.6cm}|X|}
+        \hline
+        \textbf{Minta} & \textbf{Hol} & \textbf{Milyen problémát old meg} \\ \hline
+        Rétegzett architektúra & a három csomag &
+            A felület módosítása nem érinti a tananyagot és az
+            algoritmusokat, ezek böngésző nélkül tesztelhetők. \\ \hline
+        Regiszter (registry) & \texttt{modules/index.tsx}, \texttt{topics/index.ts} &
+            A tananyag szöveges azonosítóval hivatkozik a modulra, így a
+            tartalomcsomagnak nem kell ismernie a React-komponenseket. \\ \hline
+        Funkcionális mag, imperatív héj & \texttt{automata-core} és a komponensek &
+            Az állapot és a mellékhatások a megjelenítési rétegben vannak, az
+            algoritmusok tiszta függvények, ezért determinisztikusan tesztelhetők. \\ \hline
+        Előre kiszámított végrehajtási napló & \texttt{runDfa}, \texttt{usePlayer} &
+            A lépések listája miatt a lejátszás oda-vissza léptethető, az
+            algoritmust nem kell visszafelé futtatni. \\ \hline
+        Megfigyelő (observer) & \texttt{progress.ts} &
+            A haladás változásakor minden feliratkozott komponens (pl.\ a
+            fejléc menüje) frissül, külön állapotkezelő könyvtár nélkül. \\ \hline
+    \end{tabularx}
+    \caption{A felhasznált tervezési minták}
+    \label{tab:arch-patterns}
+\end{table}
+A következő három szakasz a~\ref{fig:arch-packages}.~ábra
+ csomagjait egyenként fogja részletebemenően bemutatni, ezek lesznek
+  a tartalomcsomagot (\ref{sec:content-design}.), az algoritmuscsomagot és a webalkalmazást.
+
+\subsection{A tartalommodell}
+\label{sec:content-design}
+
+A tervezés során viszonylag korán döntést kellett hozni arról, hogy a tananyagok és a hozzájuk tartozó metaadatok milyen formában
+ kerüljenek tárolásra. A végül megvalósított megoldás szerint az adatok közvetlenül TypeScript-típusok formájában, .ts fájlokban kerülnek 
+ rögzítésre a @fotoc/content csomagban.
+ Ennek eredményeként a tananyag minden eleme saját, jól definiált típussal van felvíve, így a szöveges tartalmon túl annak szerkezete, típusa és egyéb metaadatai is explicit módon mellette vannak.
+  A típusok használata jelentősen növeli a rendszer megbízhatóságát, mivel a fordító már fejlesztés közben képes jelezni az esetleges szerkezeti vagy típushibákat.
+
+Alternatív lehetőségként a tartalom tárolása történhetett volna JSON-, Markdown/MDX-alapú formátumban,
+ ilvagyvaletve adatbázisban tárolva
+is. A JSON-megoldás ugyan egyszerű és széles körben támogatott, viszont így mindenképpen külön betöltést és feldolgozást igényelne,
+ valamint nem biztosít olyan szintű típusellenőrzést, mint a TypeScript. 
+ A Markdown vagy MDX formátum előnye az ember által könnyen olvasható szintaxis, ugyanakkor a komplexebb struktúrák kezelése nehézkesebb.
+  Adatbázis alkalmazása szintén megvalósítható lett volna, azonban egy teljes mértékben statikus alkalmazás esetén szükségtelen többletkomplexitást és infrastruktúraigényt hozzáadni.
+
+A TypeScript-alapú tárolás előnye, hogy nincs szükség külön adatbetöltési vagy parszolási steppekre,
+ a tartalom direkt felhasználható az alkalmazásban,
+  miközben a fordító folyamatosan garantálja az adatok konzisztenciáját.
+
+A tartalommodell típusait a~\ref{fig:content-types}.~ábra mutatja. Mivel a csomagban nincsenek
+osztályok, csak típusok, az ábra az UML-osztálydiagram jelöléseit használja típusokra.
+Egy témakör (\texttt{Topic}) egy metadata-objektumból, tartalomblokkok sorozatából és
+opcionálisan kvízkérdésekből áll. A \texttt{ContentBlock} uniótípus, amelynek változatait a
+\texttt{type} mező különbözteti meg. A \texttt{ProofBlock} maga is tartalomblokkokat tartalmaz,
+így a bizonyítások egymásba ágyazhatók.
+
+\begin{figure}[H]
+    \centering
+    \resizebox{\textwidth}{!}{\input{fejezetek/abrak/tipus-tartalom.tex}}
+    \caption{A tartalommodell típusai}
+    \label{fig:content-types}
+\end{figure}
+
+
+Ahogy a diagrammban is olvasható, minden megjelenő szöveg \texttt{LocalizedText} típusú. A magyar
+változat kötelező, az angol opcionális, így a fordítás a meglévő
+tartalom módosítása nélkül, fokozatosan pótolható.
+
+\begin{lstlisting}
+type LocalizedText = {
+  hu: string;
+  en?: string;
+};
+\end{lstlisting}
+
+A \texttt{ContentBlock} ún.\ diszkriminált unió (\emph{discriminated
+union}): minden blokknak van egy \texttt{type} mezője, amely alapján a
+fordító és a megjelenítő is el tudja dönteni, milyen további mezői
+vannak. A jelenleg definiált blokktípusokat
+a~\ref{tab:blocks}.~táblázat mutatja.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{l p{4.6cm} X}
+        \toprule
+        \textbf{\texttt{type}} & \textbf{Mezők} & \textbf{Szerep} \\
+        \midrule
+        \texttt{heading}    & \texttt{level} (1--3), \texttt{text}
+                            & Fejezet- vagy szakaszcím \\
+        \texttt{paragraph}  & \texttt{text}
+                            & Folyó szöveg \\
+        \texttt{definition} & \texttt{term}, \texttt{content}
+                            & Fogalom definíciója \\
+        \texttt{theorem}    & \texttt{kind}, \texttt{name?},
+                              \texttt{statement}, \texttt{proof?}
+                            & Tétel, lemma, állítás vagy következmény \\
+        \texttt{example}    & \texttt{title?}, \texttt{content}
+                            & Kidolgozott példa \\
+        \texttt{formula}    & \texttt{latex}
+                            & Kiemelt képlet \\
+        \texttt{list}       & \texttt{ordered}, \texttt{items}
+                            & Számozott vagy felsorolásos lista \\
+        \texttt{table}      & \texttt{headers}, \texttt{rows}
+                            & Táblázat (pl.\ átmenettáblázat) \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A tartalomblokkok típusai (a \texttt{?} opcionális mezőt jelöl)}
+    \label{tab:blocks}
+\end{table}
+
+A \texttt{theorem} blokk \texttt{kind} mezője a
+\texttt{tetel}, \texttt{lemma}, \texttt{allitas} és
+\texttt{kovetkezmeny} értékek egyikét veheti fel. Egy definíció például
+így néz ki:
+
+\begin{lstlisting}
+{
+  type: "definition",
+  term: { hu: "Determinisztikus véges automata" },
+  content: { hu: "Az $A = \\langle Q, \\Sigma, \\delta, q_0, F \\rangle$ rendezett ötös, ahol ..." },
+}
+\end{lstlisting}
+
+A tárgy anyaga sok matematikai jelölést tartalmaz (automaták
+definíciói, grammatikák, pumpálási lemmák, a CYK algoritmus stb.),
+ezért a képleteket egységesen \LaTeX{} szintaxissal tárolom:
+
+\begin{itemize}
+    \item szövegen belüli képlet: \verb|$...$| a szövegmezőben;
+    \item kiemelt képlet: külön \texttt{formula} blokk;
+    \item a sztringekben a \verb|\| karaktert duplán kell írni
+          (\verb|\\|).
+\end{itemize}
+
+\subsection{Az algoritmuscsomag terve}
+% Az automata-core típusai és fő függvényei, osztály/típusdiagram.
+\mbox{}
+
+\subsection{A webalkalmazás szerkezete}
+% Útvonalak, komponensfa, modulregiszter.
+\mbox{}
+
+\subsection{Állapotkezelés és perzisztencia}
+% localStorage: megnyitott témakörök, kvízeredmények, beállítások, nyelv.
+\mbox{}
+
+\subsection{Dinamikus modell}
+% Szekvenciadiagram egy szimulációs lépésről (DVA felhasználói történet alapján).
+\mbox{}
+
+\subsection{Fejlesztési folyamat}
+% Fázisok, iterációk, verziókezelés.
+\mbox{}
+
+%======================================================================
+\section{Implementáció}
+%======================================================================
+
+\subsection{Fejlesztői környezet és könyvtárszerkezet}
+% Eszközök, monorepo felépítése, build és futtatás.
+\mbox{}
+
+\subsection{Kiemelt algoritmusok}
+% Rövid kódrészletek magyarázattal: NDVA-lépés, Chomsky-osztályozás, 3NF, felsorolás.
+\mbox{}
+
+\subsection{A lépésenkénti lejátszás}
+% usePlayer és PlayerControls működése.
+\mbox{}
+
+\subsection{Matematikai jelölések megjelenítése}
+% KaTeX, MathText komponens.
+\mbox{}
+
+\subsection{Bemenet-ellenőrzés és hibakezelés}
+% Hogyan jelzi a rendszer a hibás bemenetet (FK-6, NFK-2).
+\mbox{}
+
+%======================================================================
+\section{Tesztelés}
+%======================================================================
+
+\subsection{Tesztelési terv}
+% Szintek (egység, rendszer/manuális, nem funkcionális), eszközök (Vitest), mit miért.
+\mbox{}
+
+\subsection{Egységtesztek}
+% Táblázat modulonként: tesztesetek száma, mit ellenőriz, eredmény.
+\mbox{}
+
+\subsection{Manuális rendszertesztek}
+% A felhasználói történetekből: lépések, elvárt és tényleges eredmény.
+\mbox{}
+
+\subsection{Nem funkcionális tesztek}
+% Válaszidő (NFK-1), böngészők (NFK-3), reszponzivitás.
+\mbox{}
+
+\subsection{A tesztelés értékelése}
+% Lefedettség, ismert hibák, korlátok.
+\mbox{}

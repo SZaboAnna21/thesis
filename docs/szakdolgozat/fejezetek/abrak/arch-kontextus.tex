@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+    wf,
+    sys/.style={draw=black!80, line width=0.9pt, fill=black!6, rounded corners=3pt,
+                minimum width=4.6cm, minimum height=2.2cm, align=center},
+    ext/.style={draw=black!60, dashed, fill=white, rounded corners=3pt,
+                minimum width=4.2cm, minimum height=1.6cm, align=center},
+    rel/.style={->, >=stealth, black!70, densely dashed},
+    lbl/.style={font=\sffamily\scriptsize, fill=white, inner sep=1.5pt, align=center},
+  ]
+  \begin{scope}[shift={(0,0)}, black!80, line width=0.8pt]
+    \draw (0,1.05) circle (0.25);
+    \draw (0,0.8) -- (0,0.05);
+    \draw (-0.45,0.55) -- (0.45,0.55);
+    \draw (0,0.05) -- (-0.35,-0.5);
+    \draw (0,0.05) -- (0.35,-0.5);
+    \node[anchor=north, align=center] at (0,-0.55) {\textbf{Hallgató}\\{\scriptsize[személy]}};
+  \end{scope}
+
+  \node[sys] (app) at (5.6,0.4) {\textbf{Fotoc-helper}\\{\scriptsize[szoftverrendszer]}\\[2pt]
+      {\scriptsize böngészőben futó egyoldalas}\\{\scriptsize webalkalmazás}};
+
+  \node[ext] (host) at (11.2,2.0) {\textbf{Statikus tárhely}\\{\scriptsize[ GitHub Pages]} \\{\scriptsize a webalkalmazás statikus hosztolása}};
+  \node[ext] (store) at (11.2,-1.2) {\textbf{Böngésző helyi tárolója}\\{\scriptsize[localStorage]}};
+
+  \draw[rel] (0.6,0.4) -- node[lbl, above=2pt] {témakört választ,\\bemenetet ad meg} (app.west);
+  \draw[rel] (host.west) -- node[lbl, sloped, above] {kiszolgálja a webalkalmazást} (app.north east);
+  \draw[rel] (app.south east) -- node[lbl, sloped, below] {haladás/beállítások írása/olvasása} (store.west);
+\end{tikzpicture}

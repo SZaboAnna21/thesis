@@ -1,0 +1,35 @@
+\begin{tikzpicture}[
+    wf,
+    cmp/.style={draw=black!80, line width=0.8pt, fill=white, rounded corners=2pt,
+                minimum width=3.3cm, minimum height=1.0cm, align=center},
+    ext/.style={draw=black!60, fill=black!6, rounded corners=2pt,
+                minimum width=3.3cm, minimum height=1.0cm, align=center},
+    store/.style={draw=black!60, dashed, fill=white, rounded corners=2pt,
+                minimum width=3.3cm, minimum height=1.0cm, align=center},
+    call/.style={->, >=stealth, black!75},
+    lbl/.style={font=\sffamily\scriptsize, fill=white, inner sep=1.5pt, align=center},
+  ]
+  \node[cmp] (router) at (0,6)    {\texttt{router}\\{\scriptsize\#/topics/:topicID}};
+  \node[cmp] (page)   at (7.5,6)  {\texttt{Topicpages}};
+  \node[ext] (get)    at (15,6)   {\texttt{getTopic(id)}\\{\scriptsize @fotoc/content}};
+
+  \node[cmp] (theory) at (0,3)    {\texttt{TheoryRenderer}\\{\scriptsize + \texttt{MathText} (KaTeX)}};
+  \node[cmp] (reg)    at (5,3)    {\texttt{modules[meta.module]}\\{\scriptsize modulregiszter}};
+  \node[cmp] (quiz)   at (10,3)   {\texttt{QuizView}};
+  \node[cmp] (prog)   at (15,3)   {\texttt{markTopicVisited}\\{\scriptsize \texttt{progress}}};
+
+  \node[ext] (core)   at (-0.5,0.3)  {pl.\ \texttt{runDfa}\\{\scriptsize @fotoc/automata-core}};
+  \node[cmp] (sim)    at (5,0.3)  {pl.\ \texttt{DfaSimulator}\\{\scriptsize\texttt{usePlayer}, \texttt{PlayerControls}}};
+  \node[store] (ls)   at (15,0.3) {localStorage};
+
+  \draw[call] (router) -- node[lbl, above=2pt] {témakör-azonosító} (page);
+  \draw[call] (page) -- node[lbl, above=2pt] {\texttt{Topic}} (get);
+  \draw[call] (page) -- node[lbl, pos=0.45] {\texttt{content}} (theory.north);
+  \draw[call] (page) -- node[lbl, pos=0.5] {\texttt{meta.module}} (reg.north);
+  \draw[call] (page) -- node[lbl, pos=0.5] {\texttt{quiz}} (quiz.north);
+  \draw[call] (page) -- node[lbl, pos=0.45] {megnyitás} (prog.north);
+  \draw[call] (reg) -- node[lbl, right] {létrehozza} (sim);
+  \draw[call] ([yshift=5pt]sim.west) -- node[lbl, above=1pt] {bemenet} ([yshift=5pt]core.east);
+  \draw[call] ([yshift=-5pt]core.east) -- node[lbl, below=1pt] {lépések} ([yshift=-5pt]sim.west);
+  \draw[call] (prog) -- node[lbl, right] {írás} (ls);
+\end{tikzpicture}

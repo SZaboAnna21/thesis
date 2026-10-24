@@ -1,0 +1,78 @@
+\begin{tikzpicture}[
+    wf,
+    cls/.style={rectangle split, rectangle split parts=2, draw=black!80, line width=0.8pt,
+                fill=white, text width=3.5cm, inner sep=3pt, anchor=north,
+                font=\ttfamily\scriptsize},
+    hl/.style={fill=black!6},
+    comp/.style={diamond-, black!75, line width=0.6pt},
+    gen/.style={-open triangle 60, black!75, line width=0.6pt},
+    dep/.style={->, >=stealth, dashed, black!60},
+    mult/.style={font=\sffamily\scriptsize, inner sep=1.5pt},
+  ]
+  \newcommand{\hdr}[2]{{\centering{\sffamily\scriptsize\guillemotleft#1\guillemotright}\\
+                        {\sffamily\small\bfseries#2}\par}}
+
+  \node[cls, hl] (topic) at (11,9) {\hdr{típus}{Topic}
+    \nodepart{second} meta: TopicMeta\\ content: ContentBlock[]\\ quiz?: QuizQuestion[]};
+
+  \node[cls] (meta) at (3,9) {\hdr{típus}{TopicMeta}
+    \nodepart{second} id: string\\ order: number\\ group: TopicGroup\\ title: LocalizedText\\
+    summary: LocalizedText\\ lectures: number[]\\ module: string | null};
+
+  \node[cls] (quiz) at (19.5,9) {\hdr{típus}{QuizQuestion}
+    \nodepart{second} question: string\\ answers: string[]\\ correct: number\\
+    explanation: string\\ difficulty: "easy" | "hard"};
+
+  \node[cls] (group) at (-1,5.4) {\hdr{felsorolás}{TopicGroup}
+    \nodepart{second} foundations\\ regular\\ context-free\\ context-sensitive\\ computability};
+
+  \node[cls] (ltext) at (5,5.4) {\hdr{típus}{LocalizedText}
+    \nodepart{second} hu: string\\ en?: string};
+
+  \node[cls, hl] (block) at (11,5.4) {\hdr{unió}{ContentBlock}
+    \nodepart{second} type: diszkrimináns};
+
+  \node[cls] (heading) at (0,1.8)   {\hdr{típus}{HeadingBlock}
+    \nodepart{second} type: "heading"\\ level: 1 | 2 | 3\\ text: LocalizedText};
+  \node[cls] (para)    at (4.4,1.8) {\hdr{típus}{ParagraphBlock}
+    \nodepart{second} type: "paragraph"\\ text: LocalizedText};
+  \node[cls] (def)     at (8.8,1.8) {\hdr{típus}{DefinitionBlock}
+    \nodepart{second} type: "definition"\\ term: LocalizedText\\ content: LocalizedText};
+  \node[cls] (thm)     at (13.2,1.8){\hdr{típus}{TheoremBlock}
+    \nodepart{second} type: "theorem"\\ kind: TheoremKind\\ name?: LocalizedText\\
+    statement: LocalizedText\\ proof?: LocalizedText};
+  \node[cls] (ex)      at (17.6,1.8){\hdr{típus}{ExampleBlock}
+    \nodepart{second} type: "example"\\ title?: LocalizedText\\ content: LocalizedText};
+  \node[cls] (proof)   at (22,1.8)  {\hdr{típus}{ProofBlock}
+    \nodepart{second} type: "proof"\\ title?: LocalizedText\\ content: ContentBlock[]};
+
+  \node[cls] (formula) at (2.2,-1.4)  {\hdr{típus}{FormulaBlock}
+    \nodepart{second} type: "formula"\\ latex: string};
+  \node[cls] (list)    at (6.6,-1.4)  {\hdr{típus}{ListBlock}
+    \nodepart{second} type: "list"\\ ordered: boolean\\ items: LocalizedText[]};
+  \node[cls] (table)   at (11,-1.4)   {\hdr{típus}{TableBlock}
+    \nodepart{second} type: "table"\\ headers: string[]\\ rows: string[][]};
+  \node[cls] (warn)    at (15.4,-1.4) {\hdr{típus}{WarningBlock}
+    \nodepart{second} type: "warning"\\ text: LocalizedText};
+  \node[cls] (fun)     at (19.8,-1.4) {\hdr{típus}{FunFactBlock}
+    \nodepart{second} type: "funfact"\\ text: LocalizedText};
+
+  \draw[comp] (topic.west) -- (topic.west -| meta.east) node[mult, above right] {1};
+  \draw[comp] (topic.east) -- (topic.east -| quiz.west) node[mult, above left] {0..*};
+  \draw[comp] (topic.south) -- (block.north) node[mult, above right] {0..*};
+
+  \draw[dep] (meta.south) -- (group.north);
+  \draw[dep] (meta.south) -- (ltext.north);
+
+  \coordinate (bus) at (11,2.4);
+  \draw[gen] (bus) -- (block.south);
+  \draw[black!75, line width=0.6pt] (0,2.4) -- (22,2.4);
+  \foreach \n in {heading, para, def, thm, ex, proof}
+    \draw[black!75, line width=0.6pt] (\n.north) -- (\n.north |- bus);
+  \foreach \n in {formula, list, table, warn, fun}
+    \draw[black!75, line width=0.6pt] (\n.north) -- (\n.north |- bus);
+
+  \draw[->, >=stealth, black!75, line width=0.6pt]
+    (proof.east) -- ++(0.7,0) |- (block.east)
+    node[mult, pos=0.95, above] {0..*} node[mult, pos=0.75, above] {content};
+\end{tikzpicture}
