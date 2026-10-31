@@ -2,6 +2,7 @@
 \label{ch:impl}
 
 \section{Követelményelemzés és specifikáció}
+\label{sec:req}
 
 A fejlesztés és kód írás megkezdése előtt fontos egy rövid felmérést, kutatást
 végeznünk és bizonyos szempontok alapján meg kell vizsgálnunk a feladatot.
@@ -559,84 +560,382 @@ A témakörök a tárgy logikai felosztását követve öt csoportba
 % TODO: témakörök száma és listája a végén (most 16 mappa a topics/ alatt)
 \fi
 \subsection{Technológiai döntések}
-A fejlesztéshez használt technológiák kiválasztását a feladat jellege,
-a \ref{sec:...}. szakaszban megfogalmazott követelmények és célok, továbbá a
-rendelkezésre álló erőforrások határozták meg nagyrészt. Az alábbiakban
-felsorolom a döntési szempontokat, ezután minden területen a választott
-megoldást.
+\label{sec:tech}
 
-A döntéseknél a következő szempontokat vettem figyelembe:
-\begin{compactitem}
-    \item a rendszer szerver nélkül, a böngészőben fusson,
-          és statikus oldalként ingyenesen üzemeltethető legyen
-    \item Fontos típusbiztos könnyen bővíthető kód az algoritmusokra és a tartalomra (NFK-1, NFK-5);
-    \item a matematikai jelölések a tárgyban megszokott formában
-          jelenjenek meg (NFK-4);
-    \item csak ingyenes, nyílt forráskódú, széles körben használt és jól
-          dokumentált eszközöket használjak.
-      \item a felhasznált technológiák ne legyenek teljesen idegenek
-\end{compactitem}
+A fejlesztés megkezdése előtt olyan kérdéseket kell körüljárni, mint
+ milyen architektúrában
+készüljön az alkalmazás, milyen nyelven és keretrendszerrel, hol
+tárolja az adatokat, és hogyan kerüljön a felhasználókhoz. Ebben a
+szakaszban minden döntési pontnál bemutatom a szóba jöhető
+alternatívákat. Végül végleges választást és annak
+indoklását. \ref{sec:tech-choice}
+
+\subsubsection{Értékelési szempontok}
+
+Az alternatívákat az alábbi szempontok szerint hasonlítottam össze.
+A szempontok a követelményekből és a megvalósíthatósági elemzésből
+következnek.
+
+\begin{compactdesc}
+    \item[Sz-1 (Üzemeltethetőség)] A rendszer szerver nélkül, statikus
+          fájlokként, ingyenesen legyen kiszolgálható, és telepítés nélkül
+          fusson a böngészőben (NFK-3). TODO
+    \item[Sz-2 (Karbantarthatóság)] Típusbiztos, modulárisan bővíthető
+          kód az algoritmusokhoz és a tananyaghoz (NFK-5).
+    \item[Sz-3 (Ökoszisztéma)] Legyen kész, jól karbantartott megoldás
+          a matematikai jelölések és a gráfok (automaták) megjelenítésére
+          (NFK-4, FK-4).
+    \item[Sz-4 (Komplexitás)] A technológia elsajátítása és használata
+          férjen bele egy félévbe, és ne legyen teljesen ismeretlen
+          a fejlesztő számára.
+    \item[Sz-5 (Költség és nyíltság)] Csak ingyenes, nyílt forráskódú,
+          széles körben használt és jól dokumentált eszközök.
+    \item[Sz-6 (Teljesítmény)] A számítások és a megjelenítés átlagos
+          eszközön is gyorsak legyenek (NFK-1).
+\end{compactdesc}
+
+
+\subsubsection{Architektúra}
+
+Az első és legmeghatározóbb döntés az alkalmazás architektúrája, itt dől el,
+ szükség van-e egyáltalán szerverre, adatbázisra és az
+ezekhez tartozó üzemeltetésre.
+
+\paragraph{Kliens--szerver architektúra.}
+Az alkalmazás két részből áll. A kliens
+(frontend) felel a felület megjelenítéséért, a felhasználói
+interakciókért és az alapvető bemenet-ellenőrzésért. A szerver
+(backend) végzi az üzleti logikát és a számításokat, eléri az
+adatbázist, kezeli a felhasználókat és a jogosultságokat. A kettő
+HTTPS felett, REST API-n keresztül, JSON formátumban
+kommunikál.
+
+- Előnye, hogy az üzleti logika nem kerül ki a klienshez, több kliens
+is használhatja ugyanazt az API-t, és könnyen kapcsolható hozzá
+adatbázis, hitelesítés vagy külső szolgáltatás. 
+- Hátránya a nagyobb komplexitás: külön kell fejleszteni és üzemeltetni,
+meg kell tervezni az API-t, a hálózati kommunikáció
+biztonsága kérdéses.
+
+Szerveroldalon több elterjedt megoldás jöhetett volna szóba. A
+JavaScript/TypeScript világban a \emph{Node.js} az \emph{Express}
+vagy a strukturáltabb \emph{NestJS} keretrendszerrel, Pythonban a
+sok mindent beépítve tartalmazó \emph{Django} (ORM, hitelesítés,
+adminfelület), a minimalista \emph{Flask} vagy a kifejezetten REST
+API-kra szánt \emph{FastAPI}. Mivel ez az alkalmazás nem igényel
+szerveroldali logikát (lásd lent), ezek részletes összehasonlítását
+nem végeztem el.
+
+\paragraph{Kliensoldali (client-only) alkalmazás.}
+Itt a teljes alkalmazás a felhasználó böngészőjében fut: a felület,
+a logika és a számítások is JavaScriptként, az esetleges adatok pedig
+a böngésző tárolójában (localStorage, IndexedDB). A kiszolgálónak
+csak statikus fájlokat kell átadnia.
+
+Előnye az egyszerűség: nincs backend, nincs adatbázis, a statikus
+tárhely ingyenes vagy nagyon olcsó, és nincs mit üzemeltetni.
+Hátránya, hogy a kliens kódja bárki számára hozzáférhető, ezért
+titkos adat (például API-kulcs) nem helyezhető el benne, és ha
+később központi adatbázisra vagy felhasználókezelésre lenne szükség,
+akkor backendet kell hozzá építeni.
+
+\paragraph{Full-stack (hibrid) keretrendszer.}
+Harmadik lehetőségként a full-stack keretrendszerek, például a
+\emph{Next.js} jöhettek szóba. Ezekben egyetlen projekt tartalmazhat
+kliensoldali komponenseket, szerveroldali megjelenítést és
+API-végpontokat. Kompromisszumot jelentenek: egyetlen projektként
+kezelhetők, de valódi backend-funkciókat is nyújtanak. A
+szerveroldali képességekhez viszont olyan futtatókörnyezet kell,
+amely Node.js-t futtat (például Vercel), egy statikus tárhelyen
+csak a statikusan exportált változat működik, és akkor éppen ezek a
+plusz képességek vesznek el.
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}p{3cm}|X|}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
-        \textbf{Terület} & \textbf{Választás} & \textbf{Alternatívák} & \textbf{Indoklás} \\ \hline
-        Architektúra & kliensoldali alkalmazás & kliens--szerver (pl. Node.js, Django) &
-            Minden számítás kis sőt véges! bemenetre fut, ezért nincs szükség szerverre; statikusan, ingyen üzemeltethető. \\ \hline
-        Nyelv & TypeScript & JavaScript &
-            A típusok már szerkesztés közben jelzik a hibás tananyagblokkot vagy automatát. \\ \hline
-        Felület keretrendszere & React & Vue, Angular, Svelte &
-            Komponensalapú, a modulok egymástól függetlenül fejleszthetők; a legnagyobb ökoszisztéma (React Flow, KaTeX-integráció). \\ \hline
-        Építőeszköz & Vite & Create React App, webpack &
-            Gyors fejlesztői szerver, minimális beállítás; már ismert; (a CRA már nem karbantartott.) \\ \hline
-        Kódszervezés & pnpm monorepo & egyetlen projekt &
-            Az algoritmusok, a tananyag és a felület külön csomagban, így az algoritmusok a felülettől függetlenül tesztelhetők, feljeszthetőek. \\ \hline
-        Képletek & KaTeX & MathJax &
-            Gyorsabb megjelenítés, \LaTeX{} szintaxis, ami megegyezik a tárgy jegyzeteivel (ppt). \\ \hline
-        Gráfok & React Flow & D3.js, Cytoscape.js &
-            React-komponensként illeszkedik, kész csomópont/él kezelés; a D3 sokkal több kézi munkát igényelne. \\ \hline
-        Stílus & Tailwind CSS & sima CSS, Bootstrap &
-            A stílus a komponens mellett marad, egységes megjelenés minimális saját CSS-sel. \\ \hline
-        Tesztelés & Node.js beépített tesztfuttató & Jest, Vitest &
-            Nem igényel külön függőséget, az algoritmuscsomag tesztjeihez elegendő. \\ \hline
+        \textbf{Szempont} & \textbf{Kliens--szerver} & \textbf{Client-only} & \textbf{Full-stack} \\ \hline
+        Sz-1 Üzemeltethetőség        & +   & +++ & ++  \\ \hline
+        Sz-2 Karbantarthatóság       & ++  & +++ & ++  \\ \hline
+        Sz-4 Komplexitás             & +   & +++ & ++  \\ \hline
+        Sz-5 Költség                 & +   & +++ & ++  \\ \hline
+        Sz-6 Teljesítmény (válaszidő) & ++  & +++ & ++  \\ \hline
+        Szerveroldali funkciók       & +++ & --  & +++ \\ \hline
     \end{tabularx}
-    \caption{Technológiai döntések és alternatíváik}
+    \caption{Az architektúra-alternatívák összehasonlítása}
+    \label{tab:arch-matrix}
+\end{table}
+
+A döntő kérdés az volt, hogy van-e olyan követelmény, amelyhez
+szerver kell. A tananyag statikus, és az alkalmazással együtt
+szállítható. Felhasználókezelés nincs (\ref{tab:out_of_scope}.~táblázat).
+A haladást elég helyben tárolni (FK-8). Az algoritmusok kis, véges
+bemeneteken futnak, így a böngésző is gyorsan lefuttatja őket. Titkos
+API-kulcsot sem kell kezelni, mert a rendszer nem használ külső
+szolgáltatást. Ezért a szerveroldali funkciók sora, ami egyedül szólna
+a másik két megoldás mellett, ennél az alkalmazásnál nem jelent előnyt.
+Egy szerver plusz hálózati kört tenne minden lépés
+kiszámítása elé.
+
+\subsubsection{Programozási nyelv: JavaScript vagy TypeScript}
+
+A \emph{JavaScript} mellett szól, hogy nincs szükség fordítási
+lépésre és típusdefiníciókra, a kód közvetlenül futtatható. 
+
+A \emph{TypeScript} statikus típusrendszert ad a JavaScripthez. Ennek
+ebben a projektben két konkrét haszna van. Az egyik az algoritmusok
+oldalán jelentkezik: az automaták, grammatikák és a végrehajtási
+lépések adatszerkezetei pontosan leírhatók típusokkal, így az
+\texttt{automata-core} és a felület közötti szerződés a fordító által
+ellenőrzött. A másik a tananyag oldalán: a tartalomblokkok
+diszkriminált unióként vannak definiálva, ezért ha egy definícióból
+hiányzik a \texttt{term} mező, vagy egy blokk típusa el van írva, azt
+a szerkesztő már gépelés közben jelzi. Ehhez jön a jobb szerkesztőtámogatás
+(automatikus kiegészítés, biztonságos átnevezés).
+
+A TypeScript hátránya a fordítási lépés és a típusok megírására
+fordított idő. A fordítást a build eszköz (\ref{sec:tech-build}.~pont)
+úgyis elvégzi, a típusok megírása pedig olyan munka, ami a
+karbantarthatóság (Sz-2) érdekében megéri.
+
+%----------------------------------------------------------------------
+\subsubsection{A felület keretrendszere}
+
+A keretrendszer eldöntésének kérdésében a~\ref{tab:fe-matrix}.~táblázatban szereplő, elterjedt
+megoldásokat vizsgáltam meg.
+
+\begin{compactdesc}
+    \item[React] Komponensalapú UI-könyvtár. Önmagában csak a
+          megjelenítésért felel, az útvonalkezelést és a többi réteget
+          külön könyvtárak adják. Nagyon nagy az ökoszisztémája.
+    \item[Vue] Frontend-keretrendszer, könnyen tanulható, egyszerű
+          szerkezetű, a React-hez hasonlóan komponensalapú.
+    \item[Angular] Teljes, sok mindent előíró keretrendszer
+          (függőséginjektálás, modulok, saját útvonalkezelő). Nagy
+          projektekhez jól strukturált, de egy ekkora alkalmazáshoz
+          nehézkesebb.
+    \item[Svelte] Fordítóalapú megközelítés: a komponensekből a build
+          során optimalizált JavaScript keletkezik, kevés futásidejű
+          kóddal. Kisebb az ökoszisztémája.
+    \item[Next.js] React-re épülő full-stack keretrendszer. A React
+          ökoszisztémáját örökli, a szerveroldali képességei viszont itt
+          kihasználatlanok maradnának.
+\end{compactdesc}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|c|c|c|c|c|}
+        \hline
+        \textbf{Szempont} & \textbf{React} & \textbf{Vue} & \textbf{Angular} & \textbf{Svelte} & \textbf{Next.js} \\ \hline
+        Sz-1 Statikus kiszolgálás  & +++ & +++ & ++  & +++ & ++  \\ \hline
+        Sz-2 TypeScript-támogatás  & +++ & ++  & +++ & ++  & +++ \\ \hline
+        Sz-3 Ökoszisztéma          & +++ & ++  & +   & ++  & +++ \\ \hline
+        Sz-4 Egyszerűség           & ++  & +++ & +   & +++ & +   \\ \hline
+        Sz-4 Előismeret            & +++ & +   & +   & +   & ++  \\ \hline
+    \end{tabularx}
+    \caption{A felületi keretrendszerek összehasonlítása}
+    \label{tab:fe-matrix}
+\end{table}
+
+A tisztán technikai szempontok alapján a React, a Vue és a Svelte is
+megfelelne. A különbséget az ökoszisztéma (Sz-3) és az előismeret
+(Sz-4) adja.
+
+%----------------------------------------------------------------------
+\subsubsection{Építőeszköz és kódszervezés}
+\label{sec:tech-build}
+
+\begin{compactdesc}
+    \item[Create React App] Korábban a React hivatalos kezdőcsomagja
+          volt, de már nem fejlesztik, ezért új projekthez nem ajánlott.
+    \item[webpack] Nagyon rugalmas, de a konfigurálása sok kézi munkát
+          igényel, és a fejlesztői szervere lassabb.
+    \item[Vite] Fejlesztés közben a natív ES-modulokra épít, ezért
+          gyorsan indul és frissül, éles buildnél optimalizált statikus
+          fájlokat készít. Minimális konfigurációval működik, a React,
+          a TypeScript és a Tailwind CSS támogatása bővítményként
+          egy-egy sor.
+\end{compactdesc}
+
+ Egyetlen projekt
+egyszerűbb, de semmi sem akadályozza meg, hogy az algoritmusok
+véletlenül React-komponensektől vagy a böngészőtől kezdjenek függeni.
+Több csomag esetén ezt a csomaghatárok kikényszerítik, viszont kell
+hozzá egy csomagkezelő, amely kezeli a munkaterületeket
+(\emph{workspace}). Ezt az npm, a Yarn és a pnpm is tudja. A pnpm a
+függőségeket egy központi tárolóból hivatkozza, így gyorsabb és
+kevesebb helyet foglal, és szigorúbb: egy csomag csak azokat a
+függőségeket látja, amelyeket ténylegesen deklarált.
+
+%----------------------------------------------------------------------
+\subsubsection{Adattárolás}
+Figyelembe véve a tárolandó adatokat, egyértemlű, hogy központi adatbázis használata nem indokolt, mivel nincs szükség sem több
+ eszköz közötti szinkronizációra, sem futásidejű tananyagszerkesztésre.
+ A kliensoldali tárolási lehetőségek közül a \emph{sessionStorage} nem biztosít tartós megőrzést, az \emph{IndexedDB} pedig a feladat összetettségéhez képest túlzott megoldás. A \emph{localStorage} egyszerű, tartós és a szükséges adatmennyiség tárolására elegendő.
+
+%----------------------------------------------------------------------
+\subsubsection{Üzemeltetés és telepítés}
+
+Ingyenes csomagot többek között a \emph{GitHub Pages}, a
+\emph{Vercel}, a \emph{Netlify} és a \emph{Render} kínál. 
+ Mindegyik ad HTTPS-t és
+Git-integrációt. A Vercel és a Render szerveroldali kódot is tud
+futtatni. A GitHub Pages előnye, hogy
+ugyanott van, ahol a forráskód, így nem kell külön szolgáltatást és
+fiókot bevonni. Hátránya, hogy nem lehet átirányítási szabályokat
+megadni, ezért egy egyoldalas alkalmazás közvetlenül megnyitott
+aloldalai (például \texttt{/topics/dfa}) 404-es hibát adnának.
+
+A telepítés lehet kézi, vagy automatizált, CI/CD folyamattal. Automatizált
+folyamatnál minden feltöltés a verziókezelt forrásból, tiszta
+környezetben, mindig ugyanazokkal a lépésekkel készül. A GitHub
+Pages mellé természetesen adódik a \emph{GitHub Actions}.
+
+
+
+\subsubsection{Biztonsági szempontok}
+
+Mivel az alkalmazás nem tartalmaz szervert, adatbázist és
+felhasználókezelést, a szerveroldali támadási felületek (például
+SQL-befecskendezés, CSRF, hitelesítés) nem aktuálisok. A böngészőbe
+letöltött kód bárki számára olvasható, titkos adat nem kerülhet bele; a rendszer ilyet nem is használ.
+
+A fennmaradó kockázatok és kezelésük:
+\begin{compactitem}
+    \item \emph{XSS:} a React a felhasználói bemenetet szövegként
+          jeleníti meg, a KaTeX pedig alapbeállításban
+          (\texttt{trust: false}) nem enged veszélyes parancsokat.
+    \item \emph{Függőségek:} az ismert sérülékenységek a
+          \texttt{pnpm audit} paranccsal ellenőrizhetők.
+    \item \emph{Szállítás:} a GitHub Pages HTTPS-en szolgálja ki az
+          oldalt.
+\end{compactitem}
+
+%======================================================================
+\subsection{A választott megoldás és indoklása}
+\label{sec:tech-choice}
+
+Az előző szakasz alternatíváit és szempontjait összevetve a
+következő technológiai készlet mellett döntöttem
+(\ref{tab:tech}.~táblázat).
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{3cm}|X|}
+        \hline
+        \textbf{Terület} & \textbf{Választás} & \textbf{Fő indok} \\ \hline
+        Architektúra & kliensoldali egyoldalas alkalmazás &
+            Egyik követelmény sem igényel szervert; statikusan, ingyen
+            üzemeltethető, a számítások azonnaliak (Sz-1, Sz-6). \\ \hline
+        Nyelv & TypeScript &
+            A fordító ellenőrzi az algoritmusok és a tananyag
+            adatszerkezeteit (Sz-2). \\ \hline
+        Felület & React &
+            Legérettebb ökoszisztéma a gráfrajzoláshoz, előismeret
+            (Sz-3, Sz-4). \\ \hline
+        Építőeszköz & Vite &
+            Gyors, minimális konfiguráció; a CRA már nem karbantartott
+            (Sz-4). \\ \hline
+        Kódszervezés & pnpm monorepo, három csomag &
+            A csomaghatárok kikényszerítik a rétegek szétválasztását
+            (Sz-2, NFK-5). \\ \hline
+        Gráfok & React Flow &
+            React-komponensként illeszkedik, kész csomópont- és
+            élkezelés (Sz-3). \\ \hline
+        Stílus & Tailwind CSS &
+            Egységes megjelenés, minimális saját CSS (Sz-4). \\ \hline
+        Adattárolás & localStorage &
+            A haladás kis mennyiségű, felhasználóhoz kötött adat
+            (FK-8). \\ \hline
+        Üzemeltetés & GitHub Pages &
+            Ingyenes, a forráskód mellett van, automatikus telepítés
+            (Sz-1, Sz-5). \\ \hline
+        Fejlesztés & Git, GitHub, VS Code &
+            Ingyenes, egy eszközben a kód és a dolgozat (Sz-5). \\ \hline
+    \end{tabularx}
+    \caption{A választott technológiák}
     \label{tab:tech}
 \end{table}
 
-\mbox{}
+\subsubsection{A döntések indoklása}
+
+\paragraph{Kliensoldali architektúra.}
+A döntés a követelményekből következik. Az
+architektúra-alternatívák közül egyedül a szerveroldali funkciók
+szólnának a kliens--szerver vagy a full-stack megoldás mellett,
+ilyen funkcióra viszont nincs szükség. Minden más szempontban
+(üzemeltetés, költség, komplexitás, válaszidő) a kliensoldali
+megoldás jobb (\ref{tab:arch-matrix}.~táblázat).
+
+\paragraph{TypeScript és React.}
+A TypeScript választása a tananyag és az algoritmusok miatt volt
+fontos: mindkettő sok, pontosan meghatározott szerkezetű adatot
+tartalmaz. A
+React mellett az ökoszisztéma döntött. 
+
+\paragraph{pnpm monorepo}
+A három csomagra bontás (\ref{sec:arch}.~szakasz) a függőségeket is
+szétválasztja: az \texttt{automata-core} függőségei között nem
+szerepel a React, így az algoritmusok nem kötődnek a felülethez, és
+böngésző nélkül, Node.js alatt is tesztelhetők.
+
+\paragraph{localStorage.}
+A haladás (a megtekintett témakörök listája) egy kis JSON-tömb,
+amelyet egyetlen modul (\texttt{progress.ts}) ír és olvas. Ehhez a
+localStorage egyszerű szinkron API-ja elég, és az IndexedDB
+bonyolultsága semmilyen előnnyel nem járna.
+
+\paragraph{GitHub Pages és GitHub Actions.} 
+A forráskód GitHubon található, 
+az alkalmazás egyszerűen és ingyenesen üzemeltethető GitHub Pages segítségével.
+ A telepítést egy GitHub Actions munkafolyamat automatizálja, a
+ mely csak sikeres fordítás és ellenőrzés után teszi közzé az új verziót.
+
+\subsubsection{Kompromisszumok és következmények}
+
+A választott megoldásnak vannak hátrányai is, amelyeket tudatosan
+vállaltam:
+\begin{compactitem}
+    \item \emph{Hash alapú útvonalak.} Mivel a GitHub Pages nem
+          támogat átirányítási szabályokat, az útvonalak a cím
+          \texttt{\#} utáni részében vannak (\texttt{\#/topics/dfa}).
+          Így minden aloldal közvetlenül megnyitható és
+          könyvjelzőzhető, cserébe a címek kevésbé szépek.
+    \item \emph{Eszközhöz kötött haladás.} A localStorage tartalma
+          csak az adott böngészőben érhető el. Ha a hallgató másik
+          gépen vagy böngészőben nyitja meg az oldalt, a haladása
+          nem jön vele, és a böngészőadatok törlésével elvész.
+    \item \emph{Nagyobb első betöltés.} A React, a React Flow és a
+          KaTeX (a betűkészleteivel együtt) az első megnyitáskor
+          töltődik le. Ezután viszont minden oldalváltás és számítás
+          hálózati kommunikáció nélkül történik.
+    \item \emph{Nyilvános kód.} A teljes alkalmazáskód a böngészőben
+          olvasható. Ez itt nem jelent kockázatot, mert a rendszer
+          nem tartalmaz titkos adatot.
+\end{compactitem}
+
+\subsubsection{Továbbfejlesztési lehetőségek}
+
+A választott architektúra nem zárja ki a későbbi bővítést. Ha
+szükség lenne felhasználói fiókokra vagy eszközök közötti
+szinkronizálásra, egy kis backend (például Node.js/Express vagy
+FastAPI, illetve egy kész háttérszolgáltatás) a meglévő kód
+átírása nélkül hozzáadható. Az algoritmusok ettől továbbra is a
+böngészőben futnának, a szerver csak a haladást tárolná. A CI
+folyamat kiegészíthető az egységtesztek és a lintelés futtatásával,
+így hibás kód már a telepítés előtt fennakadna, illetve az
+alkalmazás progresszív webalkalmazássá (PWA) alakítva internet nélkül
+is használhatóvá tehető.
 
 \subsection{Architektúra}
 \label{sec:arch}
-
-A következő fejezet a rendszer logikai felépítését, archtiektúráját kívánja bemutatni.
-Milyen nagyobb egységekből épül fel, ezek az egységek, hogyan jellemezhetőek, mi a felelőségi körük, és nem utolsó sorban,
-hogyan csatlakoznak egymáshoz.
-
- Az architektúra szemléltetése a C4-modell első három szintjén történik:
-
-először a rendszert a környezetében (rendszerkörnyezet), majd a fő
-építőelemeit (csomagok és rétegek), végül egy kiválasztott egység belső
-felépítését (komponensek) mutatom be.
-
-\subsubsection{Architekturális stílus}
-
-A rendszer \emph{kliensoldali, egyoldalas webalkalmazás} (SPA). A
-forráskód TypeScript nyelvű, ezt a Vite építéskor JavaScriptre fordítja, a böngésző ezt a fogja futtatni.
- A böngésző egyszer letölti a lefordított HTML-, JavaScript- és CSS-fájlokat,
-  ezután minden számítás és minden oldalváltás a böngészőben történik.
-Szerveroldali logika és adatbázis nincs.
-
-Ez a döntés közvetlenül a követelményekből következik. A tananyag
-statikus, az alkalmazással együtt szállítható, felhasználókezelés nincs
-(\ref{tab:out_of_scope}.~táblázat), az algoritmusok pedig kis, véges
-bemeneteken futnak, így egy átlagos gép böngészője is gyorsan elvégzi
-őket (NFK-1). Egy tipikus háromrétegű kliens--szerver--adatbázis felépítés ezért
-csak extra bonyolultságot, költséget és hibalehetőséget hozna, előnyt nem sokat. A
-statikus kiszolgálás ingyenes (pl.\ GitHub Pages), és telepítés nélkül
-működik a modern böngészőkben (NFK-3).
-
+z előző szakasz a technológiai döntéseket és azok indoklását mutatta be. 
+A következőkben a rendszer logikai felépítését ismertetem részletesebben. 
+Bemutatom, hogy milyen főbb egységekből épül fel a rendszer, milyen felelősségi 
+körökkel rendelkeznek ezek az egységek, valamint hogyan kapcsolódnak egymáshoz. 
+Az architektúra leírása a C4-modell első három szintjét követi. Először a rendszert
+ a környezetében (rendszerkörnyezet), majd a fő építőelemeit (csomagok és rétegek),
+  végül egy kiválasztott egység belső felépítését (komponensek) mutatom be.
 
 \subsubsection{Rendszerkörnyezet}
 
@@ -802,22 +1101,18 @@ A következő három szakasz a~\ref{fig:arch-packages}.~ábra
 \subsection{A tartalommodell}
 \label{sec:content-design}
 
-A tervezés során viszonylag korán döntést kellett hozni arról, hogy a tananyagok és a hozzájuk tartozó metaadatok milyen formában
- kerüljenek tárolásra. A végül megvalósított megoldás szerint az adatok közvetlenül TypeScript-típusok formájában, .ts fájlokban kerülnek 
- rögzítésre a @fotoc/content csomagban.
- Ennek eredményeként a tananyag minden eleme saját, jól definiált típussal van felvíve, így a szöveges tartalmon túl annak szerkezete, típusa és egyéb metaadatai is explicit módon mellette vannak.
-  A típusok használata jelentősen növeli a rendszer megbízhatóságát, mivel a fordító már fejlesztés közben képes jelezni az esetleges szerkezeti vagy típushibákat.
+A specifikáció \ref{sec:data}.~szakasza a tananyag logikai felépítését
+írta le (témakörcsoport, témakör, tartalomblokk, kvízkérdés). Ez a
+szakasz azt mutatja be, hogyan valósulnak meg ezek az egységek
+TypeScript-típusokként a tartalomcsomagban.
 
-Alternatív lehetőségként a tartalom tárolása történhetett volna JSON-, Markdown/MDX-alapú formátumban,
- ilvagyvaletve adatbázisban tárolva
-is. A JSON-megoldás ugyan egyszerű és széles körben támogatott, viszont így mindenképpen külön betöltést és feldolgozást igényelne,
- valamint nem biztosít olyan szintű típusellenőrzést, mint a TypeScript. 
- A Markdown vagy MDX formátum előnye az ember által könnyen olvasható szintaxis, ugyanakkor a komplexebb struktúrák kezelése nehézkesebb.
-  Adatbázis alkalmazása szintén megvalósítható lett volna, azonban egy teljes mértékben statikus alkalmazás esetén szükségtelen többletkomplexitást és infrastruktúraigényt hozzáadni.
-
-A TypeScript-alapú tárolás előnye, hogy nincs szükség külön adatbetöltési vagy parszolási steppekre,
- a tartalom direkt felhasználható az alkalmazásban,
-  miközben a fordító folyamatosan garantálja az adatok konzisztenciáját.
+A tananyag \texttt{.ts} modulokban, a \texttt{@fotoc/content}
+csomagban található, így a fordító a tartalom szerkezetét is
+ellenőrzi (\ref{sec:tech-choice}.~szakasz), és nincs szükség külön
+betöltési vagy feldolgozási lépésre. A JSON ugyanezt a szerkezetet
+típusellenőrzés nélkül írná le, a Markdown/MDX pedig folyó szövegre
+kényelmes, de a strukturált elemekre (metaadatok, kvízkérdések)
+kevésbé alkalmas.
 
 A tartalommodell típusait a~\ref{fig:content-types}.~ábra mutatja. Mivel a csomagban nincsenek
 osztályok, csak típusok, az ábra az UML-osztálydiagram jelöléseit használja típusokra.
@@ -866,6 +1161,8 @@ a~\ref{tab:blocks}.~táblázat mutatja.
         \texttt{theorem}    & \texttt{kind}, \texttt{name?},
                               \texttt{statement}, \texttt{proof?}
                             & Tétel, lemma, állítás vagy következmény \\
+        \texttt{proof}      & \texttt{title?}, \texttt{content}
+                            & Bizonyítás, maga is blokkok sorozata \\
         \texttt{example}    & \texttt{title?}, \texttt{content}
                             & Kidolgozott példa \\
         \texttt{formula}    & \texttt{latex}
@@ -874,6 +1171,10 @@ a~\ref{tab:blocks}.~táblázat mutatja.
                             & Számozott vagy felsorolásos lista \\
         \texttt{table}      & \texttt{headers}, \texttt{rows}
                             & Táblázat (pl.\ átmenettáblázat) \\
+        \texttt{warning}    & \texttt{text}
+                            & Figyelmeztetés tipikus hibára \\
+        \texttt{funfact}    & \texttt{text}
+                            & Érdekesség, kiegészítő megjegyzés \\
         \bottomrule
     \end{tabularx}
     \caption{A tartalomblokkok típusai (a \texttt{?} opcionális mezőt jelöl)}
@@ -904,9 +1205,119 @@ ezért a képleteket egységesen \LaTeX{} szintaxissal tárolom:
           (\verb|\\|).
 \end{itemize}
 
+A tartalomcsomag a képleteket csak szövegként tárolja. A megjelenítéskor
+a webalkalmazás a szövegben megkeresi a \verb|$...$| részeket, és ezeket
+a KaTeX könyvtár rajzolja ki.
+
+A tartalom és a navigáció szétválasztása érdekében minden témakörhöz
+külön metaadat (\texttt{TopicMeta}) tartozik. Ez szolgál a
+navigációhoz, a sorrendezéshez, a csoportosításhoz, az előadásokhoz
+kötéshez, és ezen keresztül kapcsolódik a témakörhöz az
+interaktív modul. A mezőket a~\ref{tab:topicmeta}.~táblázat mutatja.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{\textwidth}{l l X}
+        \toprule
+        \textbf{Mező} & \textbf{Típus} & \textbf{Jelentés} \\
+        \midrule
+        \texttt{id}       & \texttt{string}        & Egyedi azonosító, az URL-ben is ez szerepel \\
+        \texttt{order}    & \texttt{number}        & Megjelenési sorrend \\
+        \texttt{group}    & \texttt{TopicGroup}    & Témakörcsoport \\
+        \texttt{title}    & \texttt{LocalizedText} & Cím \\
+        \texttt{summary}  & \texttt{LocalizedText} & Rövid összefoglaló \\
+        \texttt{lectures} & \texttt{number[]}      & Kapcsolódó előadások sorszáma \\
+        \texttt{module}   & \texttt{string | null} & A kapcsolódó interaktív modul azonosítója \\
+        \bottomrule
+    \end{tabularx}
+    \caption{A \texttt{TopicMeta} mezői}
+    \label{tab:topicmeta}
+\end{table}
+
+A témakörök a tárgy logikai felosztását követve öt csoportba
+(\texttt{TopicGroup}) sorolódnak (\ref{tab:groups}.~táblázat). TODO ez noni fog
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l l}
+        \toprule
+        \textbf{Azonosító} & \textbf{Jelentés} \\
+        \midrule
+        \texttt{foundations}       & Alapfogalmak \\
+        \texttt{regular}           & Reguláris nyelvek \\
+        \texttt{context-free}      & Környezetfüggetlen nyelvek \\
+        \texttt{context-sensitive} & Környezetfüggő és 0-típusú nyelvek \\
+        \texttt{computability}     & Kiszámíthatóság (II. rész) \\
+        \bottomrule
+    \end{tabular}
+    \caption{Témakörcsoportok}
+    \label{tab:groups}
+\end{table}
+
+A modell a bővíthetőséget (NFK-5) azzal támogatja, hogy egy új témakör
+felvétele csak adatfelvitel: a témakör mappájában elkészül a
+\texttt{meta.ts} és a \texttt{theory.ts}, és ha új blokktípusra nincs
+szükség, sem a típusokhoz, sem a megjelenítőhöz nem kell hozzányúlni.
+A témaköröket a \texttt{topics/index.ts} regiszter gyűjti egy listába,
+és rendezi az \texttt{order} mező szerint. Jelenleg 16 témakör szerepel
+benne, a webalkalmazás ebből a listából építi fel a menüt és az
+útvonalakat.
+
 \subsection{Az algoritmuscsomag terve}
-% Az automata-core típusai és fő függvényei, osztály/típusdiagram.
-\mbox{}
+\label{sec:core-design}
+
+Nézzük meg közelebbről az algoritmuscsomag felépítését.
+A \texttt{@fotoc/automata-core} csomag tartalmazza a rendszer elméleti alapját
+megvalósító algoritmusokat és adatszerkezeteket, például a véges automaták,
+veremautomaták, Turing-gépek és formális nyelvtani eszközök kezeléséhez szükséges logikát.
+Az architektúrában (\ref{sec:arch}) ez a csomag felel az üzleti logikáért. 
+Kizárólag tiszta TypeScript kódot tartalmaz: nem használ React-komponenseket,
+nem fér hozzá a DOM-hoz, és nem végez adatperzisztenciát. 
+A függvények bemenetként adatstruktúrákat kapnak, eredményként pedig
+új adatstruktúrákat állítanak elő.
+Ennek köszönhetően a csomag a felhasználói felülettől függetlenül tesztelhető
+és újrafelhasználható.
+
+\subsubsection{Modulok és interfész}
+% Egy mondat: a csomag egyetlen belépési pontja az index.ts, a felület
+% csak az innen exportált típusokat és függvényeket látja.
+% Táblázat: modul | felelősség, algoritmus | fő exportált függvények
+%   dfa.ts        DVA futtatása, teljesség        runDfa, isComplete, dfaToNfa
+%   nfa.ts        epszilon-lezárt, NDVA futtatása,
+%                 részhalmaz-konstrukció          runNfa, epsilonClosure, determinize
+%   grammer.ts    levezetési lépések              possibleSteps, applyStep
+%   chomsky.ts    Chomsky-osztályozás szabályonként classifyGrammer, checkOneRule
+%   normalform3.ts 3. normálformára hozás lépésenként toNormalForm3Steps
+%   language.ts   regex elemzése, regex -> NDVA,
+%                 korlátos ellenpélda-keresés     parseRegex, regexToNfa, checkRegex
+%   words.ts      szóműveletek (tükrözés, hatvány,
+%                 prefixek, suffixek)             reverse, power, prefixes
+% Utána egy mondat a modulok közti függésről (language -> nfa, dfa -> nfa).
+% Az algoritmusok bonyolultságát 1-1 félmondatban (pl. a determinizálás
+% legrosszabb esetben exponenciális, az ellenpélda-keresés ezért
+% korlátos hosszig, shortlex sorrendben vizsgálja a szavakat).
+% Hibás bemenet: a csomag a hibát visszatérési értékben jelzi
+% (pl. invalidLetter a DfaRun-ban), így a felület meg tudja mutatni az
+% okát; a részletek: Implementáció, Bemenet-ellenőrzés és hibakezelés.
+
+\subsubsection{Adatszerkezetek}
+% A fő típusok: Dfa, Nfa, Grammer/Rule, a reguláris kifejezés
+% szintaxisfája. Miért rekordok és tömbök, nem osztályok (JSON-szerű,
+% a tartalomcsomagban is leírható, könnyen tesztelhető).
+% Ábra: típusdiagram UML-osztálydiagram jelöléssel, ugyanúgy, mint a
+% tartalommodellnél (\ref{fig:content-types}).
+
+\subsubsection{Lépéslisták}
+% A központi tervezési döntés: az algoritmus nem csak az eredményt adja
+% vissza, hanem a teljes futás lépéseit (DfaRun/DfaStep, NfaRunStep,
+% SubsetStep, a 3NF lépései). A felület ezt játssza vissza, maga nem
+% számol (funkcionális mag, imperatív héj, \ref{tab:arch-patterns}).
+% Rövid lstlisting egy lépéstípusról, pl. DfaRun.
+% Egy algoritmus pszeudokódja (algorithm környezet), amely megmutatja,
+% hogyan épül fel a lépéslista, pl. a részhalmaz-konstrukció. A valódi
+% kód az Implementáció, Kiemelt algoritmusok szakaszba megy.
+% Zárómondat: mivel a csomag csak adatot kap és ad, a tesztek böngésző
+% nélkül, node --test alatt futnak (\ref{sec:testing}).
 
 \subsection{A webalkalmazás szerkezete}
 % Útvonalak, komponensfa, modulregiszter.
@@ -950,6 +1361,7 @@ ezért a képleteket egységesen \LaTeX{} szintaxissal tárolom:
 
 %======================================================================
 \section{Tesztelés}
+\label{sec:testing}
 %======================================================================
 
 \subsection{Tesztelési terv}
