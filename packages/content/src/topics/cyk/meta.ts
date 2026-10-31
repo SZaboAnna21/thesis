@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [8],
 
-  module: null,
+  module: "cyk",
 };
