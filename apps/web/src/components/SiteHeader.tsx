@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { topics, type Topic } from "@fotoc/content";
+import { useVisitedTopics } from "../progress";
 
 const fotoc1Topics = topics.filter((t) => t.meta.group !== "computability");
 const fotoc2Topics = topics.filter((t) => t.meta.group === "computability");
@@ -13,6 +14,8 @@ type DropdownProps = {
 function TopicDropdown({ label, items }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const visited = useVisitedTopics();
+  const visitedCount = items.filter((topic) => visited.includes(topic.meta.id)).length;
 
 
   useEffect(() => {
@@ -60,17 +63,25 @@ function TopicDropdown({ label, items }: DropdownProps) {
               TODO.
             </p>
           ) :(
-            <ul className="max-h-[70vh] overflow-y-auto">
-              {items.map((topic) => (
-                <li key={topic.meta.id}>
-                  <Link to={`/topics/${topic.meta.id}`}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-brand-50 hover:text-brand-700">
-                    {topic.meta.title.hu}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className="max-h-[70vh] overflow-y-auto">
+                {items.map((topic) => (
+                  <li key={topic.meta.id}>
+                    <Link to={`/topics/${topic.meta.id}`}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-brand-50 hover:text-brand-700">
+                      {topic.meta.title.hu}
+                      {visited.includes(topic.meta.id) && (
+                        <span className="text-brand-600" title="Már megnyitottad">✓</span>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="border-t border-slate-100 px-3 pt-2 pb-1 text-xs text-slate-500">
+                Megnyitva: {visitedCount} / {items.length}
+              </p>
+            </>
           )}
         </div>
       )}

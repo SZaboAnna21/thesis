@@ -1,8 +1,10 @@
 import { getTopic, type TopicGroup } from "@fotoc/content"
+import { useEffect } from "react";
 import { useParams } from "react-router-dom"
 import { TheoryRenderer } from "../components/Theoryrenderer";
 import { QuizView } from "../components/QuizView";
 import { modules } from "../modules";
+import { markTopicVisited } from "../progress";
 
 const groupLabels: Record<TopicGroup, string> = {
     foundations: "Alapok",
@@ -16,6 +18,10 @@ export function Topicpages() {
 
     const {topicID} = useParams();
     const topic = getTopic(topicID!);
+
+    useEffect(() => {
+        if (topic) markTopicVisited(topic.meta.id);
+    }, [topic]);
 
     if (!topic){
         return(
