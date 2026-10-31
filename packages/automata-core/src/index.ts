@@ -43,5 +43,8 @@ export { classifyGrammer, checkOneRule, tokenize } from "./chomsky";
 export type * from "./normalform3";
 export { toNormalForm3Steps, showRule, lengthReduction, chainLayers, removeChains } from "./normalform3";
 
+export type * from "./cyk";
+export { isChomskyNormalForm, cyk, cykDerivation } from "./cyk";
+
 export type * from "./nfa";
 export { EPS, epsilonClosure, runNfa, acceptsWord, determinize } from "./nfa";
