@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Környezetfüggő és mondatszerkezetű grammatikák.",
+    hu: "Hossz-nemcsökkentő grammatikák, Kuroda-normálforma, 0-típusú normálforma.",
   },
 
-  lectures: [],
+  lectures: [11],
 
   module: "cs-derivation",
 };

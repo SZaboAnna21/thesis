@@ -5,6 +5,20 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
+      hu: "Levezetési fa",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "Egyértelműség",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
       hu: "Nagy Bar-Hillel lemma",
     },
   },
@@ -13,6 +27,13 @@ export const theory: ContentBlock[] = [
     level: 1,
     text: {
       hu: "Nem környezetfüggetlen nyelvek",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "Zártsági és eldönthetőségi kérdések",
     },
   },
 ];

@@ -6,14 +6,14 @@ export const meta: TopicMeta = {
   group: "context-free",
 
   title: {
-    hu: "Nagy Bar-Hillel lemma",
+    hu: "Levezetési fa és Nagy Bar-Hillel lemma",
   },
 
   summary: {
-    hu: "Pumpáló lemma környezetfüggetlen nyelvekre és alkalmazásai.",
+    hu: "Levezetési fa, egyértelműség, pumpáló lemma CF nyelvekre, zártsági és eldönthetőségi kérdések.",
   },
 
-  lectures: [],
+  lectures: [10],
 
   module: null,
 };

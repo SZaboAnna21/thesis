@@ -5,21 +5,7 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
-      hu: "Elérhetetlen állapotok",
-    },
-  },
-  {
-    type: "heading",
-    level: 1,
-    text: {
-      hu: "Ekvivalens állapotok",
-    },
-  },
-  {
-    type: "heading",
-    level: 1,
-    text: {
-      hu: "Minimalizáló algoritmus",
+      hu: "Maradéknyelvek",
     },
   },
   {
@@ -27,6 +13,27 @@ export const theory: ContentBlock[] = [
     level: 1,
     text: {
       hu: "Myhill–Nerode tétel",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "Összefüggővé alakítás",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "Ekvivalens állapotok összevonása",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "A minimális automata",
     },
   },
 ];

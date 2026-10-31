@@ -13,7 +13,7 @@ export const meta: TopicMeta = {
     hu: "A szóprobléma eldöntése Chomsky-normálformájú grammatikára.",
   },
 
-  lectures: [],
+  lectures: [8],
 
   module: null,
 };

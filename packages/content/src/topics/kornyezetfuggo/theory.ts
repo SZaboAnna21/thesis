@@ -5,7 +5,7 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
-      hu: "Környezetfüggő grammatika",
+      hu: "Hossz-nemcsökkentő grammatikák",
     },
   },
   {

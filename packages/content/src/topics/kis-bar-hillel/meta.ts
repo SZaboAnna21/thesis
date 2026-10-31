@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Pumpáló lemma reguláris nyelvekre és alkalmazásai.",
+    hu: "Pumpáló lemma reguláris nyelvekre, nem reguláris nyelvek, eldönthetőségi kérdések.",
   },
 
-  lectures: [],
+  lectures: [5, 7],
 
   module: null,
 };

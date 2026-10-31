@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Kleene tétele: reguláris kifejezések és véges automaták ekvivalenciája.",
+    hu: "Kleene tétele: reguláris kifejezésből automata, automatából reguláris kifejezés.",
   },
 
-  lectures: [],
+  lectures: [3, 7],
 
   module: null,
 };

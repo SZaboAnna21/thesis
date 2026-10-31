@@ -10,10 +10,10 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Veremautomaták és kapcsolatuk a CF grammatikákkal.",
+    hu: "Veremautomaták, elfogadás végállapottal és üres veremmel, kapcsolat a CF grammatikákkal.",
   },
 
-  lectures: [],
+  lectures: [9],
 
   module: null,
 };

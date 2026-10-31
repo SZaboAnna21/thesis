@@ -10,7 +10,7 @@ export const meta: TopicMeta = {
   },
 
   summary: {
-    hu: "Szintaxis, jelentés, azonosságok, Arden tétele, egyenletrendszerek, Kleene tétele.",
+    hu: "Szintaxis, jelentés, azonosságok, Arden tétele, egyenletrendszerek.",
   },
 
   lectures: [3],

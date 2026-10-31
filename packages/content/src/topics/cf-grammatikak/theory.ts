@@ -5,21 +5,14 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
-      hu: "Környezetfüggetlen grammatika",
+      hu: "Aktív és elérhető nemterminálisok",
     },
   },
   {
     type: "heading",
     level: 1,
     text: {
-      hu: "Derivációs fa",
-    },
-  },
-  {
-    type: "heading",
-    level: 1,
-    text: {
-      hu: "Egyértelműség",
+      hu: "Redukált grammatika",
     },
   },
   {
@@ -33,7 +26,7 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
-      hu: "Zártsági tulajdonságok",
+      hu: "A normálformára hozás lépései",
     },
   },
 ];

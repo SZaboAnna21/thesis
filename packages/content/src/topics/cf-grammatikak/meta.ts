@@ -6,14 +6,14 @@ export const meta: TopicMeta = {
   group: "context-free",
 
   title: {
-    hu: "Környezetfüggetlen grammatikák",
+    hu: "Redukált grammatika és Chomsky-normálforma",
   },
 
   summary: {
-    hu: "CF grammatikák, derivációs fák és normálformák.",
+    hu: "Aktív és elérhető nemterminálisok, a Chomsky-normálformára hozás négy lépése.",
   },
 
-  lectures: [],
+  lectures: [8],
 
   module: "cf-derivation",
 };

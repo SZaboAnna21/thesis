@@ -6,14 +6,14 @@ export const meta: TopicMeta = {
   group: "regular",
 
   title: {
-    hu: "Automaták minimalizálása",
+    hu: "Minimális automata és Myhill–Nerode tétel",
   },
 
   summary: {
-    hu: "Elérhetetlen és ekvivalens állapotok, minimális automata.",
+    hu: "Maradéknyelvek, Myhill–Nerode tétel, összefüggővé alakítás, ekvivalens állapotok összevonása.",
   },
 
-  lectures: [],
+  lectures: [5, 6],
 
   module: null,
 };
