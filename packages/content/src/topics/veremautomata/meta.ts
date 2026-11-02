@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [9],
 
-  module: null,
+  module: "pda-lab",
 };

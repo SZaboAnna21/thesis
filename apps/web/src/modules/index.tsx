@@ -12,6 +12,7 @@ import { NormalForm3Visualizer } from "../components/NormalForm3Visualizer";
 import { NfaLab } from "../components/NfaLab";
 import { nfaExamples } from "./nfaExamples";
 import { CykVisualizer } from "../components/CykVisualizer";
+import { PdaLab } from "../components/PdaLab";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -86,4 +87,5 @@ export const modules: Record<string, () => ReactNode> = {
   "nf3-converter": () => <NormalForm3Visualizer />,
   "nfa-lab": () => <NfaLab examples={nfaExamples} />,
   "cyk": () => <CykVisualizer />,
+  "pda-lab": () => <PdaLab />,
 };
