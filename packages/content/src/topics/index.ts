@@ -29,6 +29,8 @@ import { meta as cykMeta } from "./cyk/meta";
 import { theory as cykTheory } from "./cyk/theory";
 import { meta as veremautomataMeta } from "./veremautomata/meta";
 import { theory as veremautomataTheory } from "./veremautomata/theory";
+import { meta as levezetesiFaMeta } from "./levezetesi-fa/meta";
+import { theory as levezetesiFaTheory } from "./levezetesi-fa/theory";
 import { meta as nagyBarHillelMeta } from "./nagy-bar-hillel/meta";
 import { theory as nagyBarHillelTheory } from "./nagy-bar-hillel/theory";
 import { meta as kornyezetfuggoMeta } from "./kornyezetfuggo/meta";
@@ -49,6 +51,7 @@ export const topics: Topic[] = [
   { meta: cfGrammatikakMeta, content: cfGrammatikakTheory },
   { meta: cykMeta, content: cykTheory },
   { meta: veremautomataMeta, content: veremautomataTheory },
+  { meta: levezetesiFaMeta, content: levezetesiFaTheory },
   { meta: nagyBarHillelMeta, content: nagyBarHillelTheory },
   { meta: kornyezetfuggoMeta, content: kornyezetfuggoTheory },
 ].sort((a, b) => a.meta.order - b.meta.order);
