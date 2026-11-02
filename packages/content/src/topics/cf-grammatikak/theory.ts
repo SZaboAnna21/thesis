@@ -5,13 +5,47 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 1,
     text: {
+      hu: "Környezetfüggetlen grammatikák átalakítása",
+    },
+  },
+  {
+    type: "paragraph",
+    text: {
+      hu: "A Chomsky-hierarchiánál láttuk, hogy egy $G = \\langle N, \\Sigma, P, S \\rangle$ grammatika környezetfüggetlen (2-es típusú), ha minden szabálya $A \\to v$ alakú, ahol $A \\in N$ és $v \\in (N \\cup \\Sigma)^*$. A bal oldalon tehát egyetlen nemterminális áll.",
+    },
+  },
+  {
+    type: "paragraph",
+    text: {
+      hu: "Na de viszont a jobb oldalakra szinte semmi megkötés sincs: lehetnek hosszúak, keveredhet terminálist és nemterminálist, lehet $\\varepsilon$ vagy egyetlen nemterminális. Ez kényelmes, ha grammatikát írunk, de kényelmetlen, ha algoritmust akarunk rá építeni. Ezért ebben a részben azt nézzük meg, hogyan lehet egy grammatikát lépésről lépésre egyszerűbb alakra hozni úgy, hogy közben a generált nyelv ne változzon.",
+    },
+  },
+  {
+    type: "definition",
+    term: {
+      hu: "ekvivalens grammatikák",
+    },
+    content: {
+      hu: "A $G_1$ és $G_2$ grammatikák ekvivalensek, ha $L(G_1) = L(G_2)$.",
+    },
+  },
+  {
+    type: "paragraph",
+    text: {
+      hu: "Két dolgot fogunk csinálni: először kidobjuk a felesleges nemterminálisokat (redukálunk), utána pedig Chomsky-normálformára hozzuk a grammatikát. Mindkét átalakítás ekvivalens grammatikát ad, és a normálformára később a CYK-algoritmusnál lesz szükségünk. (link to CYK-algoritmus)",
+    },
+  },
+  {
+    type: "heading",
+    level: 1,
+    text: {
       hu: "Aktív és elérhető nemterminálisok",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Egy környezetfüggetlen grammatikában lehetnek „halott” nemterminálisok: olyanok, amelyekből sosem lesz terminális szó, vagy amelyekhez el sem lehet jutni $S$-ből. Ezek nyugodtan kidobhatók.",
+      hu: "Egy környezetfüggetlen grammatikában lehetnek „halott” nemterminálisok: olyanok, amelyekből sosem lesz terminális szó, vagy amelyekhez el sem lehet jutni $S$-ből. A redukálási folyamatban ezeket most nyugodtan kidobhatjuk.",
     },
   },
   {
@@ -26,12 +60,12 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Mindkét halmazt rétegenként építjük, amíg már nem változik:",
+      hu: "Fogjuk a nemterminálisokat és 2 halmzat készítunk ezeket rétegenként bővítjük, amíg már nem változik:",
     },
   },
   {
     type: "table",
-    headers: ["", "Kezdet", "Bővítés"],
+    headers: ["", "Kezdei halmaz", "Bővítés"],
     rows: [
       ["Aktívak", "$A_1$: akinek van csupa terminális jobb oldalú szabálya", "$X$ bekerül, ha van $X \\to w$, ahol $w$ csak terminálisokból és már aktívakból áll"],
       ["Elérhetők", "$R_1 = \\{S\\}$", "$Y$ bekerül, ha egy már elérhető $X$ valamelyik szabályának jobb oldalán szerepel"],
@@ -40,7 +74,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Redukálás: előbb kidobjuk az inaktív nemterminálisokat az őket tartalmazó összes szabállyal együtt, aztán a maradékban kidobjuk az elérhetetleneket és az ő szabályaikat is.",
+      hu: "Redukálás: előbb kidobjuk az inaktív nemterminálisokat és az őket tartalmazó összes szabállyalt, aztán a maradékból kidobjuk az elérhetetleneket és az ő szabályaikat.",
     },
   },
   {
@@ -74,7 +108,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Tehát a jobb oldalon vagy pontosan két nemterminális áll, vagy pontosan egy terminális. Minden környezetfüggetlen grammatikához van vele ekvivalens Chomsky-normálformájú, és ezt négy lépésben állítjuk elő. Erre lesz szükség a CYK-algoritmushoz is.",
+      hu: "Tehát a jobb oldalon vagy pontosan két nemterminális áll, vagy pontosan egy terminális. Minden környezetfüggetlen grammatikához van vele ekvivalens Chomsky-normálformájú, és ezt négy lépésben állítjuk elő.",
     },
   },
   {
@@ -88,7 +122,7 @@ export const theory: ContentBlock[] = [
     type: "list",
     ordered: true,
     items: [
-      { hu: "Álterminálisok: a terminálisok kiszedése a hosszú jobb oldalakból." },
+      { hu: "Álterminálisok: a terminálisok kiszedése a hosszú(>=2) jobb oldalakból." },
       { hu: "Hosszredukció: a 3 vagy több hosszú jobb oldalak feldarabolása." },
       { hu: "$\\varepsilon$-mentesítés: az $X \\to \\varepsilon$ szabályok eltüntetése." },
       { hu: "Láncmentesítés: az $X \\to Y$ szabályok eltüntetése." },
@@ -111,12 +145,6 @@ export const theory: ContentBlock[] = [
     type: "paragraph",
     text: {
       hu: "Minden $a$ terminálishoz felveszünk egy új $\\bar{a}$ nemterminálist és egy $\\bar{a} \\to a$ szabályt, a jobb oldalakon pedig $a$ helyére $\\bar{a}$-t írunk. Így a jobb oldalak csupa nemterminálisból állnak.",
-    },
-  },
-  {
-    type: "warning",
-    text: {
-      hu: "Az $A \\to a$ alakú szabályokat nem kell átírni, azok már jók. Csak ott cseréljük a terminálist, ahol a jobb oldal hossza legalább 2.",
     },
   },
   {
@@ -159,10 +187,10 @@ export const theory: ContentBlock[] = [
     type: "formula",
     latex: "U_1 := \\{ X \\mid X \\to \\varepsilon \\in P \\}, \\qquad U_{i+1} := U_i \\cup \\{ X \\mid X \\to u \\in P,\\ u \\in U_i^* \\}",
   },
-  {
+  { 
     type: "paragraph",
     text: {
-      hu: "Vagyis $X$ bekerül, ha van olyan szabálya, aminek a jobb oldalán csupa $U_i$-beli nemterminális áll. A stabilizálódott halmaz $U$. Ezután töröljük az összes $X \\to \\varepsilon$ szabályt, és minden $A \\to BC$ szabály mellé felvesszük:",
+      hu: "Vagyis $X$ bekerül, ha van olyan szabálya, aminek a jobb oldalán csupa $U_i$-beli nemterminális áll. A stabilizálódott halmaz $U$. Ezután töröljük az összes $X \\to \\varepsilon$ szabályt, és minden $A \\to BC$ szabályt vizsgálunk:",
     },
   },
   {
