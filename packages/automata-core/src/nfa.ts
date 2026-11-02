@@ -20,7 +20,6 @@ export type SubsetStep = {
   queue: string[][];
 };
 
-// 1. lecke: ε-lezárt.
 export function epsilonClosure(nfa: Nfa, states: string[]): string[] {
   const toReturnStates: string[] = [...states];
   const toProcessStates: string[] = [...states];

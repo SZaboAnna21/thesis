@@ -48,3 +48,21 @@ export { isChomskyNormalForm, cyk, cykDerivation } from "./cyk";
 
 export type * from "./nfa";
 export { EPS, epsilonClosure, runNfa, acceptsWord, determinize } from "./nfa";
+
+export type * from "./verem";
+export {
+  configKey,
+  startConfig,
+  applyMove,
+  epsilonClosure as pdaEpsilonClosure,
+  onestep,
+  runningPda,
+  acceptor,
+  wordchecker,
+  pathTo,
+  acceptingPath,
+  bestPath,
+  isDeterministic,
+  parsePdaRules,
+  findPdaCounterexample,
+} from "./verem";

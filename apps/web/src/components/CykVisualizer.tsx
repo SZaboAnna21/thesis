@@ -2,7 +2,6 @@ import { useState } from "react";
 import { cyk, cykDerivation, isChomskyNormalForm, showRule, type CykStep, type Grammer } from "@fotoc/automata-core";
 import { GrammarInput } from "./InputGrammer";
 
-// A jegyzet példája.
 const lectureExample: Grammer = {
   nonterminals: ["S", "A", "B", "X", "Y", "C", "U", "V", "W", "Z"],
   terminals: ["a", "b", "c"],
