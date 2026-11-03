@@ -23,6 +23,7 @@ import { meta as regexAutomataMeta } from "./regex-automata/meta";
 import { theory as regexAutomataTheory } from "./regex-automata/theory";
 import { meta as kisBarHillelMeta } from "./kis-bar-hillel/meta";
 import { theory as kisBarHillelTheory } from "./kis-bar-hillel/theory";
+import { quiz as kisBarHillelQuiz } from "./kis-bar-hillel/quiz";
 import { meta as cfGrammatikakMeta } from "./cf-grammatikak/meta";
 import { theory as cfGrammatikakTheory } from "./cf-grammatikak/theory";
 import { meta as cykMeta } from "./cyk/meta";
@@ -31,10 +32,13 @@ import { meta as veremautomataMeta } from "./veremautomata/meta";
 import { theory as veremautomataTheory } from "./veremautomata/theory";
 import { meta as levezetesiFaMeta } from "./levezetesi-fa/meta";
 import { theory as levezetesiFaTheory } from "./levezetesi-fa/theory";
+import { quiz as levezetesiFaQuiz } from "./levezetesi-fa/quiz";
 import { meta as nagyBarHillelMeta } from "./nagy-bar-hillel/meta";
 import { theory as nagyBarHillelTheory } from "./nagy-bar-hillel/theory";
+import { quiz as nagyBarHillelQuiz } from "./nagy-bar-hillel/quiz";
 import { meta as kornyezetfuggoMeta } from "./kornyezetfuggo/meta";
 import { theory as kornyezetfuggoTheory } from "./kornyezetfuggo/theory";
+import { quiz as kornyezetfuggoQuiz } from "./kornyezetfuggo/quiz";
 
 export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
@@ -47,13 +51,13 @@ export const topics: Topic[] = [
   { meta: ndvaMeta, content: ndvaTheory },
   { meta: minimalizalasMeta, content: minimalizalasTheory },
   { meta: regexAutomataMeta, content: regexAutomataTheory },
-  { meta: kisBarHillelMeta, content: kisBarHillelTheory },
+  { meta: kisBarHillelMeta, content: kisBarHillelTheory, quiz: kisBarHillelQuiz },
   { meta: cfGrammatikakMeta, content: cfGrammatikakTheory },
   { meta: cykMeta, content: cykTheory },
   { meta: veremautomataMeta, content: veremautomataTheory },
-  { meta: levezetesiFaMeta, content: levezetesiFaTheory },
-  { meta: nagyBarHillelMeta, content: nagyBarHillelTheory },
-  { meta: kornyezetfuggoMeta, content: kornyezetfuggoTheory },
+  { meta: levezetesiFaMeta, content: levezetesiFaTheory, quiz: levezetesiFaQuiz },
+  { meta: nagyBarHillelMeta, content: nagyBarHillelTheory, quiz: nagyBarHillelQuiz },
+  { meta: kornyezetfuggoMeta, content: kornyezetfuggoTheory, quiz: kornyezetfuggoQuiz },
 ].sort((a, b) => a.meta.order - b.meta.order);
 
 export function getTopic(id: string): Topic | undefined {

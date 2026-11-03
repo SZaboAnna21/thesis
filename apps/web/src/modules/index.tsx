@@ -65,7 +65,7 @@ function GrammarModule({ initial }: { initial: Grammer }) {
 
   return (
     <div className="space-y-4">
-      <GrammarInput initial={anbnGrammar} onChange={setGrammar} />
+      <GrammarInput initial={initial} onChange={setGrammar} />
       <GrammarDerivation
         key={JSON.stringify(grammar)}
         grammer={grammar}
