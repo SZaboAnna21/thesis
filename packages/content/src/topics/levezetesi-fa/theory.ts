@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egy környezetfüggetlen grammatikában minden lépés egyetlen nemterminálist ír át, és ez független attól, mi van mellette. Ezért a levezetést fába is rajzolhatjuk: minden nemterminális csúcs gyerekei annak a szabálynak a jobb oldala, amivel átírtuk.",
+      hu: "Környezetfüggetlen grammatikában egy lépés mindig pontosan egy nemterminálist ír át, függetlenül annak környezetétől. Ezért a levezetés természetesen ábrázolható fával, ahol minden csúcs gyermekei a rá alkalmazott szabály jobb oldalát adják.",
     },
   },
   {
@@ -45,7 +45,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Minden terminális szót generáló levezetéshez tartozik egy levezetési fa, amelynek határa éppen az adott szó. Fordítva viszont nem igaz: a fa nem mondja meg, milyen sorrendben alkalmaztuk a szabályokat. Ugyanahhoz a fához általában több levezetés is tartozik.",
+      hu: "Egy levezetési fa határa a generált szó. A fa csak a szintaktikai szerkezetet rögzíti, a szabályalkalmazások sorrendjét nem, ezért ugyanahhoz a fához több levezetés is tartozhat.",
     },
   },
   {
@@ -96,7 +96,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A lényegében azonos levezetések közül kitüntetünk egyet, hogy minden fához pontosan egy levezetést rendelhessünk.",
+      hu: "A levezetési fa nem rögzíti a szabályalkalmazások sorrendjét, ezért ugyanahhoz a fához több levezetés is tartozhat. Ennek elkerülésére kitüntetjük a baloldali levezetést.",
     },
   },
   {
@@ -111,7 +111,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Így minden levezetési fához pontosan egy baloldali levezetés tartozik: a fát mélységi bejárással, balról jobbra olvassuk ki. A fenti példában az első levezetés a baloldali.",
+      hu: "Minden levezetési fához pontosan egy baloldali levezetés tartozik: mindig a balról első nemterminálist írjuk át.",
     },
   },
   {
@@ -119,6 +119,12 @@ export const theory: ContentBlock[] = [
     level: 1,
     text: {
       hu: "Egyértelműség",
+    },
+  },  
+  {
+    type: "paragraph",
+    text: {
+      hu: "Egy környezetfüggetlen grammatika akkor egyértelmű, ha ugyanaz a szó nem állítható elő több különböző szerkezettel.",
     },
   },
   {
@@ -175,12 +181,6 @@ export const theory: ContentBlock[] = [
     type: "paragraph",
     text: {
       hu: "Az egyértelműség a grammatika tulajdonsága, nem a nyelvé. Ugyanazt a nyelvet generálhatja egyértelmű és nem egyértelmű grammatika is. A fenti nyelvet például az $S \\to caS \\mid cbS \\mid c$ grammatika is generálja, és ebben minden szónak csak egy fája van, mert a szót balról jobbra, betűpáronként építi fel.",
-    },
-  },
-  {
-    type: "funfact",
-    text: {
-      hu: "Általában algoritmikusan eldönthetetlen, hogy egy környezetfüggetlen grammatika egyértelmű-e. Konkrét grammatikára persze sokszor könnyű ellenpéldát találni. A programozási nyelvek fordítóinál ezért fontos, hogy a nyelvtant eleve egyértelműre írják: a $2 + 3 \\cdot 4$ kifejezésnek csak egy fája lehet, különben nem lenne világos, mit kell kiszámolni.",
     },
   },
 ];

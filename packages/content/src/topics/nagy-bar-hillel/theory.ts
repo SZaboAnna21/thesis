@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Ez a Kis Bar-Hillel lemma párja környezetfüggetlen nyelvekre: ezzel bizonyítjuk, hogy egy nyelv nem CF.",
+      hu: "A Kis Bar-Hillel lemma a reguláris nyelvekhez tartozó pumpáló lemma. Ennek környezetfüggetlen nyelvekre vonatkozó megfelelője a Nagy Bar-Hillel lemma, amelyet tipikusan annak bizonyítására használunk, hogy egy nyelv nem környezetfüggetlen.",
     },
   },
   {
@@ -27,13 +27,13 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egyszerűbben: egy CF nyelv minden elég hosszú szavában van két közeli rész, $x$ és $y$, amelyeket egyszerre pumpálhatunk. Az ok: egy hosszú szó levezetési fájában van egy hosszú ág, ezen valamelyik nemterminális, mondjuk $A$, kétszer szerepel. A két $A$ közötti részfát ismételgetve vagy kihagyva kapjuk az $ux^iwy^iz$ szavakat.",
+      hu: "Egyszerűbben: egy környezetfüggetlen nyelv minden elég hosszú szavában található két rész, $x$ és $y$, amelyeket azonos számban ismételhetünk vagy elhagyhatunk úgy, hogy a kapott szó továbbra is a nyelvben marad.",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "A különbség a kis lemmához képest: két részt pumpálunk egyszerre, és nem mi döntjük el, hol vannak. Csak annyit tudunk, hogy $xwy$ legfeljebb $q$ hosszú.",
+      hu: "A kis lemmához képest két fontos különbség van: egyszerre két részt pumpálunk, és azok helyét nem mi választhatjuk meg. Csupán azt tudjuk, hogy az $xwy$ rész hossza legfeljebb $q$.",
     },
   },
   {

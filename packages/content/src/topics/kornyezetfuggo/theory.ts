@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A környezetfüggő (1-es típusú) szabályokkal kényelmetlen dolgozni, ezért a gyakorlatban egy lazább, de ugyanolyan erős fogalmat használunk.",
+      hu: "Bár a környezetfüggő grammatikák pontosan jellemzik az 1-es típusú nyelveket, a szabályaik alakja gyakran nehezen kezelhető. Emiatt gyakran a hossz-nemcsökkentő grammatikák fogalmát használjuk, amelyek ugyanazt a nyelvosztályt írják le egyszerűbb formában.",
     },
   },
   {
@@ -61,7 +61,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A Chomsky-normálforma megfelelője környezetfüggő grammatikákra.",
+      hu: "Kuroda-normálforma a Chomsky-normálforma megfelelője csak éppen a környezetfüggő grammatikákra.",
     },
   },
   {
@@ -83,7 +83,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A lépések nagyrészt a Chomsky-normálformánál tanultak: álterminálisok bevezetése, hosszredukció, láncmentesítés. Az új elem az $AB \\to CD$ alakú szabály, ahol mindkét betű változik. Ezt egy új $W$ nemterminálissal három lépésre bontjuk, amelyek mindegyike csak egy betűt cserél:",
+      hu:"Az átalakítás nagy része megegyezik a Chomsky-normálformánál megismert lépésekkel: álterminálisok bevezetésével, hosszredukcióval és láncszabályok megszüntetésével. Az egyetlen új nehézséget az $AB \\to CD$ alakú szabályok jelentik, mivel ezek egyszerre két nemterminálist írnak át. Ezért egy segédváltozó segítségével olyan szabályokra bontjuk őket, amelyekben egy lépésben mindig csak egyetlen szimbólum változik:"
     },
   },
   {
@@ -100,14 +100,14 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A 0-típusú grammatikákra is van normálforma. Ez a Kuroda-normálforma, kiegészítve az $A \\to B$ és az $AB \\to B$ alakú szabályokkal. Utóbbi rövidíti a mondatformát, ezt a környezetfüggő grammatikák nem tudják.",
+      hu: "A 0-típusú grammatikákra is van normálforma. Ez a Kuroda-normálforma, kiegészítve az $A \\to B$ és az $AB \\to B$ alakú szabályokkal. Az utóbbi szabály csökkenti a mondatforma hosszát, ezért ilyen szabály környezetfüggő grammatikában nem szerepelhet.",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "A legfontosabb különbség a szóprobléma. Hossz-nemcsökkentő grammatikánál egy $u$ szó levezetésében egyik mondatforma sem hosszabb $|u|$-nál, és ilyen mondatformából csak véges sok van, így minden levezetés kipróbálható. 0-típusnál a mondatforma közben akármekkorára nőhet, ezért ez a módszer nem működik.",
-    },
+      hu: "A legfontosabb különbség a szóprobléma eldönthetőségében jelenik meg. Hossz-nemcsökkentő grammatikák esetén egy uuu szó levezetésében a mondatformák hossza nem haladhatja meg $|u|$-t, ezért csak véges sok esetet kell megvizsgálni, így a szóprobléma eldönthető. Ezzel szemben 0-típusú grammatikáknál a mondatformák hossza korlátlanul növekedhet, ezért a szóprobléma nem eldönthető, csak parciálisan eldönthető.",
+  },
   },
   {
     type: "table",
