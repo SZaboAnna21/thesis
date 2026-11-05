@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Adott egy $G = \\langle N, \\Sigma, P, S \\rangle$ környezetfüggetlen grammatika és egy $u \\in \\Sigma^*$ szó. A kérdés: $u \\in L(G)$? Ez a szóprobléma. Reguláris grammatikára már láttunk rá lineáris algoritmust, most a környezetfüggetlen esetet nézzük.",
+      hu: "Adott egy $G = \\langle N, \\Sigma, P, S \\rangle$ környezetfüggetlen grammatika és egy $u \\in \\Sigma^*$ szó. A kérdés: $u \\in L(G)$? Ez a szóprobléma. Reguláris (3-as típusú) grammatikára  már láttunk lineáris algoritmust, most a környezetfüggetlen (2-es típusú) esetet nézzük.",
     },
   },
   {
@@ -21,13 +21,13 @@ export const theory: ContentBlock[] = [
       hu: "A környezetfüggetlen grammatikák szóproblémája eldönthető.",
     },
     proof: {
-      hu: "Hozzuk $G$-t Chomsky-normálformára, ez algoritmikusan megy. Ha $u = \\varepsilon$, akkor $u \\in L(G) \\iff S \\to \\varepsilon \\in P$. Ha $|u| = n \\geq 1$, akkor $u$ minden levezetése pontosan $n - 1$ darab $A \\to BC$ és $n$ darab $A \\to a$ alakú szabályalkalmazásból áll. Rögzített grammatika és $n$ mellett ilyen levezetésből csak véges sok van, ezeket mind végignézve eldönthető, hogy $u \\in L(G)$.",
+      hu: "Hozzuk $G$-t Chomsky-normálformára. Ha $u = \\varepsilon$, akkor $u \\in L(G) \\iff S \\to \\varepsilon \\in P$. Ha $|u| = n \\geq 1$, akkor $u$ minden levezetése pontosan $n - 1$ darab $A \\to BC$ és $n$ darab $A \\to a$ alakú szabályalkalmazásból áll. Rögzített grammatika és $n$ mellett ilyen levezetésből csak véges sok van, ezeket mind végignézve eldönthető, hogy $u \\in L(G)$.",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Ez a módszer helyes, de a levezetések száma exponenciálisan nő $n$-nel, a gyakorlatban használhatatlan. A levezetéseket viszont nem kell egyenként felsorolni: elég alulról felfelé, a rövid részszavaktól a hosszabbak felé haladva feljegyezni, hogy melyik részszó melyik nemterminálisból vezethető le. Ez a dinamikus programozás ötlete, és pontosan ezt csinálja a CYK algoritmus.",
+      hu: "Ez a módszer helyes, de a levezetések száma exponenciálisan nő $n$-nel, a gyakorlatban használhatatlan. A levezetéseket viszont nem kell egyenként felsorolni: elég alulról felfelé, a rövid részszavaktól a hosszabbak felé haladva feljegyezni, hogy melyik részszó melyik nemterminálisból vezethető le.",
     },
   },
   {
@@ -40,7 +40,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A nevét kitalálóiról, John Cocke-ról, Daniel Youngerről és Tadao Kasamiról kapta.",
+      hu: "A nevét kitalálóiról kapta.  John Cocke-ról, Daniel Youngerről és Tadao Kasamiról.",
     },
   },
   {
@@ -49,7 +49,7 @@ export const theory: ContentBlock[] = [
       hu: "Cocke–Younger–Kasami (CYK) algoritmus",
     },
     content: {
-      hu: "Bemenet: egy Chomsky-normálformájú $G = \\langle N, \\Sigma, P, S \\rangle$ grammatika és egy $u = t_1 \\cdots t_n$ szó ($t_i \\in \\Sigma$, $n \\geq 1$). Kimenet: $u \\in L(G)$? Az algoritmus $H_{i,j}$ halmazokat számol ki ($1 \\leq i \\leq j \\leq n$), $j - i$ szerint növekvő sorrendben:",
+      hu: "Bemenet: egy Chomsky-normálformájú (környezetfüggetlen) $G = \\langle N, \\Sigma, P, S \\rangle$ grammatika és egy $u = t_1 \\cdots t_n$ szó ($t_i \\in \\Sigma$, $n \\geq 1$). Kimenet: $u \\in L(G)$? Igen vagy nem. Az algoritmus $H_{i,j}$ halmazokat számol ki ($1 \\leq i \\leq j \\leq n$), $j - i$ szerint növekvő sorrendben:",
     },
   },
   {

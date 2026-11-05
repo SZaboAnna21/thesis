@@ -187,7 +187,7 @@ export const theory: ContentBlock[] = [
     ordered: true,
     items: [
       { hu: "Döntsd el, mit számol vagy mit jegyez meg a verem (pl. a még pár nélküli betűket)." },
-      { hu: "Az állapotokkal a fázisokat különítsd el (pl. „még $a$-kat olvasunk” és „már $b$-ket”)." },
+      { hu: "A fázisokat állapotokkal különítsd el (pl. „még $a$-kat olvasunk” „már $b$-ket”)." },
       { hu: "Minden (verem teteje, állapot, betű) hármasra írd fel, mi történjen, ami nem kell, arra ne legyen szabály." },
       { hu: "A végén $\\varepsilon$-lépéssel ürítsd a vermet vagy lépj végállapotba, amikor a $z_0$ kerül felülre." },
       { hu: "Ellenőrizd egy elfogadott és egy elutasított szóval." },
