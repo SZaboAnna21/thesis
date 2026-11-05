@@ -16,6 +16,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { EPS, type Letter, type Nfa, type State } from "@fotoc/automata-core";
+import { useTheme, type Theme } from "../theme";
 
 const R = 28;
 
@@ -33,13 +34,22 @@ type StateData = {
 };
 type StateNode = Node<StateData, "state">;
 
-type TransitionData = { letters: Letter[]; activeLetters: Letter[]; status: Status; bend: boolean };
+type TransitionData = { letters: Letter[]; activeLetters: Letter[]; status: Status; bend: boolean; edgeStyle: EdgeStyle };
 type TransitionEdge = Edge<TransitionData, "transition">;
 
-const EDGE_STYLE: Record<Status, { color: string; width: number }> = {
-  active: { color: "#7432cc", width: 3 },
-  visited: { color: "#b794f6", width: 2 },
-  idle: { color: "#9ca3af", width: 1.5 },
+type EdgeStyle = Record<Status, { color: string; width: number }>;
+
+const EDGE_STYLES: Record<Theme, EdgeStyle> = {
+  light: {
+    active: { color: "#7432cc", width: 3 },
+    visited: { color: "#b794f6", width: 2 },
+    idle: { color: "#9ca3af", width: 1.5 },
+  },
+  dark: {
+    active: { color: "#b68cff", width: 3 },
+    visited: { color: "#7a4fc4", width: 2 },
+    idle: { color: "#6b7280", width: 1.5 },
+  },
 };
 
 const NODE_STYLE: Record<Status, string> = {
@@ -70,7 +80,7 @@ function circleLayout(automaton: Nfa): StateNode[] {
 
 const edgeId = (from: State, to: State) => `${from}->${to}`;
 
-function buildEdges(automaton: Nfa, taken: GraphTransition[], takenBefore: GraphTransition[]): TransitionEdge[] {
+function buildEdges(automaton: Nfa, taken: GraphTransition[], takenBefore: GraphTransition[], edgeStyle: EdgeStyle): TransitionEdge[] {
   const grouped = new Map<string, { from: State; to: State; letters: Letter[] }>();
   for (const from of automaton.states) {
     for (const letter of [...automaton.alphabet, EPS]) {
@@ -92,9 +102,9 @@ function buildEdges(automaton: Nfa, taken: GraphTransition[], takenBefore: Graph
       type: "transition",
       source: from,
       target: to,
-      markerEnd: { type: MarkerType.ArrowClosed, color: EDGE_STYLE[status].color, width: 16, height: 16 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: edgeStyle[status].color, width: 16, height: 16 },
       zIndex: status === "active" ? 2 : status === "visited" ? 1 : 0,
-      data: { letters, activeLetters, status, bend: from !== to && grouped.has(edgeId(to, from)) },
+      data: { letters, activeLetters, status, edgeStyle, bend: from !== to && grouped.has(edgeId(to, from)) },
     };
   });
 }
@@ -110,6 +120,7 @@ type Props = {
 
 export function AutomatonGraph({ automaton, active, visited = [], viaEps = [], taken = [], takenBefore = [] }: Props) {
   const [nodes, setNodes] = useState(() => circleLayout(automaton));
+  const theme = useTheme();
 
   const shownNodes = nodes.map((node) => ({
     ...node,
@@ -124,7 +135,8 @@ export function AutomatonGraph({ automaton, active, visited = [], viaEps = [], t
     <div className="h-96 rounded border bg-gray-50">
       <ReactFlow
         nodes={shownNodes}
-        edges={buildEdges(automaton, taken, takenBefore)}
+        edges={buildEdges(automaton, taken, takenBefore, EDGE_STYLES[theme])}
+        colorMode={theme}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodesChange={(changes: NodeChange<StateNode>[]) => setNodes((ns) => applyNodeChanges(changes, ns))}
@@ -159,7 +171,7 @@ function StateNodeView({ data }: NodeProps<StateNode>) {
         {data.label}
       </div>
       {data.viaEps && (
-        <span className="absolute -top-1 -right-1 rounded bg-brand-900 px-1 text-xs text-white">ε</span>
+        <span className="absolute -top-1 -right-1 rounded bg-brand-900 px-1 text-xs text-white dark:bg-brand-600">ε</span>
       )}
       <Handle type="source" position={Position.Top} className="invisible" />
       <Handle type="target" position={Position.Top} className="invisible" />
@@ -207,7 +219,7 @@ function TransitionEdgeView({ source, target, data, markerEnd }: EdgeProps<Trans
     label = { x: (start.x + 2 * ctrl.x + end.x) / 4, y: (start.y + 2 * ctrl.y + end.y) / 4 };
   }
 
-  const { color, width } = EDGE_STYLE[data.status];
+  const { color, width } = data.edgeStyle[data.status];
   const onlyEps = data.letters.every((letter) => letter === EPS);
 
   return (

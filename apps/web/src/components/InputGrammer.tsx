@@ -49,36 +49,43 @@ export function GrammarInput({ initial, onChange }: Props) {
   }
 
   return (
-    <div className="p-4 border rounded space-y-3">
+    <div className="p-4 border rounded ">
       <h2 className="font-bold text-lg">Grammatika</h2>
+      <div className="grid grid-cols-2 gap-5">
 
-      <input
-        className="border p-2 w-full"
-        placeholder="Nemterminálisok (S,A,B)"
-        value={fields.nonterminals}
-        onChange={(e) => update("nonterminals", e.target.value)}
-      />
+        <label className="text-sm text-gray-600" htmlFor="nonterminals">Nemterminálisok:</label>
+        
+        <input
+          className="border p-2"
+          placeholder="Nemterminálisok (S,A,B)"
+          value={fields.nonterminals}
+          onChange={(e) => update("nonterminals", e.target.value)}
+        />
 
-      <input
-        className="border p-2 w-full"
-        placeholder="Terminálisok (a,b)"
-        value={fields.terminals}
-        onChange={(e) => update("terminals", e.target.value)}
-      />
+        <label className="text-sm text-gray-600" htmlFor="terminals">Terminálisok:</label>
+        <input
+          className="border p-2"
+          placeholder="Terminálisok (a,b)"
+          value={fields.terminals}
+          onChange={(e) => update("terminals", e.target.value)}
+        />
 
-      <input
-        className="border p-2 w-full"
-        placeholder="Kezdőszimbólum"
-        value={fields.start}
-        onChange={(e) => update("start", e.target.value)}
-      />
-
-      <textarea
-        className="border p-2 w-full h-32 font-mono"
-        placeholder={"S->aSb\nS->"}
-        value={fields.rules}
-        onChange={(e) => update("rules", e.target.value)}
-      />
+        <label className="text-sm text-gray-600" htmlFor="start">Kezdőszimbólum:</label>
+        <input
+          className="border p-2"
+          placeholder="Kezdőszimbólum"
+          value={fields.start}
+          onChange={(e) => update("start", e.target.value)}
+        />
+    
+        <label className="text-sm text-gray-600" htmlFor="rules">Szabályok:</label>
+        <textarea
+          className="border p-2  h-32 font-mono"
+          placeholder={"S->aSb\nS->"}
+          value={fields.rules}
+          onChange={(e) => update("rules", e.target.value)}
+        />
+    </div>
     </div>
   );
 }

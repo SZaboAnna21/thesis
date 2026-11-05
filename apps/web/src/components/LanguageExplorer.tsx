@@ -84,7 +84,6 @@ export function LanguageExplorer({
   const [second, setSecond] = useState(initialSecond);
   const [maxLength, setMaxLength] = useState(5);
 
-  // Az ábécé a beírt egyedi betűk, a beírás sorrendjében (ez a shortlex sorrend is).
   const alphabet = useMemo(
     () => [...new Set([...alphabetText].filter((c) => /[a-z0-9]/i.test(c)))],
     [alphabetText],

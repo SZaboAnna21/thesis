@@ -11,9 +11,85 @@
   --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   html {
     color-scheme: light;
+  }
+
+  /* Sötét mód: a színskálák megfordulnak, így a komponensek osztályai változatlanok maradhatnak. */
+  html.dark {
+    color-scheme: dark;
+
+    --color-white: oklch(21% 0.034 264.665);
+
+    --color-slate-50: oklch(16% 0.032 264);
+    --color-slate-100: oklch(26% 0.04 260);
+    --color-slate-200: oklch(31% 0.042 258);
+    --color-slate-300: oklch(39% 0.044 257);
+    --color-slate-400: oklch(55.4% 0.046 257.417);
+    --color-slate-500: oklch(70.4% 0.04 256.788);
+    --color-slate-600: oklch(78% 0.03 255);
+    --color-slate-700: oklch(86.9% 0.022 252.894);
+    --color-slate-800: oklch(92.9% 0.013 255.508);
+    --color-slate-900: oklch(96.8% 0.007 247.896);
+    --color-slate-950: oklch(98.4% 0.003 247.858);
+
+    --color-gray-50: oklch(16% 0.028 262);
+    --color-gray-100: oklch(26% 0.033 257);
+    --color-gray-200: oklch(31% 0.034 258);
+    --color-gray-300: oklch(39% 0.034 259);
+    --color-gray-400: oklch(55.1% 0.027 264.364);
+    --color-gray-500: oklch(70.7% 0.022 261.325);
+    --color-gray-600: oklch(78% 0.016 260);
+    --color-gray-700: oklch(87.2% 0.01 258.338);
+    --color-gray-800: oklch(92.8% 0.006 264.531);
+    --color-gray-900: oklch(96.7% 0.003 264.542);
+    --color-gray-950: oklch(98.5% 0.002 247.839);
+
+    --color-brand-50: #241638;
+    --color-brand-100: #2f1b4e;
+    --color-brand-200: #4a2a7e;
+    --color-brand-500: #a36cf2;
+    --color-brand-600: #8447e0;
+    --color-brand-700: #c9a8ff;
+    --color-brand-900: #ebe0ff;
+
+    --color-green-50: oklch(25% 0.05 152);
+    --color-green-100: oklch(30% 0.07 152);
+    --color-green-200: oklch(36% 0.09 152);
+    --color-green-300: oklch(45% 0.11 151);
+    --color-green-700: oklch(79.2% 0.209 151.711);
+    --color-green-800: oklch(87.1% 0.15 154.449);
+    --color-green-900: oklch(92.5% 0.084 155.995);
+
+    --color-red-50: oklch(25% 0.06 25);
+    --color-red-300: oklch(45% 0.14 25);
+    --color-red-400: oklch(55% 0.18 25);
+    --color-red-600: oklch(70.4% 0.191 22.216);
+    --color-red-700: oklch(80.8% 0.114 19.571);
+    --color-red-900: oklch(88.5% 0.062 18.334);
+
+    --color-amber-50: oklch(25% 0.045 60);
+    --color-amber-100: oklch(30% 0.06 60);
+    --color-amber-200: oklch(38% 0.08 60);
+    --color-amber-300: oklch(48% 0.1 60);
+    --color-amber-400: oklch(62% 0.14 70);
+    --color-amber-700: oklch(87.9% 0.169 91.605);
+    --color-amber-800: oklch(92.4% 0.12 95.746);
+    --color-amber-900: oklch(96.2% 0.059 95.617);
+
+    --color-yellow-100: oklch(32% 0.06 90);
+    --color-yellow-200: oklch(40% 0.08 90);
+  }
+
+  .dark .text-white {
+    --color-white: #fff;
+  }
+
+  .dark .text-brand-600 {
+    --color-brand-600: #b68cff;
   }
 
   body {
