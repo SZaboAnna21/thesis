@@ -13,6 +13,7 @@ import { NfaLab } from "../components/NfaLab";
 import { nfaExamples } from "./nfaExamples";
 import { CykVisualizer } from "../components/CykVisualizer";
 import { PdaLab } from "../components/PdaLab";
+import { MinimizerLab } from "../components/MinimizerLab";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -26,6 +27,22 @@ const parityDfa: Dfa = {
     q3: { a: "q1", b: "q2" },
   },
 };
+const endsWithAbDfa: Dfa = {
+  states: ["q0", "q1", "q2", "q3", "q4", "q5", "q6"],
+  alphabet: ["a", "b"],
+  start: "q0",
+  accepting: ["q2", "q5"],
+  transitions: {
+    q0: { a: "q1", b: "q3" },
+    q1: { a: "q4", b: "q2" },
+    q2: { a: "q4", b: "q3" },
+    q3: { a: "q4", b: "q0" },
+    q4: { a: "q1", b: "q5" },
+    q5: { a: "q1", b: "q0" },
+    q6: { a: "q2", b: "q6" },
+  },
+};
+
 const equalAbGrammar: Grammer = {
   nonterminals: ["S"],
   terminals: ["a", "b"],
@@ -88,4 +105,5 @@ export const modules: Record<string, () => ReactNode> = {
   "nfa-lab": () => <NfaLab examples={nfaExamples} />,
   "cyk": () => <CykVisualizer />,
   "pda-lab": () => <PdaLab />,
+  "minimizer": () => <MinimizerLab dfa={endsWithAbDfa} />,
 };

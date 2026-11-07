@@ -25,6 +25,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @fotoc/automata-core test
       - run: pnpm --filter web build
       - uses: actions/upload-pages-artifact@v3
         with:

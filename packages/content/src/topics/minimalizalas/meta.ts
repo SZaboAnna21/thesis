@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [5, 6],
 
-  module: null,
+  module: "minimizer",
 };

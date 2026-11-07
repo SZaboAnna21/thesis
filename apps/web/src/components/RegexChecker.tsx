@@ -107,7 +107,7 @@ export function RegexChecker({ exercises }: Props) {
         <div className="flex flex-wrap gap-2">
           <button
             type="submit"
-            className="rounded bg-brand-600 px-4 py-2 font-semibold text-white hover:bg-brand-700"
+            className="rounded bg-brand-600 px-4 py-2 font-semibold text-white hover:bg-brand-700 dark:hover:bg-brand-500"
           >
             Ellenőrzés
           </button>

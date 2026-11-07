@@ -4,7 +4,6 @@ export type RegexInputState =
   | { ok: true; regex: Regex }
   | { ok: false; message: string };
 
-// A beírt szövegből szintaxisfa, vagy egy megjeleníthető hibaüzenet.
 export function readRegex(value: string, alphabet?: string[]): RegexInputState {
   const parsed = parseRegex(value);
   if (!parsed.ok) {

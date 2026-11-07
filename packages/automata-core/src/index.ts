@@ -49,6 +49,9 @@ export { isChomskyNormalForm, cyk, cykDerivation } from "./cyk";
 export type * from "./nfa";
 export { EPS, epsilonClosure, runNfa, acceptsWord, determinize } from "./nfa";
 
+export type * from "./minimize";
+export { reachableLayers, removeUnreachable, equivalenceRounds, classLabel, minimize } from "./minimize";
+
 export type * from "./verem";
 export {
   configKey,
