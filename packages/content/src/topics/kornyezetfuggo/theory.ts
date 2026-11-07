@@ -110,13 +110,26 @@ export const theory: ContentBlock[] = [
   },
   },
   {
+    type: "heading",
+    level: 1,
+    text: {
+      hu: "Összefoglalás: a Chomsky-hierarchia",
+    },
+  },
+  {
     type: "table",
-    headers: ["Típus", "Szóprobléma"],
+    headers: ["Típus", "Név", "Szabályok alakja", "Felismerő automata", "Példa nyelv", "Szóprobléma"],
     rows: [
-      ["3 (reguláris)", "eldönthető, lineáris időben"],
-      ["2 (környezetfüggetlen)", "eldönthető, polinomiális időben (CYK)"],
-      ["1 (környezetfüggő)", "eldönthető"],
-      ["0", "eldönthetetlen, csak parciálisan eldönthető: ha $u \\in L(G)$, a keresés megtalálja, ha nem, nem biztos, hogy megáll"],
+      ["3", "reguláris", "$A \\to uB$, $A \\to u$ ($u \\in \\Sigma^*$); normálformában $A \\to aB$, $A \\to \\varepsilon$", "véges automata (DVA, NDVA)", "$(ab)^*c$", "eldönthető, lineáris időben"],
+      ["2", "környezetfüggetlen", "$A \\to v$, $A \\in N$, $v \\in (N \\cup \\Sigma)^*$", "veremautomata", "$\\{a^nb^n \\mid n \\geq 0\\}$", "eldönthető, polinomiális időben (CYK)"],
+      ["1", "környezetfüggő", "$u_1Au_2 \\to u_1vu_2$, $v \\neq \\varepsilon$ (KES); ekvivalensen hossz-nemcsökkentő: $|u| \\leq |v|$", "lineárisan korlátolt automata*", "$\\{a^nb^nc^n \\mid n \\geq 1\\}$", "eldönthető"],
+      ["0", "rekurzívan felsorolható", "$u \\to v$, $u$ tartalmaz nemterminálist", "Turing-gép*", "a megállási probléma nyelve", "eldönthetetlen, csak parciálisan eldönthető: ha $u \\in L(G)$, a keresés megtalálja, ha nem, nem biztos, hogy megáll"],
     ],
+  },
+  {
+    type: "funfact",
+    text: {
+      hu: "*A lineárisan korlátolt automata és a Turing-gép nem része ennek a tárgynak, csak a teljesség kedvéért szerepelnek.",
+    },
   },
 ];

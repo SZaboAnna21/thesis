@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [11],
 
-  module: "cs-derivation",
+  module: "null",
 };
