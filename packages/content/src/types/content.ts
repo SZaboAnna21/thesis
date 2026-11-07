@@ -18,6 +18,7 @@ export type DefinitionBlock = {
   type: "definition";
   term: LocalizedText;
   content: LocalizedText;
+  items?: LocalizedText[];
 };
 
 export type TheoremKind =

@@ -38,6 +38,16 @@ import { quiz as nagyBarHillelQuiz } from "./nagy-bar-hillel/quiz";
 import { meta as kornyezetfuggoMeta } from "./kornyezetfuggo/meta";
 import { theory as kornyezetfuggoTheory } from "./kornyezetfuggo/theory";
 import { quiz as kornyezetfuggoQuiz } from "./kornyezetfuggo/quiz";
+import { meta as logikaMeta } from "./logika/meta";
+import { theory as logikaTheory } from "./logika/theory";
+import { meta as turingGepekMeta } from "./turing-gepek/meta";
+import { theory as turingGepekTheory } from "./turing-gepek/theory";
+import { meta as eldonthetetlensegMeta } from "./eldonthetetlenseg/meta";
+import { theory as eldonthetetlensegTheory } from "./eldonthetetlenseg/theory";
+import { meta as bonyolultsagMeta } from "./bonyolultsag/meta";
+import { theory as bonyolultsagTheory } from "./bonyolultsag/theory";
+import { meta as npTeljessegMeta } from "./np-teljesseg/meta";
+import { theory as npTeljessegTheory } from "./np-teljesseg/theory";
 
 export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
@@ -56,6 +66,11 @@ export const topics: Topic[] = [
   { meta: veremautomataMeta, content: veremautomataTheory },
   { meta: nagyBarHillelMeta, content: nagyBarHillelTheory, quiz: nagyBarHillelQuiz },
   { meta: kornyezetfuggoMeta, content: kornyezetfuggoTheory, quiz: kornyezetfuggoQuiz },
+  { meta: logikaMeta, content: logikaTheory },
+  { meta: turingGepekMeta, content: turingGepekTheory },
+  { meta: eldonthetetlensegMeta, content: eldonthetetlensegTheory },
+  { meta: bonyolultsagMeta, content: bonyolultsagTheory },
+  { meta: npTeljessegMeta, content: npTeljessegTheory },
 ].sort((a, b) => a.meta.order - b.meta.order);
 
 export function getTopic(id: string): Topic | undefined {

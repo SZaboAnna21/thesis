@@ -41,10 +41,17 @@ function renderBlockasType(block: ContentBlock) {
 
     case "definition":
       return (
-        <p className="border-l-4 border-brand-700 bg-brand-50 pl-3 py-2 rounded-r">
+        <div className="border-l-4 border-brand-700 bg-brand-50 pl-3 py-2 rounded-r">
           <b className="font-semibold text-brand-700"><MathText text={block.term.hu} />:</b>{" "}
           <MathText text={block.content.hu} />
-        </p>
+          {block.items && (
+            <ul className="list-disc pl-8 mt-1">
+              {block.items.map((item, index) => (
+                <li key={index}><MathText text={item.hu} /></li>
+              ))}
+            </ul>
+          )}
+        </div>
       );
 
     case "theorem":
