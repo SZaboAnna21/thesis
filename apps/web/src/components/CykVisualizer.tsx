@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { cyk, cykDerivation, isChomskyNormalForm, showRule, type CykStep, type Grammer } from "@fotoc/automata-core";
+import { useEffect, useState } from "react";
+import { showRule, type CykResult, type CykStep, type Grammer, type Rule } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { GrammarInput } from "./InputGrammer";
 
 const lectureExample: Grammer = {
@@ -53,23 +54,43 @@ export function CykVisualizer() {
   );
 }
 
+type CykWorkerResult = {
+  cnf: { ok: true } | { ok: false; rule: Rule; reason: string };
+  result?: CykResult;
+  derivation?: string[] | null;
+};
+
 function CykResultView({ grammar, word }: { grammar: Grammer; word: string }) {
-  const cnf = isChomskyNormalForm(grammar);
-  if (!cnf.ok) {
+  const [data, setData] = useState<CykWorkerResult | null>(null);
+  useEffect(() => {
+    setData(null);
+    call<CykWorkerResult>("cyk", grammar, word).then(setData);
+  }, [grammar, word]);
+
+  if (!data) return <p className="text-sm text-gray-400">Számítás…</p>;
+
+  if (!data.cnf.ok) {
     return (
       <p className="text-sm text-red-600">
-        {showRule(cnf.rule)}: {cnf.reason}
+        {showRule(data.cnf.rule)}: {data.cnf.reason}
       </p>
     );
   }
 
-  const result = cyk(grammar, word);
+  const result = data.result!;
   if (!result.ok) {
     return <p className="text-sm text-red-600">{result.error}</p>;
   }
 
   if (word === "") {
-    return <Answer grammar={grammar} word={word} table={result.table} accepted={result.accepted} />;
+    return (
+      <Answer
+        word={word}
+        table={result.table}
+        accepted={result.accepted}
+        derivation={data.derivation ?? null}
+      />
+    );
   }
 
   return (
@@ -79,6 +100,7 @@ function CykResultView({ grammar, word }: { grammar: Grammer; word: string }) {
       table={result.table}
       steps={result.steps}
       accepted={result.accepted}
+      derivation={data.derivation ?? null}
     />
   );
 }
@@ -89,9 +111,10 @@ type PlayerProps = {
   table: string[][][];
   steps: CykStep[];
   accepted: boolean;
+  derivation: string[] | null;
 };
 
-function CykPlayer({ grammar, word, table, steps, accepted }: PlayerProps) {
+function CykPlayer({ word, table, steps, accepted, derivation }: PlayerProps) {
   const [current, setCurrent] = useState(0);
   const [selectedH, setSelectedH] = useState<number | null>(null);
 
@@ -164,7 +187,7 @@ function CykPlayer({ grammar, word, table, steps, accepted }: PlayerProps) {
         </span>
       </div>
 
-      {current === last && <Answer grammar={grammar} word={word} table={table} accepted={accepted} />}
+      {current === last && <Answer word={word} table={table} accepted={accepted} derivation={derivation} />}
     </div>
   );
 }
@@ -237,24 +260,22 @@ function CykTable({ word, table, steps, current, selectedH }: TableProps) {
 }
 
 type AnswerProps = {
-  grammar: Grammer;
   word: string;
   table: string[][][];
   accepted: boolean;
+  derivation: string[] | null;
 };
 
-function Answer({ grammar, word, table, accepted }: AnswerProps) {
+function Answer({ word, accepted, derivation }: AnswerProps) {
   const shownWord = word === "" ? "ε" : word;
 
   if (!accepted) {
     return (
       <p className="rounded border p-3 text-sm text-red-600">
-        {shownWord} ∉ L(G), mert {grammar.start} nincs a csúcson.
+        {shownWord} ∉ L(G), mert a kezdőszimbólum nincs a csúcson.
       </p>
     );
   }
-
-  const derivation = cykDerivation(grammar, word, table);
 
   return (
     <div className="rounded border p-3 text-sm">

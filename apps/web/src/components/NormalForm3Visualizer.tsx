@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ButtonHTMLAttributes, type KeyboardEvent } from "react";
-import { showRule, toNormalForm3Steps, type Grammer, type Nf3Phase, type Nf3Step, type Rule } from "@fotoc/automata-core";
+import { showRule, type Grammer, type Nf3Phase, type Nf3Result, type Nf3Step, type Rule } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { GrammarInput } from "./InputGrammer";
 
 // A jegyzet példája: van benne hosszú szabály, A → u szabály és kétlépéses lánc is.
@@ -47,11 +48,16 @@ export function NormalForm3Visualizer() {
 }
 
 function NormalForm3Player({ grammar }: { grammar: Grammer }) {
-  const result = useMemo(() => toNormalForm3Steps(grammar), [grammar]);
+  const [result, setResult] = useState<Nf3Result | null>(null);
+  useEffect(() => {
+    setResult(null);
+    call<Nf3Result>("normalForm3", grammar).then(setResult);
+  }, [grammar]);
 
-  if (!result.ok) {
+  if (!result)
+    return <p className="text-sm text-gray-400">Számítás…</p>;
+  if (!result.ok)
     return <p className="text-sm text-red-600">{result.message}</p>;
-  }
   return <Player steps={result.steps} />;
 }
 

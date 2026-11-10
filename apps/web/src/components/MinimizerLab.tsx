@@ -1,5 +1,6 @@
-import { useMemo } from "react";
-import { dfaToNfa, minimize, type Dfa, type MinimizeResult, type PartitionRound, type State } from "@fotoc/automata-core";
+import { useEffect, useState } from "react";
+import { dfaToNfa, type Dfa, type MinimizeResult, type PartitionRound, type State } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { AutomatonGraph } from "./AutomatonGraph";
 import { PlayerControls } from "./PlayerControls";
 import { showSet } from "./showSet";
@@ -40,9 +41,18 @@ function stateMarker(dfa: Dfa, state: State): string {
 }
 
 export function MinimizerLab({ dfa }: { dfa: Dfa }) {
-  const result = useMemo(() => minimize(dfa), [dfa]);
-  const steps = useMemo(() => buildSteps(result), [result]);
-  const player = usePlayer(steps.length);
+  const [result, setResult] = useState<MinimizeResult | null>(null);
+  useEffect(() => {
+    setResult(null);
+    call<MinimizeResult>("minimize", dfa).then(setResult);
+  }, [dfa]);
+
+  const steps = result ? buildSteps(result) : [];
+  const player = usePlayer(steps.length || 1);
+
+  if (!result)
+    return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
+
   const step = steps[player.index];
 
   const lastLayer = result.reachableLayers[result.reachableLayers.length - 1];

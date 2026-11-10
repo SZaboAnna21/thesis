@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   OUTPUT_SYMBOL,
   classify,
@@ -7,10 +7,10 @@ import {
   formulaToString,
   knfFromTable,
   parseFormula,
-  truthTable,
   type Formula,
   type TruthTable,
 } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { FormulaInput } from "./FormulaInput";
 import { PlayerControls } from "./PlayerControls";
 import { usePlayer } from "./usePlayer";
@@ -35,13 +35,23 @@ export function FormulaLab() {
 }
 
 function FormulaPlayer({ formula }: { formula: Formula }) {
-  const table = useMemo(() => truthTable(formula), [formula]);
-  const steps: Step[] = useMemo(
-    () => [{ kind: "tree" }, ...table.columns.map((_, column) => ({ kind: "column" as const, column })), { kind: "done" }],
-    [table],
-  );
+  const [table, setTable] = useState<TruthTable | null>(null);
+  useEffect(() => {
+    setTable(null);
+    call<TruthTable>("truthTable", formula).then(setTable);
+  }, [formula]);
+
+  const steps: Step[] = table
+    ? [{ kind: "tree" }, ...table.columns.map((_, column) => ({ kind: "column" as const, column })), { kind: "done" }]
+    : [{ kind: "tree" }];
   const player = usePlayer(steps.length);
   const [reading, setReading] = useState<Reading>("none");
+
+  if (!table)
+    return (
+      <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>
+    );
+
   const step = steps[player.index];
 
   let filled = table.columns.length;

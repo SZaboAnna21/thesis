@@ -1,14 +1,5 @@
-import { useMemo, useState, type ReactNode } from "react";
-import {
-  concatSplits,
-  inKleeneStar,
-  nfaAccepts,
-  nfaAcceptsPrefix,
-  nfaAcceptsSuffix,
-  regexToNfa,
-  reverse,
-  shortlex,
-} from "@fotoc/automata-core";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { call } from "../useCore";
 import { RegexInput } from "./RegexInput";
 import { readRegex } from "./readRegex";
 
@@ -71,8 +62,6 @@ function OperationCard({ operation }: { operation: Operation }) {
   );
 }
 
-const pieceOf = (word: string, split: number) =>
-  `${word.slice(0, split) || "ε"} · ${word.slice(split) || "ε"}`;
 
 export function LanguageExplorer({
   initialAlphabet = "ab",
@@ -91,54 +80,22 @@ export function LanguageExplorer({
   const firstState = useMemo(() => readRegex(first, alphabet), [first, alphabet]);
   const secondState = useMemo(() => readRegex(second, alphabet), [second, alphabet]);
 
-  const operations = useMemo((): Operation[] | null => {
-    if (!firstState.ok || !secondState.ok || alphabet.length === 0) return null;
-
-    const nfa1 = regexToNfa(firstState.regex);
-    const nfa2 = regexToNfa(secondState.regex);
-    const in1 = (u: string) => nfaAccepts(nfa1, u);
-    const in2 = (u: string) => nfaAccepts(nfa2, u);
-    const words = [...shortlex(alphabet, maxLength)];
-    const where = (test: (u: string) => boolean): WordEntry[] =>
-      words.filter(test).map((word) => ({ word }));
-
-    const concat: WordEntry[] = [];
-    for (const word of words) {
-      const splits = concatSplits(word, in1, in2);
-      if (splits.length > 0) concat.push({ word, splits: splits.map((s) => pieceOf(word, s)) });
+  const [operations, setOperations] = useState<Operation[] | null>(null);
+  const [computing, setComputing] = useState(false);
+  useEffect(() => {
+    if (!firstState.ok || !secondState.ok || alphabet.length === 0) {
+      setOperations(null);
+      setComputing(false);
+      return;
     }
-    const ambiguous = concat.filter((e) => e.splits!.length > 1).length;
-
-    return [
-      { title: "L₁", entries: where(in1) },
-      { title: "L₂", entries: where(in2) },
-      { title: "L₁ ∪ L₂", entries: where((u) => in1(u) || in2(u)) },
-      { title: "L₁ ∩ L₂", entries: where((u) => in1(u) && in2(u)) },
-      { title: "L₁ − L₂", entries: where((u) => in1(u) && !in2(u)) },
-      {
-        title: "L₁ komplementere",
-        note: `A komplementer mindig az ábécéhez képest értendő: most Σ = {${alphabet.join(", ")}}.`,
-        entries: where((u) => !in1(u)),
+    setComputing(true);
+    setOperations(null);
+    call<Operation[]>("languageOps", firstState.regex, secondState.regex, alphabet, maxLength).then(
+      (ops) => {
+        setOperations(ops);
+        setComputing(false);
       },
-      {
-        title: "L₁L₂",
-        note:
-          ambiguous > 0
-            ? `${ambiguous} szó többféleképpen is előáll (sárgával jelölve, vidd fölé az egeret a felbontásokért). Ezért lehet |L₁L₂| < |L₁|·|L₂|.`
-            : "Minden szó pontosan egyféleképpen áll elő.",
-        entries: concat,
-      },
-      { title: "L₂L₁", note: "A konkatenáció nem kommutatív: vesd össze L₁L₂-vel!", entries: where((u) => concatSplits(u, in2, in1).length > 0) },
-      { title: "L₁*", entries: where((u) => inKleeneStar(u, in1)) },
-      {
-        title: "L₁⁺",
-        note: "Ha ε ∈ L₁, akkor L₁⁺ = L₁*, különben L₁⁺ = L₁* − {ε}.",
-        entries: where((u) => u !== "" ? inKleeneStar(u, in1) : in1("")),
-      },
-      { title: "L₁ᴿ", entries: where((u) => in1(reverse(u))) },
-      { title: "Pre(L₁)", note: "L₁ ⊆ Pre(L₁) mindig teljesül.", entries: where((u) => nfaAcceptsPrefix(nfa1, u)) },
-      { title: "Suf(L₁)", note: "L₁ ⊆ Suf(L₁) mindig teljesül.", entries: where((u) => nfaAcceptsSuffix(nfa1, u)) },
-    ];
+    );
   }, [firstState, secondState, alphabet, maxLength]);
 
   return (
@@ -175,6 +132,8 @@ export function LanguageExplorer({
       </div>
 
       {alphabet.length === 0 && <p className="text-sm text-red-600">Adj meg legalább egy betűt az ábécében.</p>}
+
+      {computing && <p className="text-center text-sm text-gray-400">Számítás…</p>}
 
       {operations && (
         <div className="grid gap-3 sm:grid-cols-2">

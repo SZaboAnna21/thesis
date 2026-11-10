@@ -1,5 +1,6 @@
-import { useMemo } from "react";
-import { determinize, type Nfa, type SubsetRow, type SubsetStep } from "@fotoc/automata-core";
+import { useEffect, useMemo, useState } from "react";
+import { type Nfa, type SubsetRow, type SubsetStep } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { NfaTable } from "./NfaTable";
 import { PlayerControls } from "./PlayerControls";
 import { showSet } from "./showSet";
@@ -34,9 +35,18 @@ function newTargets(steps: SubsetStep[], k: number): Set<string> {
 }
 
 export function SubsetPlayer({ nfa }: Props) {
-  const steps = useMemo(() => determinize(nfa), [nfa]);
-  const player = usePlayer(steps.length + 1);
+  const [steps, setSteps] = useState<SubsetStep[] | null>(null);
+  useEffect(() => {
+    setSteps(null);
+    call<SubsetStep[]>("determinize", nfa).then(setSteps);
+  }, [nfa]);
+
+  const player = usePlayer(steps ? steps.length + 1 : 1);
   const index = player.index;
+
+  if (!steps)
+    return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
+
   const current = index === 0 ? undefined : steps[index - 1];
   const queue = current ? current.queue : [steps[0].row.set];
   const fresh = useMemo(() => (index === 0 ? new Set<string>() : newTargets(steps, index - 1)), [steps, index]);

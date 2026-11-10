@@ -1,18 +1,15 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   EPS,
-  acceptingPath,
-  bestPath,
   isDeterministic,
   parsePdaRules,
-  runningPda,
   type AcceptMode,
   type Nfa,
   type Pda,
   type PdaConfig,
-  type PdaLimits,
   type PdaMove,
 } from "@fotoc/automata-core";
+import { call } from "../useCore";
 import { AutomatonGraph, type GraphTransition } from "./AutomatonGraph";
 import { PlayerControls } from "./PlayerControls";
 import { showSet } from "./showSet";
@@ -38,7 +35,6 @@ a q1 b -> q1
   mode: "empty-stack",
 };
 
-const LIMITS: PdaLimits = { maxConfigs: 5000, maxStack: 50 };
 
 const showStack = (stack: string[]) => (stack.length === 0 ? "ε" : stack.join(""));
 const splitList = (text: string) => text.split(",").map((s) => s.trim()).filter(Boolean);
@@ -220,13 +216,23 @@ function ModeRadio({
   );
 }
 
+type PdaPathResult = { path: PdaConfig[]; accepted: boolean; truncated: boolean };
+
 function PdaRunView({ pda, mode, word }: { pda: Pda; mode: AcceptMode; word: string }) {
   const graph = useMemo(() => toGraph(pda), [pda]);
-  const run = useMemo(() => runningPda(pda, word, LIMITS), [pda, word]);
-  const accepted = useMemo(() => acceptingPath(pda, run, mode), [pda, run, mode]);
-  const path = accepted ?? bestPath(run);
-  const player = usePlayer(path.length);
-  const index = player.index;
+  const [pathResult, setPathResult] = useState<PdaPathResult | null>(null);
+  useEffect(() => {
+    setPathResult(null);
+    call<PdaPathResult>("pdaPath", pda, word, mode).then(setPathResult);
+  }, [pda, word, mode]);
+
+  const path = pathResult?.path ?? [];
+  const player = usePlayer(path.length || 1);
+  const index = Math.min(player.index, path.length - 1);
+
+  if (!pathResult)
+    return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
+
   const config = path[index];
   const position = readCount(path, index);
   const isLast = index === path.length - 1;
@@ -276,8 +282,8 @@ function PdaRunView({ pda, mode, word }: { pda: Pda; mode: AcceptMode; word: str
           word={word}
           config={config}
           position={position}
-          accepted={accepted !== null}
-          truncated={run.truncated}
+          accepted={pathResult.accepted}
+          truncated={pathResult.truncated}
         />
       )}
     </div>
@@ -395,8 +401,8 @@ function Verdict({
   if (truncated) {
     return (
       <p className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-        Nem sikerült eldönteni: az ε-átmenetek miatt túl nagyra nőtt a keresés (legfeljebb {LIMITS.maxStack} hosszú verem,{" "}
-        {LIMITS.maxConfigs} konfiguráció).
+        Nem sikerült eldönteni: az ε-átmenetek miatt túl nagyra nőtt a keresés (legfeljebb 50 hosszú verem,{" "}
+        5000 konfiguráció).
       </p>
     );
   }
