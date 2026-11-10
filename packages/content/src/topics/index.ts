@@ -44,6 +44,7 @@ import { meta as turingGepekMeta } from "./turing-gepek/meta";
 import { theory as turingGepekTheory } from "./turing-gepek/theory";
 import { meta as eldonthetetlensegMeta } from "./eldonthetetlenseg/meta";
 import { theory as eldonthetetlensegTheory } from "./eldonthetetlenseg/theory";
+import { quiz as eldonthetetlensegQuiz } from "./eldonthetetlenseg/quiz";
 import { meta as bonyolultsagMeta } from "./bonyolultsag/meta";
 import { theory as bonyolultsagTheory } from "./bonyolultsag/theory";
 import { meta as npTeljessegMeta } from "./np-teljesseg/meta";
@@ -68,7 +69,7 @@ export const topics: Topic[] = [
   { meta: kornyezetfuggoMeta, content: kornyezetfuggoTheory, quiz: kornyezetfuggoQuiz },
   { meta: logikaMeta, content: logikaTheory },
   { meta: turingGepekMeta, content: turingGepekTheory },
-  { meta: eldonthetetlensegMeta, content: eldonthetetlensegTheory },
+  { meta: eldonthetetlensegMeta, content: eldonthetetlensegTheory, quiz: eldonthetetlensegQuiz },
   { meta: bonyolultsagMeta, content: bonyolultsagTheory },
   { meta: npTeljessegMeta, content: npTeljessegTheory },
 ].sort((a, b) => a.meta.order - b.meta.order);

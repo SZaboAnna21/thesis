@@ -69,3 +69,7 @@ export {
   parsePdaRules,
   findPdaCounterexample,
 } from "./verem";
+
+export type * from "./logic";
+export {OUTPUT_SYMBOL, parseFormula, formulaToString, variables, subformulas, evaluate, truthTable, classify,  literalToString, clauseToString, dnfFromTable, knfFromTable,
+} from "./logic";

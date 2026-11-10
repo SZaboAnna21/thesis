@@ -4,7 +4,6 @@ import { EPS, acceptsWord, determinize, epsilonClosure, runNfa, type Nfa } from 
 
 const sorted = (xs: string[]) => [...xs].sort();
 
-// "ab"-re végződő szavak: q0-ban várunk, a-ra q1-be is "átugrunk".
 const endsWithAb: Nfa = {
   states: ["q0", "q1", "q2"],
   alphabet: ["a", "b"],
@@ -17,7 +16,6 @@ const endsWithAb: Nfa = {
   },
 };
 
-// ε-lánc: p0 -ε-> p1 -ε-> p2, és p2 a-ra önmagába. p2 elfogadó, tehát a* minden szava jó.
 const epsChain: Nfa = {
   states: ["p0", "p1", "p2"],
   alphabet: ["a"],

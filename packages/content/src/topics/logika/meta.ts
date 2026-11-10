@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [1, 2],
 
-  module: null,
+  module: "logic-lab",
 };
