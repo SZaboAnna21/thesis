@@ -15,5 +15,5 @@ export const meta: TopicMeta = {
 
   lectures: [3, 4],
 
-  module: null,
+  module: "tm-simulator",
 };

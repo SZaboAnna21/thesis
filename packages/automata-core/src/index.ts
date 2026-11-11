@@ -70,6 +70,9 @@ export {
   findPdaCounterexample,
 } from "./verem";
 
+export type * from "./turing";
+export { initConfiguration, isHalted, isAccepted, findTransition, step, computeAllSteps } from "./turing";
+
 export type * from "./logic";
 export {OUTPUT_SYMBOL, parseFormula, formulaToString, variables, subformulas, evaluate, truthTable, classify,  literalToString, clauseToString, dnfFromTable, knfFromTable,
 } from "./logic";

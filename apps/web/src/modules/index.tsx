@@ -15,6 +15,7 @@ import { CykVisualizer } from "../components/CykVisualizer";
 import { PdaLab } from "../components/PdaLab";
 import { MinimizerLab } from "../components/MinimizerLab";
 import { FormulaLab } from "../components/FormulaLab";
+import { TuringLab } from "../components/TuringLab";
 
 const parityDfa: Dfa = {
   states: ["q0", "q1", "q2", "q3"],
@@ -108,4 +109,5 @@ export const modules: Record<string, () => ReactNode> = {
   "pda-lab": () => <PdaLab />,
   "minimizer": () => <MinimizerLab dfa={endsWithAbDfa} />,
   "logic-lab": () => <FormulaLab />,
+  "tm-simulator": () => <TuringLab />,
 };
