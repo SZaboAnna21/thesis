@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Az eldönthetetlenség után most olyan problémákkal foglalkozunk, amelyekről már tudjuk, hogy megoldhatók. A kérdés ilyenkor nem az, hogy létezik-e algoritmus rájuk, hanem az, hogy mennyi időre vagy tárhelyre van szükség a megoldásukhoz. A hasonló erőforrásigényű problémákat közös bonyolultsági osztályokba soroljuk.",
+      hu: "z eldönthetetlen problémák után most olyan feladatokkal foglalkozunk, amelyekről tudjuk, hogy megoldhatók. A kérdés már nem az, hogy létezik-e algoritmus rájuk, hanem az, hogy mennyi erőforrás szükséges a megoldásukhoz. Elsősorban az időt (mennyi lépést végez a gép) és a tárat (mennyi memóriát használ) vizsgáljuk. Az azonos nagyságrendű erőforrásigényű problémákat bonyolultsági osztályokba soroljuk.",
     },
   },
   {
@@ -24,7 +24,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Az erőforrásigényt általában nem pontosan adjuk meg, mert számunkra nem az a lényeg, hogy egy algoritmus például 1000 vagy 2000 lépést végez-e, hanem az, hogy a bemenet növekedésével milyen gyorsan nő az idő- vagy tárigénye. Ezt a növekedési ütemet írják le az aszimptotikus jelölések. Legyenek $f, g : \\mathbb{N} \\to \\mathbb{R}_0^+$ függvények.",
+      hu: "Egy algoritmus elemzésekor általában nem érdekel, hogy pontosan 1000 vagy 2000 lépést fut-e, mert ez csak konstans szorzónyi különbség. Sokkal fontosabb, hogy mi történik, ha a bemenet mérete nagy lesz. Az aszimptotikus jelölések ezt a növekedési ütemet írják le.",
     },
   },
   {
@@ -36,7 +36,7 @@ export const theory: ContentBlock[] = [
       hu: "Valamely $c > 0$ konstansra és $N$ küszöbindexre minden $n \\geq N$ esetén:",
     },
     items: [
-      { hu: "$f(n) = O(g(n))$ (felső korlát), ha $f(n) \\leq c \\cdot g(n)$," },
+      { hu: "$f(n) = O(g(n))$ (felső korlát), ha $f(n) \\leq c \\cdot g(n)$, " },
       { hu: "$f(n) = \\Omega(g(n))$ (alsó korlát), ha $f(n) \\geq c \\cdot g(n)$," },
       { hu: "$f(n) = \\Theta(g(n))$ (éles korlát), ha $f = O(g)$ és $f = \\Omega(g)$ is teljesül." },
     ],
@@ -51,9 +51,9 @@ export const theory: ContentBlock[] = [
     type: "table",
     headers: ["$\\lim f(n)/g(n)$", "Következmény"],
     rows: [
-      ["$0$", "$f = O(g)$, de $f \\neq \\Omega(g)$"],
-      ["$c > 0$ konstans", "$f = \\Theta(g)$"],
-      ["$+\\infty$", "$f = \\Omega(g)$, de $f \\neq O(g)$"],
+      ["$0$", "$f = O(g)$, de $f \\neq \\Omega(g)$ az első függvény lassabban nő"],
+      ["$c > 0$ konstans", "$f = \\Theta(g)$ ugyanabba a nagyságrendbe tartoznak"],
+      ["$+\\infty$", "$f = \\Omega(g)$, de $f \\neq O(g)$ az első függvény gyorsabban nő"],
     ],
   },
   {
@@ -98,7 +98,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egy Turing-gép futási ideje egy $u$ szóra a megállásig megtett lépések száma. $M$ $f(n)$ időkorlátos, ha minden $u$ bemeneten legfeljebb $f(|u|)$ lépést tesz. Nemdeterminisztikus gépnél a leghosszabb számítási ágat nézzük.",
+      hu: "Az időbonyolultság azt vizsgálja, hogy a bemenet méretének függvényében hány lépést kell végrehajtani a probléma megoldásához. Formálisan egy Turing-gép futási ideje egy adott bemeneten a megállásig végrehajtott lépések száma.",
     },
   },
   {
@@ -112,15 +112,15 @@ export const theory: ContentBlock[] = [
     items: [
       { hu: "$TIME(f(n))$: az $O(f(n))$ időkorlátos determinisztikus Turing-géppel eldönthető nyelvek," },
       { hu: "$NTIME(f(n))$: ugyanez nemdeterminisztikus Turing-géppel," },
-      { hu: "$P = \\bigcup_{k \\geq 1} TIME(n^k)$: polinom időben eldönthető nyelvek," },
-      { hu: "$NP = \\bigcup_{k \\geq 1} NTIME(n^k)$: nemdeterminisztikusan polinom időben eldönthető nyelvek," },
+      { hu: "$P = \\bigcup_{k \\geq 1} TIME(n^k)$: polinom időben eldönthető nyelvek, ismert hatékony (polinom idejű) algoritmus" },
+      { hu: "$NP = \\bigcup_{k \\geq 1} NTIME(n^k)$: nemdeterminisztikusan polinom időben eldönthető nyelvek, egy jó megoldás helyessége polinom időben ellenőrizhető" },
       { hu: "$EXPTIME = \\bigcup_{k \\geq 1} TIME(2^{n^k})$." },
     ],
   },
   {
     type: "paragraph",
     text: {
-      hu: "$P$-re úgy gondolunk, mint a gyakorlatban hatékonyan megoldható problémák osztályára. Nyilván $P \\subseteq NP$, mert a determinisztikus gép a nemdeterminisztikus speciális esete. Továbbá $NTIME(f(n)) \\subseteq TIME(2^{O(f(n))})$, mert a nemdeterminisztikus gép összes ágát végig lehet próbálni.",
+      hu: "$P$ osztályba a polinom időben megoldható problémák tartoznak, ezért ezeket tekintjük hatékonyan kezelhetőnek. Nyilván $P \\subseteq NP$, hiszen a determinisztikus gép a nemdeterminisztikus speciális esete. Egy nemdeterminisztikus gép determinisztikusan is szimulálható az összes számítási ág végigpróbálásával, ezért $NTIME(f(n)) \\subseteq TIME(2^{O(f(n))})$.Vagyis a nemdeterminizmus kiváltható, de általában exponenciális időveszteséggel.",
     },
   },
   {
@@ -133,22 +133,22 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egy probléma pontosan akkor NP-beli, ha minden „igen” bemenetéhez van polinom méretű tanú (bizonyíték), ami polinom időben ellenőrizhető. A nemdeterminisztikus gép ezt a tanút „megsejti”, majd determinisztikusan ellenőrzi.",
+      hu: "Az NP osztály egyik legfontosabb tulajdonsága, hogy egy megoldást gyorsan tudunk ellenőrizni, még akkor is, ha nem tudjuk gyorsan megtalálni. Formálisan egy probléma akkor NP-beli, ha minden „igen” válaszú bemenethez létezik egy polinom méretű tanú (bizonyíték), amelynek helyessége polinom időben ellenőrizhető. A nemdeterminisztikus gép ezt a tanút „megsejti”, majd determinisztikusan ellenőrzi.",
     },
   },
-  {
-    type: "example",
-    title: {
-      hu: "Tanúk",
-    },
-    content: {
-      hu: "SAT: egy kielégítő interpretáció (behelyettesítjük, és kiértékeljük a formulát). Hamilton-kör: a csúcsok egy sorrendje (ellenőrizzük, hogy minden csúcs egyszer szerepel, és egymás utáni csúcsok szomszédosak). Klikk: $k$ darab csúcs (ellenőrizzük, hogy páronként szomszédosak).",
-    },
+  { 
+    type: "list",
+    ordered: false,
+    items: [
+      { hu: "SAT: tanú egy kielégítő változóértékadás." },
+      { hu: "Hamilton-kör: tanú a csúcsok megfelelő sorrendje." },
+      { hu: "Klikk: tanú a kiválasztott csúcsok." },
+    ],
   },
   {
     type: "funfact",
     text: {
-      hu: "A $P \\overset{?}{=} NP$ kérdés a számítástudomány leghíresebb nyitott problémája: a Clay Intézet egymillió dolláros díjat tűzött ki rá. A sejtés az, hogy $P \\neq NP$, vagyis megoldást ellenőrizni könnyebb, mint találni.",
+      hu: "A  híres $P \\overset{?}{=} NP$ kérdés a számítástudomány leghíresebb nyitott problémája: a Clay Intézet egymillió dolláros díjat tűzött ki rá. A sejtés az, hogy $P \\neq NP$, vagyis megoldást ellenőrizni könnyebb, mint találni.",
     },
   },
   {
@@ -156,6 +156,11 @@ export const theory: ContentBlock[] = [
     level: 2,
     text: {
       hu: "A coNP osztály",
+    },
+  },{
+    type: "paragraph",
+    text: {
+      hu: "Egy bonyolultsági osztály komplementerét a co előtaggal jelöljük:",
     },
   },
   {
@@ -171,9 +176,9 @@ export const theory: ContentBlock[] = [
     type: "list",
     ordered: false,
     items: [
-      { hu: "$P = coP$: a polinomidejű determinisztikus gépnél elég megcserélni $q_i$-t és $q_n$-t." },
-      { hu: "$NP \\overset{?}{=} coNP$ nyitott, a sejtés az, hogy nem egyenlők. Nemdeterminisztikus gépnél a csere nem működik, mert „van elfogadó ág” negáltja „minden ág elutasít”." },
-      { hu: "Szemléletesen: coNP-ben a „nem” válaszhoz van rövid, gyorsan ellenőrizhető tanú (cáfolat)." },
+      { hu: "$P = coP$: a polinomidejű determinisztikus gépnél elég megcserélni az elfogadó és elutasító állapotokat $q_i$-t és $q_n$-t." },
+      { hu: "$NP \\overset{?}{=} coNP$ nyitott, a sejtés az, hogy nem egyenlők." },
+      { hu: "Nemdeterminisztikus gépeknél az elfogadó és elutasító állapotok felcserélése nem működik, mert a „van elfogadó ág” állítás negáltja nem az, hogy „van elutasító ág”, hanem hogy „minden ág elutasít”." },
       { hu: "Példák: $Unsat$ (kielégíthetetlen formulák) és $Taut$ (tautológiák) coNP-teljesek." },
     ],
   },
@@ -187,7 +192,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A tárigényt offline Turing-géppel mérjük: ennek az első (bemeneti) szalagja csak olvasható, és csak a munkaszalagokon használt cellákat számoljuk. Így az input hossza nem számít bele, és értelmet kap a lineárisnál kisebb tár is (pl. $\\log n$).",
+      hu: "A tárigényt offline Turing-géppel mérjük: a bemeneti szalag csak olvasható, így csak a munkaszalagokon használt cellákat számoljuk. Emiatt értelmet kapnak a lineárisnál kisebb tárkorlátok is, például a logaritmikus tár.",
     },
   },
   {
@@ -217,7 +222,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Következmény: $PSPACE = NPSPACE$, hiszen $n^k$ négyzete is polinom. Tárnál tehát a nemdeterminizmus legfeljebb négyzetes romlással kiváltható, időnél ilyet nem tudunk. A bizonyítás ötlete az $\\text{Elér}$ probléma (van-e út $s$-ből $t$-be) rekurzív megoldása a gép konfigurációs gráfján: van-e legfeljebb $2^i$ hosszú út $x$-ből $y$-ba $\\iff$ van olyan $z$ felezőpont, hogy mindkét fél legfeljebb $2^{i-1}$ hosszú.",
+      hu: "Következmény: $PSPACE = NPSPACE$, hiszen egy polinom négyzete továbbra is polinom. Ez azt jelenti, hogy a nemdeterminizmus tárbonyolultság szempontjából legfeljebb négyzetes többletköltséget jelent. A bizonyítás alapötlete az, hogy egy konfigurációs gráfban az elérhetőséget rekurzívan, egy köztes konfiguráción keresztül vizsgáljuk.",
     },
   },
   {

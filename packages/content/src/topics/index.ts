@@ -47,8 +47,10 @@ import { theory as eldonthetetlensegTheory } from "./eldonthetetlenseg/theory";
 import { quiz as eldonthetetlensegQuiz } from "./eldonthetetlenseg/quiz";
 import { meta as bonyolultsagMeta } from "./bonyolultsag/meta";
 import { theory as bonyolultsagTheory } from "./bonyolultsag/theory";
+import { quiz as bonyolultsagQuiz } from "./bonyolultsag/quiz";
 import { meta as npTeljessegMeta } from "./np-teljesseg/meta";
 import { theory as npTeljessegTheory } from "./np-teljesseg/theory";
+import { quiz as npTeljessegQuiz } from "./np-teljesseg/quiz";
 
 export const topics: Topic[] = [
   { meta: alapfogalmakMeta, content: alapfogalmakTheory },
@@ -70,8 +72,8 @@ export const topics: Topic[] = [
   { meta: logikaMeta, content: logikaTheory },
   { meta: turingGepekMeta, content: turingGepekTheory },
   { meta: eldonthetetlensegMeta, content: eldonthetetlensegTheory, quiz: eldonthetetlensegQuiz },
-  { meta: bonyolultsagMeta, content: bonyolultsagTheory },
-  { meta: npTeljessegMeta, content: npTeljessegTheory },
+  { meta: bonyolultsagMeta, content: bonyolultsagTheory, quiz: bonyolultsagQuiz },
+  { meta: npTeljessegMeta, content: npTeljessegTheory, quiz: npTeljessegQuiz },
 ].sort((a, b) => a.meta.order - b.meta.order);
 
 export function getTopic(id: string): Topic | undefined {

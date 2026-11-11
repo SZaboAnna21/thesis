@@ -11,7 +11,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Nem tudjuk, hogy $P = NP$-e, de azt meg tudjuk mondani, melyek az NP „legnehezebb” problémái. Ezek az NP-teljes problémák: ha közülük akár egyre is találnánk polinom idejű algoritmust, akkor az összes NP-beli probléma megoldható lenne polinom időben.",
+      hu: "Nem tudjuk, hogy $P = NP$-e,de azt meg tudjuk mondani, melyek az NP osztály legnehezebb problémái. Ezeket NP-teljes problémáknak nevezzük. Az NP-teljes problémák különlegesek: ha akár egyetlen ilyen problémára találnánk polinom idejű algoritmust, akkor minden NP-beli problémát meg tudnánk oldani polinom időben."
     },
   },
   {
@@ -33,15 +33,21 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Ugyanaz, mint az eldönthetetlenségnél tanult visszavezetés, csak most az $f$-nek gyorsnak (polinomiálisnak) is kell lennie. Szemléletesen: $L_1 \\leq_p L_2$ esetén $L_2$ legalább olyan nehéz, mint $L_1$.",
+      hu: "Szemléletesen: ha $L_1$-et gyorsan át tudjuk alakítani $L_2$-vé, akkor $L_2$ legalább olyan nehéz, mint $L_1$.",
+    },
+  },
+  {
+    type: "paragraph",
+    text: {
+      hu: "Hasznos következmények:",
     },
   },
   {
     type: "list",
     ordered: false,
     items: [
-      { hu: "Ha $L_1 \\leq_p L_2$ és $L_2 \\in P$, akkor $L_1 \\in P$ (ugyanígy NP-re)." },
-      { hu: "Tranzitív: $L_1 \\leq_p L_2$ és $L_2 \\leq_p L_3$ esetén $L_1 \\leq_p L_3$ (a két függvény kompozíciója is polinomiális)." },
+      { hu: "Ha $L_1 \\leq_p L_2$ és $L_2 \\in P$, akkor $L_1 \\in P$." },
+      { hu: "A visszavezetés tranzitív: ha $L_1 \\leq_p L_2$ és $L_2 \\leq_p L_3$, akkor $L_1 \\leq_p L_3$." },
     ],
   },
   {
@@ -111,16 +117,16 @@ export const theory: ContentBlock[] = [
     type: "list",
     ordered: true,
     items: [
-      { hu: "$L' \\in NP$: megadjuk a tanút, és megmutatjuk, hogy polinom időben ellenőrizhető." },
-      { hu: "Választunk egy ismert NP-teljes $L$ problémát (pl. 3SAT, Független ponthalmaz)." },
-      { hu: "Megadunk egy $f$ visszavezetést $L$-ről $L'$-re, ami polinom időben kiszámítható." },
+      { hu: "Megmutatjuk, hogy $L' \\in NP$: megadjuk a tanút, és belátjuk, hogy polinom időben ellenőrizhető." },
+      { hu: "Kiválasztunk egy ismert NP-teljes $L$ problémát (pl. 3SAT, Független ponthalmaz)." },
+      { hu: "Megadunk egy polinom idejű $f$ visszavezetést $L$-ről $L'$-re." },
       { hu: "Belátjuk mindkét irányt: $w \\in L \\Rightarrow f(w) \\in L'$ és $f(w) \\in L' \\Rightarrow w \\in L$." },
     ],
   },
   {
     type: "warning",
     text: {
-      hu: "Az irány itt is döntő: az ismert NP-teljes problémát kell visszavezetni az újra ($L \\leq_p L'$), nem fordítva! Ha $L' \\leq_p 3SAT$-ot mutatjuk meg, az csak annyit mond, hogy $L' \\in NP$. És ne felejtsük el az NP-beliséget sem, enélkül csak NP-nehézséget láttunk be.",
+      hu: "Vizsgacsapda: az ismert NP-teljes problémát kell visszavezetni az újra ($L \\leq_p L'$), nem fordítva! Enélkül csak NP-nehézséget látunk be, az NP-beliséget külön kell megmutatni.",
     },
   },
   {
@@ -227,13 +233,19 @@ export const theory: ContentBlock[] = [
     type: "heading",
     level: 2,
     text: {
-      hu: "Ha P ≠ NP: NP-köztes problémák",
+      hu: "NP-köztes problémák",
     },
   },
   {
     type: "paragraph",
     text: {
-      hu: "Egy $L$ NP-köztes, ha $L \\in NP$, $L \\notin P$, és $L$ nem NP-teljes. Ladner tétele szerint ha $P \\neq NP$, akkor létezik ilyen. Erős jelöltek: a Gráfizomorfizmus (két gráf izomorf-e) és a Prímfaktorizáció, amire az RSA titkosítás biztonsága épül.",
+      hu: "Ha $P \\neq NP$, akkor léteznek olyan problémák, amelyek NP-ben vannak, de sem nem polinom időben megoldhatók, sem nem NP-teljesek. Ezeket NP-köztes problémáknak nevezzük. Ladner tétele szerint ilyen problémák biztosan léteznek, ha $P \\neq NP$.",
+    },
+  },
+  {
+    type: "paragraph",
+    text: {
+      hu: "Gyakran említett jelöltek: Gráfizomorfizmus és Prímfaktorizáció. Ezek valószínűleg nehezebbek a P-beli problémáknál, de nem tűnnek olyan reménytelenül nehéznek, mint az NP-teljes problémák.",
     },
   },
   {
