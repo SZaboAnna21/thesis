@@ -176,7 +176,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A valódi számítógépeket jobban modellező változatban a gépnek $k \\geq 1$ darab kétirányba végtelen szalagja van, mindegyikhez saját olvasó-író fejjel. Egy lépésben minden szalagról egyszerre olvassa be a betűket, írja vissza, és lépteti a fejeket — egymástól függetlenül.",
+      hu: "A többszalagos Turing-gép a szokásos Turing-gép olyan változata, amely k≥1k \ge 1k≥1 darab kétirányban végtelen szalaggal rendelkezik. Minden szalaghoz külön olvasó-író fej tartozik, amelyek egymástól függetlenül mozoghatnak.",
     },
   },
   {
@@ -204,7 +204,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A szimuláció alapötlete: $M'$ az egyszalagán $\\#$-jelekkel elválasztva tárolja mind a $k$ szalag tartalmát, és speciális jelöléssel a fejek pozícióját. Minden $M$-beli lépés szimulálásához $M'$-nek végig kell mennie a saját szalagján, ami $O(n + f(n))$ lépés. Ez $f(n)$ lépés szimulálásán összesen $O(f(n)^2)$ lépést ad.",
+      hu: "Intuíció: Az egyszalagos gép egyetlen szalagon tárolja a kkk szalag tartalmát, elválasztó jelekkel és a fejek helyét jelölő speciális szimbólumokkal. Egy többszalagos lépés szimulálásához végig kell olvasnia ezt a reprezentációt, ami legfeljebb $O(f(n))$ időt igényel. Mivel ezt az eredeti gép minden egyes lépésére el kell végeznie, az összes futási idő $O(f(n)^2)$ lesz.",
     },
   },
   {
@@ -222,14 +222,14 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "Egy $u$ inputhoz az NTG-nek **több számítása** (ága) is lehet: elfogadók, elutasítók, és végtelen (elakadó) számítások egyaránt. Az NTG elfogadja $u$-t, ha **legalább egy** számítása elfogadó konfigurációban ér véget. A felismert és eldöntött nyelvek fogalma analóg a determinisztikus esettel.",
+      hu: "Egy $u$ inputhoz az NTG-nek több számítása (ága) is lehet: elfogadók, elutasítók, és végtelen (elakadó) számítások egyaránt. Az NTG elfogadja $u$-t, ha legalább egy számítása elfogadó konfigurációban ér véget. A felismert és eldöntött nyelvek fogalma analóg a determinisztikus esettel.",
     },
   },
   {
     type: "definition",
     term: { hu: "Nemdeterminisztikus számítási fa" },
     content: {
-      hu: "Az $M$ NTG-hez és $u \\in \\Sigma^*$ inputhoz tartozó **nemdeterminisztikus számítási fa** egy gyökeres fa, melynek csúcsai $M$ konfigurációival vannak címkézve. A gyökér $q_0 u\\square$. Ha $C$ egy csúcs és $\\{C' \\mid C \\vdash C'\\}$ az összes lehetséges rákövetkezője, akkor ezek $C$ gyerekei.",
+      hu: "Az $M$ NTG-hez és $u \\in \\Sigma^*$ inputhoz tartozó nemdeterminisztikus számítási fa egy gyökeres fa, melynek csúcsai $M$ konfigurációival vannak címkézve. A gyökér $q_0 u\\square$. Ha $C$ egy csúcs és $\\{C' \\mid C \\vdash C'\\}$ az összes lehetséges rákövetkezője, akkor ezek $C$ gyerekei.",
     },
   },
   {
@@ -243,7 +243,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A bizonyítás alapötlete: $M'$ szélességi bejárással szimulálhatja $M$ összes számítási ágát. Ehhez $M'$ egy 3-szalagos gépet épít fel: az 1. szalagon az input, a 2-on az éppen szimulált ág, a 3-on az ág szelektora (egy $T^*$-beli szó, ahol $T$ az átmenetfüggvény lehetséges kimeneteinek számosságát tárolja). Ezt az összes $T^*$-beli szóra sorban elvégezve legfeljebb $d^{f(n)+1}$ ágat vizsgál meg, ami $2^{O(f(n))}$ időigényt ad.",
+      hu: "A bizonyítás alapötlete: A determinisztikus gép szélességi bejárással szimulálja a nemdeterminisztikus számítási fa összes ágát. Mivel egy $f(n)$ lépéses futás során exponenciálisan sok ág keletkezhet, a teljes szimuláció időigénye $2^{O(f(n))}$.",
     },
   },
   {
@@ -267,7 +267,7 @@ export const theory: ContentBlock[] = [
   {
     type: "paragraph",
     text: {
-      hu: "A kiszámítható függvények fogalma az eldöntési (igen/nem kimenetű) problémák általánosítása. Az eldöntési problémáknál a kimenet egyetlen bit, míg a kiszámítási feladatoknál tetszőleges szó. Az összes eddig vizsgált algoritmikus modell ugyanazt a kiszámítható függvénnyosztályt adja, ami a Church–Turing-tézist tovább erősíti.",
+      hu: "A kiszámítható függvények fogalma az eldöntési problémák kibővítéseként fogható fel. Míg egy eldöntési probléma végén csak egy igen vagy nem választ kapunk, addig itt a kimenet bármilyen szó lehet. Másképpen fogalmazva: a gép nemcsak eldönt valamit a bemenetről, hanem eredményt is előállít. Az eddig megismert számítási modellek mind ugyanazt a függvényosztályt adják, vagyis ugyanazokat a függvényeket tudják kiszámítani.",
     },
   },
 ];
