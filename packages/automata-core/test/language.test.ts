@@ -7,22 +7,35 @@ import {
   regexMatches,
   findRegexCounterexample,
   checkRegex,
+  regexToNfa,
+  nfaAcceptsPrefix,
+  nfaAcceptsSuffix,
+  concatSplits,
+  inKleeneStar,
   type Regex,
 } from "../src/language.ts";
 
-const parse = (source: string): Regex => {
+function parse(source: string): Regex {
   const result = parseRegex(source);
-  if (!result.ok) throw new Error(`${source}: ${result.error.message}`);
+  if (!result.ok) {
+    throw new Error(`${source}: ${result.error.message}`);
+  }
   return result.regex;
-};
+}
 
-const count = (word: string, letter: string) => [...word].filter((c) => c === letter).length;
+function count(word: string, letter: string): number {
+  let n = 0;
+  for (const c of word) {
+    if (c === letter) n++;
+  }
+  return n;
+}
 
 test("shortlex: rövidebb előbb, azonos hossznál ábécérend", () => {
   assert.deepEqual([...shortlex(["a", "b"], 2)], ["", "a", "b", "aa", "ab", "ba", "bb"]);
 });
 
-test("parser: precedencia (a regkif-lap 1. mintapéldája)", () => {
+test("parser: precedencia (csillag > konkatenáció > alternatíva)", () => {
   assert.equal(regexToString(parse("(a+b)a*")), "(a + b)a*");
   assert.equal(regexToString(parse("a+ba*")), "a + ba*");
   assert.equal(regexToString(parse("ab*")), "ab*");
@@ -62,21 +75,23 @@ test("illeszkedés: ε, ∅ és a csillag", () => {
   assert.ok(!regexMatches(parse("a^+"), ""));
 });
 
-test("pontos összevetés: az azonosságok ekvivalensek", () => {
-  const pairs: [string, string][] = [
+test("pontos összevetés: az azonosságok ekvivalensek-e", () => {
+  const pairs = [
     ["(a+b)a*", "aa*+ba*"],
     ["a*", "ε+aa*"],
     ["a*", "(ε+a)*"],
     ["(a+b)*", "(a*b*)*"],
     ["ab*(bc*)*", "ab*(bc*)*+∅"],
   ];
-  for (const [p, q] of pairs) {
+  for (const pair of pairs) {
+    const p = pair[0];
+    const q = pair[1];
+
     assert.equal(findRegexCounterexample(parse(p), parse(q), ["a", "b", "c"]), null, `${p} = ${q}`);
   }
 });
 
 test("pontos összevetés: a legrövidebb ellenpélda", () => {
-  // (a+b)a* ≠ a+ba*: az első eltérés az aa
   assert.deepEqual(findRegexCounterexample(parse("a+ba*"), parse("(a+b)a*"), ["a", "b"]), {
     word: "aa",
     inCandidate: false,
@@ -84,27 +99,26 @@ test("pontos összevetés: a legrövidebb ellenpélda", () => {
   });
 });
 
-// ZH1 2. feladat: páros sok a, és ha van b, az utolsó b utáni a-k száma páratlan.
-const zh2 = (u: string) => {
+function hasEvenNumberOfAs(u: string): boolean {
   if (count(u, "a") % 2 !== 0) return false;
   const lastB = u.lastIndexOf("b");
-  return lastB === -1 || (u.length - lastB - 1) % 2 === 1;
-};
+  if (lastB === -1) return true;
+  const lettersAfterLastB = u.length - lastB - 1;
+  return lettersAfterLastB % 2 === 1;
+}
 
-test("ZH1 2. feladat: helyes megoldás nem kap ellenpéldát", () => {
+test("checkRegex: helyes megoldás nem kap ellenpéldát", () => {
   const result = checkRegex(
     "(aa)* + (b+ab*a)*ab*ba(aa)*",
-    { kind: "predicate", accepts: zh2, maxLength: 10 },
+    { kind: "predicate", accepts: hasEvenNumberOfAs, maxLength: 10 },
     ["a", "b"],
   );
   assert.deepEqual(result, { status: "no-counterexample", checkedUpTo: 10 });
 });
 
-test("ZH1 2. feladat: tipikus hibás megoldás ellenpéldát kap", () => {
-  // elfelejtette a b nélküli szavakat
-  const result = checkRegex(
-    "(b+ab*a)*ab*ba(aa)*",
-    { kind: "predicate", accepts: zh2, maxLength: 10 },
+test("checkRegex: hibás megoldás ellenpéldát kap", () => {
+  const result = checkRegex("(b+ab*a)*ab*ba(aa)*",
+    { kind: "predicate", accepts: hasEvenNumberOfAs, maxLength: 10 },
     ["a", "b"],
   );
   assert.deepEqual(result, {
@@ -113,8 +127,8 @@ test("ZH1 2. feladat: tipikus hibás megoldás ellenpéldát kap", () => {
   });
 });
 
-test("regkif-lap 3d: páros sok 1-es, regex referenciával (pontos)", () => {
-  const reference = { kind: "regex", source: "0*(10*10*)*" } as const;
+test("checkRegex: páros számú 1-est tartalmazó szavak, regex referenciával", () => {
+  const reference: { kind: "regex"; source: string } = { kind: "regex", source: "0*(10*10*)*" };
   assert.deepEqual(checkRegex("(0+10*1)*", reference, ["0", "1"]), { status: "equivalent" });
   assert.deepEqual(checkRegex("(0+11)*", reference, ["0", "1"]), {
     status: "counterexample",
@@ -128,25 +142,24 @@ test("idegen betű és szintaktikai hiba", () => {
   assert.equal(checkRegex("a+", reference, ["a", "b"]).status, "parse-error");
 });
 
-test("nyelvműveletek: Pre, Suf, konkatenáció felbontásai, lezárt", async () => {
-  const { regexToNfa, nfaAcceptsPrefix, nfaAcceptsSuffix, concatSplits, inKleeneStar } =
-    await import("../src/language.ts");
-
-  // a diák példája: L = {a^(2n+1) b}
+test("nyelvműveletek: Pre, Suf, konkatenáció felbontásai, lezárt", () => {
   const nfa = regexToNfa(parse("a(aa)*b"));
-  const pre = [...shortlex(["a", "b"], 4)].filter((u) => nfaAcceptsPrefix(nfa, u));
+
+  const allWords4 = [...shortlex(["a", "b"], 4)];
+  const pre = allWords4.filter((u) => nfaAcceptsPrefix(nfa, u));
   assert.deepEqual(pre, ["", "a", "aa", "ab", "aaa", "aaaa", "aaab"]);
-  const suf = [...shortlex(["a", "b"], 3)].filter((u) => nfaAcceptsSuffix(nfa, u));
+
+  const allWords3 = [...shortlex(["a", "b"], 3)];
+  const suf = allWords3.filter((u) => nfaAcceptsSuffix(nfa, u));
   assert.deepEqual(suf, ["", "b", "ab", "aab"]);
 
-  // L3 = {a, ab}, L4 = {bc, c}: abc kétféleképpen áll elő
-  const inL3 = (u: string) => u === "a" || u === "ab";
-  const inL4 = (u: string) => u === "bc" || u === "c";
+  function inL3(u: string): boolean { return u === "a" || u === "ab"; }
+  function inL4(u: string): boolean { return u === "bc" || u === "c"; }
   assert.deepEqual(concatSplits("abc", inL3, inL4), [1, 2]);
   assert.deepEqual(concatSplits("ac", inL3, inL4), [1]);
   assert.deepEqual(concatSplits("bc", inL3, inL4), []);
 
-  const inL = (u: string) => u === "a" || u === "bb";
+  function inL(u: string): boolean { return u === "a" || u === "bb"; }
   assert.ok(inKleeneStar("", inL));
   assert.ok(inKleeneStar("abba", inL));
   assert.ok(!inKleeneStar("aba", inL));

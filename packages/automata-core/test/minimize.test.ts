@@ -51,11 +51,12 @@ describe("equivalenceRounds", () => {
   test("~1 = ~2, három osztály", () => {
     const rounds = equivalenceRounds(removeUnreachable(lectureExample));
     assert.equal(rounds.length, 2);
-    assert.deepEqual(rounds[1].classes.map(sorted), [
-      ["q0", "q3"],
-      ["q1", "q4"],
-      ["q2", "q5"],
-    ]);
+    const classes = rounds[1].classes.map((cls) => [...cls].sort());
+      assert.deepEqual(classes, [
+        ["q0", "q3"],
+        ["q1", "q4"],
+        ["q2", "q5"],
+      ]);
   });
 
   test("csak elfogadó állapotok: egy osztály", () => {

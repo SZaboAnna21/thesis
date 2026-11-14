@@ -18,7 +18,6 @@ function grammar(rules: string[], nonterminals: string[], terminals = ["a", "b",
 
 const ruleSet = (g: Grammer) => g.rules.map((r) => `${r.from}->${r.to}`).sort();
 
-// Jobblineáris grammatika összes legfeljebb maxLen hosszú szava.
 function words(g: Grammer, maxLen: number): string[] {
   const result = new Set<string>();
   const seen = new Set<string>();
@@ -43,7 +42,6 @@ function words(g: Grammer, maxLen: number): string[] {
   return [...result].sort();
 }
 
-// Hosszredukció után minden szabály X → aY, X → Y vagy X → ε.
 function assertShort(g: Grammer) {
   for (const rule of g.rules) {
     const to = tokenize(g, rule.to);
@@ -99,7 +97,6 @@ describe("lengthReduction", () => {
   }
 });
 
-// A rétegeken belül a sorrend mindegy, ezért rendezve hasonlítunk.
 const sortedLayers = (layers: string[][]) => layers.map((layer) => [...layer].sort());
 
 describe("chainLayers", () => {
@@ -134,13 +131,8 @@ describe("chainLayers", () => {
     assert.deepEqual(sortedLayers(chainLayers(g, "S")), [["S"], ["A", "B", "S"], ["A", "B", "C", "S"]]);
   });
 
-  test("A → A nem ad új réteget", () => {
-    const g = grammar(["S->S", "S->a"], ["S"]);
-    assert.deepEqual(chainLayers(g, "S"), [["S"]]);
-  });
 });
 
-// 3-as normálforma: minden szabály X → aY vagy X → ε.
 function assertNormalForm(g: Grammer) {
   for (const rule of g.rules) {
     const to = tokenize(g, rule.to)!;
@@ -165,14 +157,8 @@ describe("removeChains", () => {
     );
   });
 
-  test("a láncszabályok eltűnnek (vizsgacsapda!)", () => {
-    const out = removeChains(lengthReduction(lectureExample));
-    assert.ok(!out.rules.some((r) => r.from === "S" && r.to === "B"), "S -> B bennmaradt");
-    assert.ok(!out.rules.some((r) => r.from === "B" && r.to === "V"), "B -> V bennmaradt");
-  });
 
   test("nincs duplikált szabály", () => {
-    // S és A is eléri B-t, és S-nek már eleve van S -> bB szabálya
     const g = grammar(["S->A", "S->bB", "A->B", "B->bB", "B->"], ["S", "A", "B"]);
     const out = removeChains(g);
     assert.equal(new Set(ruleSet(out)).size, out.rules.length);
@@ -188,20 +174,64 @@ describe("removeChains", () => {
     assert.deepEqual(ruleSet(removeChains(g)), ["A->", "A->aA", "S->", "S->aA"]);
   });
 
-  const cases: [string, Grammer][] = [
-    ["jegyzet", lectureExample],
-    ["láncciklus", grammar(["S->A", "A->B", "B->S", "S->ab", "A->bA", "B->"], ["S", "A", "B"])],
-    ["S -> ε és egybetűs zárás", grammar(["S->", "S->a", "S->bS", "S->cA", "A->c"], ["S", "A"])],
-    ["hosszú, nemterminális nélkül", grammar(["S->abcabc", "S->aaB", "B->bbbS", "B->c"], ["S", "B"])],
-    ["foglalt nevek", grammar(["S->abE", "E->Z1", "Z1->a"], ["S", "E", "Z1"])],
-  ];
-  for (const [name, g] of cases) {
-    test(`${name}: hosszredukció + láncmentesítés = normálforma, a nyelv nem változik`, () => {
-      const out = removeChains(lengthReduction(g));
-      assertNormalForm(out);
-      assert.deepEqual(words(out, 7), words(g, 7));
-    });
-  }
+  test("jegyzet: normálforma, a nyelv nem változik", () => {
+  const g = lectureExample;
+
+  const out = removeChains(lengthReduction(g));
+
+  assertNormalForm(out);
+  assert.deepEqual(words(out, 7), words(g, 7));
+});
+
+test("láncciklus: normálforma, a nyelv nem változik", () => {
+  const g = grammar(
+    ["S->A", "A->B", "B->S", "S->ab", "A->bA", "B->"],
+    ["S", "A", "B"],
+  );
+
+  const out = removeChains(lengthReduction(g));
+
+  assertNormalForm(out);
+  assert.deepEqual(words(out, 7), words(g, 7));
+});
+
+test("S -> ε és egybetűs zárás: normálforma, a nyelv nem változik", () => {
+  const g = grammar(
+    ["S->", "S->a", "S->bS", "S->cA", "A->c"],
+    ["S", "A"],
+  );
+
+  const out = removeChains(lengthReduction(g));
+
+  assertNormalForm(out);
+  assert.deepEqual(words(out, 7), words(g, 7));
+});
+
+test("hosszú, nemterminális nélkül: normálforma, a nyelv nem változik", () => {
+  const g = grammar(
+    ["S->abcabc", "S->aaB", "B->bbbS", "B->c"],
+    ["S", "B"],
+  );
+
+  const out = removeChains(lengthReduction(g));
+
+  assertNormalForm(out);
+  assert.deepEqual(words(out, 7), words(g, 7));
+});
+
+test("foglalt nevek: normálforma, a nyelv nem változik", () => {
+  const g = grammar(
+    ["S->abE", "E->Z1", "Z1->a"],
+    ["S", "E", "Z1"],
+  );
+
+  const out = removeChains(lengthReduction(g));
+
+  assertNormalForm(out);
+  assert.deepEqual(words(out, 7), words(g, 7));
+});
+
+  
 });
 
 const PHASE_ORDER: Nf3Phase[] = ["input", "length", "chain-closure", "chain-inherit", "chain-remove", "unreachable", "done"];

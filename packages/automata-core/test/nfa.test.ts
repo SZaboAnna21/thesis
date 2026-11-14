@@ -28,7 +28,6 @@ const epsChain: Nfa = {
   },
 };
 
-// ε-kör: r0 <-ε-> r1, r1 b-re r2.
 const epsCycle: Nfa = {
   states: ["r0", "r1", "r2"],
   alphabet: ["b"],
@@ -140,10 +139,17 @@ describe("determinize", () => {
 
   test("ugyanazt a nyelvet fogadja el, mint az NDVA", () => {
     const steps = determinize(endsWithAb);
-    const rows = new Map(steps.map((s) => [s.row.set.join(","), s.row]));
+    const rows: Record<string, typeof steps[number]["row"]> = {};
+    for (const step of steps) {
+      rows[step.row.set.join(",")] = step.row;}
+
     for (const w of ["", "a", "b", "ab", "ba", "aab", "aba", "abab", "bbab"]) {
       let row = steps[0].row;
-      for (const letter of w) row = rows.get(row.next[letter].join(","))!;
+      
+      for (const letter of w) 
+        {
+          row = rows[row.next[letter].join(",")];
+        }
       assert.equal(row.isAccepting, acceptsWord(endsWithAb, w), w);
     }
   });

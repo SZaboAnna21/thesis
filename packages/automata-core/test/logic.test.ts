@@ -17,7 +17,6 @@ function parse(source: string): Formula {
   return result.formula;
 }
 
-const show = (clauses: Clause[]) => clauses.map((c) => clauseToString(c));
 
 describe("parseFormula", () => {
   test("precedencia: ¬, ∧, ∨, →", () => {
@@ -53,7 +52,7 @@ describe("truthTable", () => {
 
   test("mintazh 2. feladat: KNF a táblából", () => {
     const table = truthTable(parse("~(x -> ~y) -> z & x"));
-    assert.deepEqual(show(knfFromTable(table)), ["¬x ∨ ¬y ∨ z"]);
+    assert.deepEqual(knfFromTable(table).map((clause) => clauseToString(clause)),["¬x ∨ ¬y ∨ z"]);
   });
 
   test("osztályozás", () => {
@@ -62,4 +61,16 @@ describe("truthTable", () => {
     assert.equal(classify(truthTable(parse("x -> y"))), "satisfiable");
     assert.equal(classify(truthTable(parse("x"))), "satisfiable");
   });
+
+  test("single variable", () => {
+    const table = truthTable(parse("x"));
+    assert.deepEqual(table.variables, ["x"]);
+    assert.equal(table.rows.length, 2);
+  });
+
+  test("KNF of tautology", () => {
+    const table = truthTable(parse("x | ~x"));
+    assert.deepEqual(knfFromTable(table).map((clause) => clauseToString(clause)), []);
+  });
+
 });
