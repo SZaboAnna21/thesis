@@ -4,7 +4,6 @@ import type { Dfa } from "../src/dfa.ts";
 import { runDfa } from "../src/dfa.ts";
 import { equivalenceRounds, minimize, reachableLayers, removeUnreachable } from "../src/minimize.ts";
 
-const sorted = (xs: string[]) => [...xs].sort();
 
 const lectureExample: Dfa = {
   states: ["q0", "q1", "q2", "q3", "q4", "q5", "q6"],
@@ -80,6 +79,7 @@ describe("minimize", () => {
   });
 
   test("ugyanazt a nyelvet ismeri fel", () => {
+    // #INT
     for (const word of ["", "a", "b", "ab", "aab", "abb", "bab", "abab", "ba"]) {
       assert.equal(runDfa(minimal, word).accepted, runDfa(lectureExample, word).accepted, word);
     }

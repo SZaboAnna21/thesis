@@ -76,6 +76,7 @@ test("illeszkedés: ε, ∅ és a csillag", () => {
 });
 
 test("pontos összevetés: az azonosságok ekvivalensek-e", () => {
+  // #INT
   const pairs = [
     ["(a+b)a*", "aa*+ba*"],
     ["a*", "ε+aa*"],
@@ -92,6 +93,7 @@ test("pontos összevetés: az azonosságok ekvivalensek-e", () => {
 });
 
 test("pontos összevetés: a legrövidebb ellenpélda", () => {
+  // #INT
   assert.deepEqual(findRegexCounterexample(parse("a+ba*"), parse("(a+b)a*"), ["a", "b"]), {
     word: "aa",
     inCandidate: false,
@@ -108,6 +110,7 @@ function hasEvenNumberOfAs(u: string): boolean {
 }
 
 test("checkRegex: helyes megoldás nem kap ellenpéldát", () => {
+  // #INT
   const result = checkRegex(
     "(aa)* + (b+ab*a)*ab*ba(aa)*",
     { kind: "predicate", accepts: hasEvenNumberOfAs, maxLength: 10 },
@@ -117,6 +120,7 @@ test("checkRegex: helyes megoldás nem kap ellenpéldát", () => {
 });
 
 test("checkRegex: hibás megoldás ellenpéldát kap", () => {
+  // #INT
   const result = checkRegex("(b+ab*a)*ab*ba(aa)*",
     { kind: "predicate", accepts: hasEvenNumberOfAs, maxLength: 10 },
     ["a", "b"],
@@ -128,6 +132,7 @@ test("checkRegex: hibás megoldás ellenpéldát kap", () => {
 });
 
 test("checkRegex: páros számú 1-est tartalmazó szavak, regex referenciával", () => {
+  // #INT
   const reference: { kind: "regex"; source: string } = { kind: "regex", source: "0*(10*10*)*" };
   assert.deepEqual(checkRegex("(0+10*1)*", reference, ["0", "1"]), { status: "equivalent" });
   assert.deepEqual(checkRegex("(0+11)*", reference, ["0", "1"]), {
@@ -143,6 +148,7 @@ test("idegen betű és szintaktikai hiba", () => {
 });
 
 test("nyelvműveletek: Pre, Suf, konkatenáció felbontásai, lezárt", () => {
+  // #INT
   const nfa = regexToNfa(parse("a(aa)*b"));
 
   const allWords4 = [...shortlex(["a", "b"], 4)];

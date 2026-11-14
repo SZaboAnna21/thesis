@@ -90,6 +90,7 @@ describe("lengthReduction", () => {
   ];
   for (const [name, g] of cases) {
     test(`${name}: csak rövid szabályok, és a nyelv nem változik`, () => {
+      // #INT
       const out = lengthReduction(g);
       assertShort(out);
       assert.deepEqual(words(out, 7), words(g, 7));
@@ -175,6 +176,7 @@ describe("removeChains", () => {
   });
 
   test("jegyzet: normálforma, a nyelv nem változik", () => {
+  // #INT
   const g = lectureExample;
 
   const out = removeChains(lengthReduction(g));
@@ -184,6 +186,7 @@ describe("removeChains", () => {
 });
 
 test("láncciklus: normálforma, a nyelv nem változik", () => {
+  // #INT
   const g = grammar(
     ["S->A", "A->B", "B->S", "S->ab", "A->bA", "B->"],
     ["S", "A", "B"],
@@ -196,6 +199,7 @@ test("láncciklus: normálforma, a nyelv nem változik", () => {
 });
 
 test("S -> ε és egybetűs zárás: normálforma, a nyelv nem változik", () => {
+  // #INT
   const g = grammar(
     ["S->", "S->a", "S->bS", "S->cA", "A->c"],
     ["S", "A"],
@@ -208,6 +212,7 @@ test("S -> ε és egybetűs zárás: normálforma, a nyelv nem változik", () =>
 });
 
 test("hosszú, nemterminális nélkül: normálforma, a nyelv nem változik", () => {
+  // #INT
   const g = grammar(
     ["S->abcabc", "S->aaB", "B->bbbS", "B->c"],
     ["S", "B"],
@@ -220,6 +225,7 @@ test("hosszú, nemterminális nélkül: normálforma, a nyelv nem változik", ()
 });
 
 test("foglalt nevek: normálforma, a nyelv nem változik", () => {
+  // #INT
   const g = grammar(
     ["S->abE", "E->Z1", "Z1->a"],
     ["S", "E", "Z1"],

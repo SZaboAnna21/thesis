@@ -138,6 +138,7 @@ describe("determinize", () => {
   });
 
   test("ugyanazt a nyelvet fogadja el, mint az NDVA", () => {
+    // #INT
     const steps = determinize(endsWithAb);
     const rows: Record<string, typeof steps[number]["row"]> = {};
     for (const step of steps) {
