@@ -27,7 +27,6 @@ import {
   type Grammer,
 } from "@fotoc/automata-core";
 
-// ---- Language Explorer helper types ----
 type OpEntry = { word: string; splits?: string[] };
 type OpResult = { title: string; note?: string; entries: OpEntry[] };
 
@@ -99,7 +98,6 @@ function computeLanguageOps(
   ];
 }
 
-// ---- PDA helper ----
 const PDA_LIMITS: PdaLimits = { maxConfigs: 5000, maxStack: 50 };
 
 function computePdaPath(pda: Pda, word: string, mode: AcceptMode) {
@@ -120,7 +118,6 @@ function computeCyk(grammar: Grammer, word: string) {
   return { cnf, result, derivation };
 }
 
-// ---- Dispatch ----
 type Msg = { id: number; fn: string; args: unknown[] };
 
 self.onmessage = ({ data: { id, fn, args } }: MessageEvent<Msg>) => {

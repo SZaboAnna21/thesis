@@ -43,10 +43,15 @@ export function reachableLayers(dfa: Dfa): State[][] {
 export function removeUnreachable(dfa: Dfa): Dfa {
   const layers = reachableLayers(dfa);
   const reachable = layers[layers.length - 1];
+  const transitions: Dfa["transitions"] = {};
+
+for (const state of reachable) {
+  transitions[state] = { ...dfa.transitions[state] };
+}
   return {
     states: reachable,
     alphabet: dfa.alphabet,
-    transitions: Object.fromEntries(reachable.map((state) => [state, { ...dfa.transitions[state] }])),
+    transitions,
     start: dfa.start,
     accepting: dfa.accepting.filter((state) => reachable.includes(state)),
   };
@@ -73,7 +78,8 @@ function refine(dfa: Dfa, classes: State[][]): PartitionRound {
 function split(dfa: Dfa, round: PartitionRound): State[][] {
   const groups = new Map<string, State[]>();
   for (const row of round.rows) {
-    const key = [row.classIndex, ...dfa.alphabet.map((letter) => row.signature[letter])].join(",");
+    const signature = dfa.alphabet.map((letter) => row.signature[letter]);
+    const key = [row.classIndex, ...signature].join(",");
     if (!groups.has(key)) {
       groups.set(key, []);
     }
