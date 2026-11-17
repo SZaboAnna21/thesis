@@ -42,7 +42,7 @@ describe("parseFormula", () => {
 });
 
 describe("truthTable", () => {
-  test("mintazh 1. feladat", () => {
+  test("minta 1. feladat", () => {
     const table = truthTable(parse("y -> x & ~y | ~z"));
     assert.deepEqual(table.variables, ["y", "x", "z"]);
     assert.deepEqual(table.columns.map(formulaToString), ["¬y", "¬z", "x ∧ ¬y", "x ∧ ¬y ∨ ¬z", "y → x ∧ ¬y ∨ ¬z"]);
@@ -50,7 +50,7 @@ describe("truthTable", () => {
     assert.equal(last, "hihiiiii");
   });
 
-  test("mintazh 2. feladat: KNF a táblából", () => {
+  test("minta 2. feladat: KNF a táblából", () => {
     const table = truthTable(parse("~(x -> ~y) -> z & x"));
     assert.deepEqual(knfFromTable(table).map((clause) => clauseToString(clause)),["¬x ∨ ¬y ∨ z"]);
   });
