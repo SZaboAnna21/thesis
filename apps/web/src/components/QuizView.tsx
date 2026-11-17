@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { QuizQuestion } from "@fotoc/content";
 import { MathText } from "./MathText";
+import { useQuizResult, saveQuizResult, clearQuizResult, type QuizSelections } from "../progress";
 
 type Props = {
   questions: QuizQuestion[];
+  topicId: string;
 };
 
 const difficultyLabels: Record<QuizQuestion["difficulty"], string> = {
@@ -68,8 +70,19 @@ function QuestionCard({
   );
 }
 
-export function QuizView({ questions }: Props) {
-  const [selected, setSelected] = useState<Record<number, number>>({});
+export function QuizView({ questions, topicId }: Props) {
+  const saved = useQuizResult(topicId);
+  const [selected, setSelected] = useState<QuizSelections>(saved);
+
+  useEffect(() => {
+    setSelected(saved);
+  }, [topicId]);
+
+  function handleSelect(index: number, answer: number) {
+    const next = { ...selected, [index]: answer };
+    setSelected(next);
+    saveQuizResult(topicId, next);
+  }
 
   const answeredCount = Object.keys(selected).length;
   const correctCount = questions.filter((question, index) => selected[index] === question.correct).length;
@@ -92,7 +105,7 @@ export function QuizView({ questions }: Props) {
                 question={question}
                 number={index + 1}
                 selected={selected[index]}
-                onSelect={(answer) => setSelected((prev) => ({ ...prev, [index]: answer }))}
+                onSelect={(answer) => handleSelect(index, answer)}
               />
             ))}
           </div>
@@ -109,7 +122,7 @@ export function QuizView({ questions }: Props) {
         {answeredCount > 0 && (
           <button
             type="button"
-            onClick={() => setSelected({})}
+            onClick={() => { setSelected({}); clearQuizResult(topicId); }}
             className="rounded border border-slate-300 px-4 py-1 text-base hover:border-brand-700 hover:text-brand-700"
           >
             Újrakezdés

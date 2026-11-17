@@ -50,7 +50,7 @@ export function Topicpages() {
             {topic.quiz && topic.quiz.length > 0 && (
                 <section className="mt-16">
                     <h2 className="mb-6 text-3xl font-bold text-brand-700">Teszteld magad!</h2>
-                    <QuizView questions={topic.quiz} />
+                    <QuizView questions={topic.quiz} topicId={topic.meta.id} />
                 </section>
             )}
         </div>
