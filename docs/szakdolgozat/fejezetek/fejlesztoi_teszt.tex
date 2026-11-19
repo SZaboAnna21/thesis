@@ -423,100 +423,90 @@ Ez a teszt azért fontos, mert a \texttt{cykDerivation} közvetlenül a \texttt{
 \end{lstlisting}
 
 \subsection{E2E tesztek user interface}
-\iffalse
+Az integrációs tesztek igazolták, 
+hogy az egyes komponensek és algoritmusok együttműködése helyes. 
+Ennek kiegészítéseként végponttól végpontig (end-to-end, E2E) tesztek manuálisan futtatásra került sor a React-alapú felhasználói felületen keresztül.
+
+Ezek a tesztek a rendszer használatát a felhasználó szemszögéből vizsgálták, és azt ellenőrizték, hogy a különböző funkciók a teljes alkalmazásban flowban
+elvárásnak megfelelően működnek.
+Az E2E tesztelés a bevezetőben felvázolt user story-kra fókuszál, a tananyagok közötti navigációra, a vizualizációk használatára, a kvízek kitöltésére,
+ valamint az állapotmegőrzési funkciókra. 
+A tesztek során a bemenetektől a felhasználó számára megjelenő eredményekig a teljes folyamat ellenőrzésre került.
+
+A folyamatok helyességének vizsgálata mellett külön felhasználói felület (UI) tesztek is készültek.
+ Ezek célja a megjelenítés, a visszajelzések, valamint az alkalmazás használhatóságának vizsgálata volt.
+
 \label{sec:e2e}
-Az E2E teszteseteket a telepített alkalmazáson, Chrome, Edge és
+Az E2E teszteseteket az felületen, Chrome, Edge és
 Firefox böngészőben hajtom végre. Egy teszteset akkor sikeres, ha a
 tényleges eredmény megegyezik az elvárttal, és a böngésző konzolján nem
 jelenik meg hiba.
 
 % Eredmény oszlop: kitöltendő a tesztek lefuttatása után.
-\begin{table}[H]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|l|X|X|c|}
-        \hline
-        \textbf{Azonosító} & \textbf{Lépések} & \textbf{Elvárt eredmény} &
-        \textbf{Eredmény} \\ \hline
-        E2E-1 (FK-4, FK-5) &
-        DVA megadása, egy szó beírása, lejátszás előre és vissza
-        lépésenként. &
-        Minden lépésben az aktuális állapot ki van emelve, a végén
-        megjelenik, hogy a szót elfogadja-e. & \\ \hline
-        E2E-2 (FK-4, FK-5) &
-        NDVA megadása $\varepsilon$-átmenettel, egy szó lépésenkénti
-        lejátszása. &
-        Minden lépésben az aktuális állapothalmaz ($\varepsilon$-lezárttal)
-        látszik, az eredmény helyes. & \\ \hline
-        E2E-3 (FK-6, NFK-2) &
-        Hibás reguláris kifejezés (pl.\ nyitott zárójel) megadása. &
-        Érthető hibaüzenet jelenik meg, az oldal működőképes marad. & \\ \hline
-        E2E-4 (FK-5) &
-        Két reguláris kifejezés ekvivalenciájának vizsgálata, egyszer
-        ekvivalens, egyszer nem ekvivalens párral. &
-        Ekvivalens párnál ezt jelzi, különben egy ellenpélda szót mutat. & \\ \hline
-        E2E-5 (FK-5) &
-        Grammatika megadása és osztályozása a Chomsky-hierarchiában. &
-        A legszűkebb osztály és az indoklás jelenik meg. & \\ \hline
-        E2E-6 (FK-4, FK-5) &
-        Grammatika 3-as normálformára hozása lépésenként. &
-        A hosszredukció és a láncszabályok elhagyása külön lépésként
-        látszik, a végeredmény 3-as normálformájú. & \\ \hline
-        E2E-7 (FK-4, FK-5) &
-        Chomsky-normálformájú grammatika és egy szó megadása a CYK
-        modulban. &
-        A táblázat lépésenként kitöltődik, az eredmény helyes. & \\ \hline
-        E2E-8 (FK-4, FK-5) &
-        Veremautomata szabályainak és egy szónak a megadása, futtatás. &
-        A konfigurációk sorozata látszik, az elfogadás helyes. & \\ \hline
-        E2E-9 (FK-4, FK-5) &
-        DVA minimalizálása. &
-        Az ekvivalens állapotok összevonása lépésenként látszik, az
-        eredmény minimális. & \\ \hline
-        E2E-10 (FK-6) &
-        Hibás grammatikaszabály (pl.\ hiányzó nyíl) megadása. &
-        Hibaüzenet jelenik meg, az oldal működőképes marad. & \\ \hline
-        E2E-11 (FK-7) &
-        Egy témakör kvízének kitöltése jó és rossz válaszokkal. &
-        Minden kérdésnél visszajelzés a helyes válasszal. & \\ \hline
-        E2E-12 (FK-1, FK-2, FK-8) &
-        Témakör megnyitása, majd az oldal újratöltése. &
-        Az elmélet és a modul megjelenik, a témakör meglátogatottként
-        megmarad. & \\ \hline
-    \end{tabularx}
-    \caption{E2E tesztesetek}
-    \label{tab:e2e}
+\begin{table}[H] \centering \small \begin{tabularx}{\textwidth}{X X X X} \hline \textbf{Azonosító} & \textbf{Lépések} & \textbf{Elvárt eredmény} & 
+    \textbf{Eredmény} \\ \hline 
+    E2E-1 Témakör megnyitása & A felhasználó a legördülő menüben kiválaszt egy témakört. & A rendszer a megfelelő tananyagoldalra navigál. & Sikeres \\ \hline 
+    E2E-2 Haladás követése & A felhasználó három különböző témakört látogat meg, majd lenyitja a menü fület. & A meglátogatott témakörök teljesítettként jelennek meg (kis pipa) & Sikeres \\ \hline 
+    E2E-3 Kvíz kitöltése & A felhasználó megnyit egy véletlenszerű kvízt, kitölti. & A rendszer kiértékeli a válaszokat és visszajelzést jelenít meg. & Sikeres \\ \hline 
+    E2E-4 Vizualizáció futtatása & A felhasználó elindít egy algoritmus-vizualizációt és végrehajt néhány léptetést előre és vissza is. & Az állapotok helyesen frissülnek minden lépés után. & Sikeres \\ \hline 
+    E2E-5 Egyéni bemenet használata & A felhasználó lecseréli a példabemenetet saját adatokra. & A vizualizáció az új bemenet alapján fut le. & Sikeres \\ \hline 
+    E2E-6 Hibás bemenet kezelése & A felhasználó szándékosan hibás formátumú bemenetet ad meg. & A rendszer hibaüzenetet jelenít meg összeomlás nélkül. & Sikeres \\ \hline 
+    E2E-7 Nyelvváltás & A felhasználó nyelvet vált az alkalmazásban. & A felület elemei a kiválasztott nyelven jelennek meg. & Sikeres \\ \hline 
+    E2E-8 Sötét mód perzisztencia & A felhasználó bekapcsolja a sötét módot és újratölti az oldalt. & A téma beállítása megmarad újratöltés után is. & Sikeres \\ \hline 
+    E2E-9 Megjegyzett adatok & Az felületen több különböző témakört látogat meg, kvíz válaszokat ad meg, sötet módon állit. Oldalt frissít & A korábbi adatok (kvíz válasz, haladás, sötétmód) nem vesztek el. & Sikeres \\ \hline 
+    E2E-10 Privát böngészési munkamenet & A felület inkognitó ablakban kerül megnyitásra. & A korábbi haladási adatok nem érhetők el. & Sikeres \\ \hline 
+
+\end{tabularx} \caption{Manuális end-to-end tesztek} \label{tab:e2e-tests} \end{table}
+
+A végponttól végpontig végzett tesztek mellett külön felhasználói felület (UI) tesztek is készültek és futtatva lettek. 
+Ezek célja az alkalmazás megjelenésének, használhatóságának és vizuális konzisztenciájának ellenőrzése. 
+A tesztek a matematikai jelölések helyes renderelésére, a navigáció működésére, a vizualizációs vezérlők állapotára, valamint a 
+különböző megjelenítési módokra és képernyőméretekre fókuszáltak.
+\begin{table}[H] \centering \small \begin{tabularx}{\textwidth}{|l|X|c|} \hline \textbf{UI ellenőrzés} & \textbf{Vizsgálat} & \textbf{Eredmény} \\ \hline 
+Matematikai szimbólumok megjelenítése & Az $\varepsilon$, $\emptyset$, $\rightarrow$ és egyéb speciális jelölések helyesen jelennek radnom 3 kiválaszott oldalon. & Sikeres \\ \hline 
+Navigáció konzisztenciája & A menüpontok és navigációs elemek minden oldalon megfelelően működnek. & Sikeres \\ \hline 
+Hibaüzenetek megjelenítése & Hibás bemenet esetén egyértelmű visszajelzés jelenik meg a felhasználó számára. & Sikeres \\ \hline 
+Sötét és világos téma & A témaváltás minden komponens megjelenését megfelelően módosítja. & Sikeres \\ \hline 
+Vizualizáció vezérlők & A léptetés, visszaállítás és automatikus futtatás gombjai megfelelő állapotban jelennek meg. & Sikeres \\ \hline 
+Haladásjelző ikonok & A teljesített témakörökhöz tartozó jelölések helyesen frissülnek. & Sikeres \\ \hline 
+Szöveg olvashatósága & A tananyag tartalma minden témában megfelelően olvasható világos és sötét témában is. & Sikeres \\ \hline 
+Reszponzív megjelenés & Az alkalmazás különböző képernyőméreteken is használható marad. & Sikeres \\ \hline 
+\end{tabularx} 
+\caption{Felhasználói felület tesztelési ellenőrzőlista} \label{tab:ui-tests} 
 \end{table}
-\fi
+
 \subsection{Nem funkcionális tesztek}
-% Válaszidő (NFK-1), böngészők (NFK-3), reszponzivitás.
-\mbox{}
-\subsubsection{A követelmények és a tesztek kapcsolata - 8. Requirements Traceability}
+A funkcionális tesztek mellett nem-funkcionális tesztek is készültek
+amik azt vizsgálták, hogy az elkészült rendszer mennyire használható/megbízható.
+
+\subsubsection{Kompatibilitás}
+\begin{table}[H] \centering \small \begin{tabularx}{\textwidth}{|l|X|c|} \hline \textbf{Környezet} & \textbf{Vizsgálat} & \textbf{Eredmény} \\ \hline Google Chrome & Teljes funkcionalitás ellenőrzése & Sikeres \\ \hline Microsoft Edge & Teljes funkcionalitás ellenőrzése & Sikeres \\ \hline Mozilla Firefox & Teljes funkcionalitás ellenőrzése & Sikeres \\ \hline Mobil méretű viewport & Reszponzív megjelenés ellenőrzése & Sikeres \\ \hline \end{tabularx} \caption{Böngésző-kompatibilitási tesztek} \label{tab:browser-compatibility} \end{table}
+  \subsubsection{Teljesítmény (NFK-1)}
+
+A teljesítményvizsgálatok
+az algoritmusok futási idejére készültek. A mérések a \texttt{node:perf\_hooks}
+modul \texttt{performance.now()} függvényével készültek, a \texttt{performance.test.ts}
+fájlban, a többi automatizált teszttel együtt lesz futtatva.
+
+\begin{lstlisting}
+test("CYK nagy bemeneten megfelelő idő alatt fut", () => {
+    const input = "a".repeat(50);
+    const start = performance.now();
+    cyk(largeGrammar, input);
+    const elapsed = performance.now() - start;
+    assert.ok(elapsed < 1000);
+});
+\end{lstlisting}
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{|l|X|}
+    \begin{tabularx}{\textwidth}{|l|X|r|r|c|}
         \hline
-        \textbf{Követelmény} & \textbf{Ellenőrzés módja} \\ \hline
-        FK-1, FK-2, FK-3 & integrációs teszt (tananyag), E2E teszt \\ \hline
-        FK-4 & egységteszt (lépéslisták), E2E teszt
-        (előre- és visszalépés) \\ \hline
-        FK-5 & egységteszt, integrációs teszt (bemenetek feldolgozása,
-        kereszt-ellenőrzés) \\ \hline
-        FK-6, NFK-2 & egységteszt (hibás bemenetek), E2E teszt \\ \hline
-        FK-7 & integrációs teszt (kvízkérdések), E2E teszt \\ \hline
-        FK-8 & E2E teszt (újratöltés után) \\ \hline
-        NFK-1, NFK-3 & nem funkcionális teszt \\ \hline
-        NFK-4 & a tesztpéldák az előadás jelölését követik \\ \hline
-        NFK-5 & a tesztek böngésző nélkül futtathatók \\ \hline
+        \textbf{Algoritmus} & \textbf{Tesztfeltétel} & \textbf{Határ} & \textbf{Mért idő} & \textbf{Eredmény} \\ \hline
+        CYK & 50 hosszú bemenet, 9 nemterminálisú CNF grammatika & 1000~ms & 49{,}8~ms & Sikeres \\ \hline
+        Determinizálás & 10 állapotú NDVA & 1000~ms & 10{,}1~ms & Sikeres \\ \hline
+        DFA minimalizálás & 20 állapotú DFA & 1000~ms & 2{,}7~ms & Sikeres \\ \hline
     \end{tabularx}
-    \caption{Követelmények és tesztelési szintek}
-    \label{tab:testtrace}
+    \caption{Algoritmusok teljesítményvizsgálata}
+    \label{tab:performance}
 \end{table}
-
-\subsection{Bugs Found and Fixes}
-
-\subsection{A tesztelés értékelése}
-\label{sec:testeval}
-% Lefedettség, ismert hibák, korlátok.
-\mbox{}
