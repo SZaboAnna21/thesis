@@ -44,12 +44,16 @@ export function SubsetPlayer({ nfa }: Props) {
   const player = usePlayer(steps ? steps.length + 1 : 1);
   const index = player.index;
 
+  const fresh = useMemo(
+    () => (index === 0 || !steps ? new Set<string>() : newTargets(steps, index - 1)),
+    [steps, index],
+  );
+
   if (!steps)
     return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
 
   const current = index === 0 ? undefined : steps[index - 1];
   const queue = current ? current.queue : [steps[0].row.set];
-  const fresh = useMemo(() => (index === 0 ? new Set<string>() : newTargets(steps, index - 1)), [steps, index]);
   const isLast = index === steps.length;
 
   return (
