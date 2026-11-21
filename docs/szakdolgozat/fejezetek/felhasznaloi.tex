@@ -1,70 +1,182 @@
 \chapter{Felhasználói dokumentáció}
 \label{ch:user}
 
-\section{A program célja}
-% 1--2 bekezdés: mit old meg a program, kinek szól, közérthetően.
+\section{A program célja} A webalkalmazás a Számításelmélet
+tantárgy hallgatói és a téma iránt érdeklődők számára készült. 
+Célja, hogy interaktív vizualizációk és eszközök segítségével támogassa
+a tananyag megértését. 
+Ez a fejezet a rendszer használatát a felhasználó szemszögéből 
+mutatja be, bemutatja a hozzáférés módját,
+az esetleges telepítési lépéseket, 
+valamint az egyes funkciók használatát példákon keresztül.
+A fejezet végül bemutatja a lehetséges hibaelhárítási lépéseket kontakinfókat
+ és az alkalmazás ismert korlátozásait.
+
 \mbox{}
 
 \section{Rendszerkövetelmények és indítás}
-
 \subsection{Rendszerkövetelmények}
-% Támogatott böngészők, hardverigény (nincs különösebb), internetkapcsolat.
+A rendszer online eléréséhez nincs különösebb hardverigény.
+Támogatott böngészők: Google Chrome, Microsoft Edge és Mozilla Firefox.
+Az online elérés internetkapcsolatot igényel, helyi futtatás esetén csak böngésző megléte a szükséges.
+
 \mbox{}
 
 \subsection{Az alkalmazás elérése}
-% Online URL (GitHub Pages).
+Az alkalmazás GitHub Pages-en van közzétéve, és az alábbi linken érhető el:
+\begin{center}
+  \url{https://szaboanna21.github.io/thesis/#/}
+\end{center}
+
 \mbox{}
 
 \subsection{Helyi futtatás}
-% Node.js és pnpm verzió, \texttt{pnpm install}, \texttt{pnpm dev}, böngészőben megnyitandó cím.
+A felület online hálozati elérés nélkül, lokálisan a felhasználó gépén is futtatható.
+
+Előkövetelmények a hoston:
+\begin{itemize}
+  \item \textbf{Node.js 24} (\url{https://nodejs.org})
+  \item \textbf{pnpm 12.6}: \texttt{npm install -g pnpm@12.6.0}
+\end{itemize}
+
+Ha az előkövetelményekben felsorolt 2 elem, már elérhető a host számítógépen a futtatás lépései a következők:
+\begin{enumerate}
+  \item A repository letöltése: \texttt{git clone <repository\_url>}
+  \item Függőségek telepítése a projekt gyökérkönyvtárából: \texttt{pnpm install}
+  \item Fejlesztői szerver indítása szintén a gyökérkönyvtárából: \texttt{pnpm -{}-filter web dev}
+  \item Az alkalmazás a böngészőben a \texttt{http://localhost:5173} címen érhető el.
+\end{enumerate}
+
 \mbox{}
 
 \section{A felület áttekintése}
 
 \subsection{Főoldal és navigáció}
-% Fejléc, lenyíló témakörlisták, képernyőkép.
+A fenti Az alkalmazás elérése szekcióban a link Az oldal főoldalára navigálja a felhasznalókat.
+Főoldal tartalmazza a rovid bemutato szoveget a fejlecben talalhatoak a navigacios menu. 
+Az oldal 2 db lenyilo menu-t tartalmaz. A  temakorok oldalak pedig ezen kereszul erhetoek, a szamitaselm 1 alatt a targy elso feleves anyagai talalhatoak a 2ben pedig a targy masodik feleves
+mint az eloadas elorehaladasat kovetik.
+A lenyilo listaban a pipajel jeloli a mar meglatogagott oldalt. Alul pedig a haladast mutatja x oldal a 16bol megnyitva pl.
+A szamitas elm alatt a kovetkezo oldala: \dots
+A szamitas elm 2 alatt pedig:
+A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic pagek kis haziko ikont jelnitenek meg ami a fore navigal vissza
+
+% Mit mutass be:
+%   - ragadós fejléc: FOTOC logó/ikon (home link), két lenyíló menü (Számításelmélet I / II), sötét–világos mód kapcsoló
+%   - a lenyíló lista: témakörök neve, pipajel (✓) a már megnyitottaknál, "Megnyitva: X / Y" számláló alul
+%   - a főoldal hero szövege (rövid leírás, mi a FOTOC, hogyan induljunk el)
+% Kérdések: Milyen témakörök érhetők el? Hogyan lehet navigálni közöttük? Mit lát a felhasználó első megnyitáskor?
+% Képernyőkép: főoldal + nyitott lenyíló menü
 \mbox{}
 
 \subsection{Egy témakör oldala}
-% Elméleti összefoglaló, \emph{Próbáld ki!}, \emph{Teszteld magad!} szakaszok, képernyőkép.
+% Mit mutass be:
+%   - morzsaútvonal fejléc (pl. "Számításelmélet I > Reguláris nyelvek > DFA")
+%   - nagy cím, alatta elméleti összefoglaló (TheoryRenderer rendereli: szöveg, képletek, definíciók)
+%   - "Próbáld ki!" szekció – az interaktív modul (nem minden témakörnek van)
+%   - "Teszteld magad!" szekció – kvízkérdések (nem minden témakörnek van)
+% Kérdések: Milyen típusú tartalmak jelennek meg az elméleti részben? Mi történik ha nincs modul / nincs kvíz?
+% Képernyőkép: egy teljes témakör oldal (pl. DFA), jelölve a három részt
 \mbox{}
 
-\subsection{Haladás és nyelvváltás}
-% Megnyitott témakörök jelölése, számláló, nyelv kiválasztása.
+\subsection{Haladás és témaváltás}
+% FIGYELEM: a kódban nincs nyelvváltás, csak sötét/világos mód váltás (ThemeToggle) – a szekciócimet érdemes javítani!
+% Mit mutass be:
+%   - a látogatás-követés működése: ha megnyitsz egy témakört, az automatikusan "megnyitottnak" jelölődik (localStorage)
+%   - a pipajel (✓) és a számláló a lenyíló menüben mutatja az előrehaladást
+%   - a sötét/világos mód gomb a fejlécben (nap/hold ikon), állapota szintén localStorage-ban tárolódik
+%   - az előrehaladás nem kötött bejelentkezéshez, csak böngészőhöz
+% Kérdések: Mikor tűnik fel a pipa? Mi történik ha másik böngészőben nyitom meg? Lehet-e alaphelyzetbe állítani?
 \mbox{}
 
 \section{A modulok használata}
-% Modulonként: mire jó, a bemenet formátuma, vezérlők, egy kidolgozott példa képernyőképpel.
+% Minden modulnál: mire jó, milyen bemenetet vár, milyen kimenet/vizualizáció jelenik meg, egy rövid példán keresztül.
+% Képernyőkép minden modulhoz ajánlott.
 
 \subsection{Determinisztikus véges automata szimulátor}
+% Mit mutass be: (DfaSimulator komponens)
+%   - előre betöltött DFA (pl. paritásautomata {a,b} felett)
+%   - szó megadása, lépésenkénti lejátszás (PlayerControls: lépés előre/hátra, lejátszás)
+%   - az aktuális állapot kiemelése a gráfon (AutomatonGraph), átmenetek animálása
+%   - elfogad/elutasít eredmény megjelenítése
+% Kérdések: Hogyan adható meg a bemeneti szó? Mit jelent a zöld/piros kiemelés? Hány lépésig megy vissza?
 \mbox{}
 
 \subsection{Nemdeterminisztikus véges automata}
+% Mit mutass be: (NfaLab komponens)
+%   - NFA megadása vagy példák közül választás (nfaExamples)
+%   - szó vizsgálata: az összes lehetséges futás megjelenítése (SubsetPlayer / NfaTable)
+%   - különbség a DFA-hoz képest: párhuzamos ágak, ε-átmenetek
+% Kérdések: Hogyan jelenik meg a nemdeterminizmus a vizualizációban? Hogyan kezeli az ε-átmeneteket?
 \mbox{}
 
 \subsection{Grammatikai levezetés}
+% Mit mutass be: (GrammarModule = GrammarInput + GrammarDerivation)
+%   - grammatika megadása: nemterminálisok, terminálisok, szabályok (pl. S → aSb | ε)
+%   - levezetés lépésenkénti megjelenítése egy adott szóra
+%   - három előre beállított példa: reguláris, CF és CS grammatika
+% Kérdések: Milyen formátumban kell megadni a szabályokat? Mi történik ha a szó nem vezethető le?
 \mbox{}
 
 \subsection{Chomsky-osztályozó}
+% Mit mutass be: (ChomskyClassifier komponens)
+%   - grammatika bevitele (szabályok)
+%   - automatikus osztályba sorolás (0–3-as típus) az összes Chomsky-feltétel ellenőrzésével
+%   - visszajelzés: melyik feltétel teljesül / nem teljesül
+% Kérdések: Milyen szabályformátumot fogad el? Megjeleníti-e a nem-teljesített feltételt?
 \mbox{}
 
 \subsection{3-as normálformára hozás}
+% Mit mutass be: (NormalForm3Visualizer komponens, Chomsky Normal Form / 3NF)
+%   - CF grammatika bevitele
+%   - az átalakítás lépéseinek vizualizálása (ε-szabályok, egységszabályok, hosszú szabályok eliminálása)
+%   - végeredmény: CNF-grammatika
+% Kérdések: Milyen lépésekre bontja az átalakítást? Melyik CNF-variánst használja a program?
 \mbox{}
 
 \subsection{Reguláris kifejezés ellenőrző}
+% Mit mutass be: (RegexChecker komponens, regexExercises feladatsorral)
+%   - feladatsor: adott feltételnek megfelelő reguláris kifejezés megadása
+%   - ellenőrzés: a beírt regex illeszkedik-e a megadott elfogadott/elutasított szavakra
+%   - vizuális visszajelzés helyes/helytelen megoldásra
+% Kérdések: Milyen regex szintaxist fogad el? Hogyan néz ki egy konkrét feladat?
 \mbox{}
 
 \subsection{Nyelvfelfedező és szójáték}
+% Mit mutass be: (LanguageExplorer + WordPlayground komponensek)
+%   - LanguageExplorer: automata vagy grammatika által generált/elfogadott szavak böngészése,
+%     szűrés hossz szerint, példaszavak listázása
+%   - WordPlayground: szabad szó-tesztelés – adott automatán vagy grammatikán próbálhat szavakat
+% Kérdések: Véges vagy végtelen szólistát mutat? Hogyan lehet szűrni? Mi a különbség a két almodul között?
 \mbox{}
 
 \section{Kvíz és önellenőrzés}
-% Kérdések nehézségi szintje, válaszadás, visszajelzés, összesítés.
+% Mit mutass be: (QuizView komponens)
+%   - kérdések két nehézségi szinten: "Könnyű" és "Nehezebb" csoportokba rendezve
+%   - egyszerű feleletválasztós kérdések (A/B/C/D gombok), egyszeri válasz lehetséges
+%   - azonnali visszajelzés: helyes válasz zölddel, helytelen piros + a helyes kiemelve
+%   - magyarázat szöveg minden kérdés után
+%   - összesítő sor: "Eredmény: X / N" + "Újrakezdés" gomb
+%   - eredmény localStorage-ban tárolódik, újra megnyitáskor visszatöltődik
+% Kérdések: Hány kérdés jelenik meg általában? Be lehet-e fejezni félúton és visszatérni?
 \mbox{}
 
 \section{Jelölések}
-% $\varepsilon$ beírása, ábécé megadása, nyilak, állapotok jelölése a programban.
+% Mit mutass be: az alkalmazásban használt beviteli konvenciók, amelyek eltérhetnek a papíros jelöléstől
+%   - üres szó (ε): a programban általában üres mezőként vagy "eps"/"epsilon" szövegként adható meg – pontosítsd!
+%   - ábécé megadása: vesszővel elválasztott karakterek (pl. a,b)
+%   - állapotok: tetszőleges szöveges azonosítók (pl. q0, q1)
+%   - átmenetek: táblázatos megadás vagy felsorolás – pontosítsd a konkrét formátumot!
+%   - matematikai kifejezések (KaTeX): hogyan jelennek meg a képletek a kérdésekben/elméletben
+% Kérdések: Hol fogad el ε-t a program? Hol kell pontosan a beviteli szintaxist bemutatni?
 \mbox{}
 
 \section{Hibaüzenetek és hibaelhárítás}
-% Gyakori hibaüzenetek, mit jelentenek, mit tegyen a felhasználó; ha az oldal nem töltődik be.
+% Mit mutass be:
+%   - tipikus felhasználói hibák: érvénytelen grammatikaszabály, nem letisztázott automata, üres mező
+%   - mit jelenít meg ilyenkor az alkalmazás (hibaüzenet szövege, piros keret stb.) – pontosítsd futtatással!
+%   - ha az oldal nem töltődik be: ellenőrizze az internetkapcsolatot (online), ill. a node/pnpm verziót (lokális)
+%   - ismert korlátok: nagyon nagy automaták lassabb megjelenítése, mobilon korlátozott élmény
+%   - kapcsolattartás / hibajelentés (GitHub Issues link vagy e-mail)
+% Kérdések: Vannak-e konkrét dobott hibaüzenetek a kódban? Milyen edge case-ek okoznak csöndes hibát?
 \mbox{}

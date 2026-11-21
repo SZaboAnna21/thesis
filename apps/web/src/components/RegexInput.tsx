@@ -34,7 +34,7 @@ export function RegexInput({ label, value, onChange, alphabet }: Props) {
       <div className="flex gap-2">
         <input
           ref={inputRef}
-          className={`w-full border p-2 font-mono ${state.ok ? "" : "border-red-400"}`}
+          className={`w-full border p-2 font-mono  ${state.ok ? "" : "border-red-400"}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           spellCheck={false}

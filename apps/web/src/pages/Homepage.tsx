@@ -10,10 +10,10 @@ export function Homepage() {
           Interaktív <span className="text-brand-600">vizualizációs</span> platform
         </h1>
         <p className="max-w-3xl text-lg leading-relaxed text-slate-600">
-          A FOTOC segít megérteni a formális nyelvek, automaták és a
-          kiszámíthatóság fogalmait. Minden témakörhöz rövid elméleti
-          összefoglaló és interaktív szimuláció tartozik, ahol saját
-          példákon próbálhatod ki, hogyan működnek az automaták.
+         Formális nyelvek, automaták, veremautomaták, Turing-gépek... azok a témák, amelyek előadást követve talán még logikusnak tűnnek, vizsga előtt pedig hirtelen már nem annyira.
+          Ez a felület interaktív szimulációkkal és rövid magyarázatokkal segít abban, hogy ne csak bemagold az anyagot, hanem lásd is működés közben. Kattints, kísérletezz, hibázz bátran, itt ezért nem jár pontlevonás.
+          A témakörök között szabadon navigálhatsz, kipróbálhatod a különböző automatákat saját példákon, vagy akár egy rövid kvízzel is ellenőrizheted a tudásodat.
+          És valljuk be: van valami elég menő abban, amikor valaki ilyen rétegtémákat is megért. Nem kell mindenkinek tudnia, hogyan működik egy Turing-gép, de aki érti, az azért kap néhány plusz intelligencia pontot. Let's get smart!
         </p>
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
           Válassz témát a fenti <span className="font-medium text-brand-700">Számításelmélet I</span> vagy{" "}
