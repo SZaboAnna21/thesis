@@ -5,12 +5,25 @@ import { PlayerControls } from "./PlayerControls";
 import { showSet } from "./showSet";
 import { usePlayer } from "./usePlayer";
 
+const defaultDfa: Dfa = {
+  states: ["q0", "q1", "q2", "q3"],
+  alphabet: ["a", "b"],
+  start: "q0",
+  accepting: ["q1", "q2"],
+  transitions: {
+    q0: { a: "q2", b: "q1" },
+    q1: { a: "q3", b: "q0" },
+    q2: { a: "q0", b: "q3" },
+    q3: { a: "q1", b: "q2" },
+  },
+};
+
 type Props = {
-  dfa: Dfa;
+  dfa?: Dfa;
   initialWord?: string;
 };
 
-export function DfaSimulator({ dfa, initialWord = "" }: Props) {
+export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
   const [word, setWord] = useState(initialWord);
   const automaton = useMemo(() => dfaToNfa(dfa), [dfa]);
   const run = useMemo(() => runDfa(dfa, word), [dfa, word]);

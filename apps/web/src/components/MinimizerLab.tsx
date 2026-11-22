@@ -40,7 +40,23 @@ function stateMarker(dfa: Dfa, state: State): string {
   return "";
 }
 
-export function MinimizerLab({ dfa }: { dfa: Dfa }) {
+const defaultDfa: Dfa = {
+  states: ["q0", "q1", "q2", "q3", "q4", "q5", "q6"],
+  alphabet: ["a", "b"],
+  start: "q0",
+  accepting: ["q2", "q5"],
+  transitions: {
+    q0: { a: "q1", b: "q3" },
+    q1: { a: "q4", b: "q2" },
+    q2: { a: "q4", b: "q3" },
+    q3: { a: "q4", b: "q0" },
+    q4: { a: "q1", b: "q5" },
+    q5: { a: "q1", b: "q0" },
+    q6: { a: "q2", b: "q6" },
+  },
+};
+
+export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
   const [result, setResult] = useState<MinimizeResult | null>(null);
   useEffect(() => {
     setResult(null);
