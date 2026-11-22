@@ -1,8 +1,7 @@
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Dfa, Grammer, NfaExample } from "@fotoc/automata-core";
 import { DfaSimulator } from "../components/DfaSimulator";
-import { GrammarInput } from "../components/InputGrammer";
-import { GrammarDerivation } from "../components/GrammarDerivation";
+import { GrammarModule } from "../components/GrammarModule";
 import { WordPlayground } from "../components/WordPlayground";
 import { LanguageExplorer } from "../components/LanguageExplorer";
 import { ChomskyClassifier } from "../components/ChomskyClassifier";
@@ -78,25 +77,10 @@ const anbnGrammar: Grammer = {
   start: "S",
 };
 
-function GrammarModule({ initial }: { initial: Grammer }) {
-  const [grammar, setGrammar] = useState<Grammer>(initial);
-
-  return (
-    <div className="space-y-4">
-      <GrammarInput initial={initial} onChange={setGrammar} />
-      <GrammarDerivation
-        key={JSON.stringify(grammar)}
-        grammer={grammar}
-        word={grammar.start}
-      />
-    </div>
-  );
-}
-
 const nfaExamples: NfaExample[] = [
   {
     id: "lecture-determinize",
-    title: "Jegyzet: determinizálás",
+    title: "Determinizálás",
     description: "Két kezdőállapot, és több helyen üres halmaz: ebből lesz a csapda.",
     nfa: {
       states: ["q0", "q1", "q2"],
@@ -112,7 +96,7 @@ const nfaExamples: NfaExample[] = [
   },
   {
     id: "lecture-3nf",
-    title: "Jegyzet: 3NF-ből NVDA",
+    title: "3NF-ből NVDA",
     description: "S → aA | aB | bB | ε, A → bS | bB, B → aS | aA | ε",
     nfa: {
       states: ["S", "A", "B"],
