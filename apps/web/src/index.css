@@ -18,7 +18,6 @@
     color-scheme: light;
   }
 
-  /* Sötét mód: a színskálák megfordulnak, így a komponensek osztályai változatlanok maradhatnak. */
   html.dark {
     color-scheme: dark;
 
@@ -101,7 +100,6 @@
   }
 }
 
-/* Normálforma-lejátszó: az új szabályok és csúcsok beúsznak. */
 @keyframes nf3-in {
   from {
     opacity: 0;

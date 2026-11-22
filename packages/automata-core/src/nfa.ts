@@ -8,6 +8,13 @@ export type Nfa = {
   accepting: string[];
 };
 
+export type NfaExample = {
+  id: string;
+  title: string;
+  description: string;
+  nfa: Nfa;
+};
+
 export type SubsetRow = {
   set: string[];
   next: Record<string, string[]>;

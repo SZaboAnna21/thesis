@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { NfaExample } from "../modules/nfaExamples";
+import type { NfaExample } from "@fotoc/automata-core";
 import { SubsetPlayer } from "./SubsetPlayer";
 
 type Props = {

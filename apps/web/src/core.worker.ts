@@ -107,7 +107,6 @@ function computePdaPath(pda: Pda, word: string, mode: AcceptMode) {
   return { path, accepted: accepted !== null, truncated: run.truncated };
 }
 
-// ---- CYK helper ----
 function computeCyk(grammar: Grammer, word: string) {
   const cnf = isChomskyNormalForm(grammar);
   if (!cnf.ok) return { cnf };

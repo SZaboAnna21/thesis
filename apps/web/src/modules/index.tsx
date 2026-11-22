@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import type { Dfa, Grammer } from "@fotoc/automata-core";
+import type { Dfa, Grammer, NfaExample } from "@fotoc/automata-core";
 import { DfaSimulator } from "../components/DfaSimulator";
 import { GrammarInput } from "../components/InputGrammer";
 import { GrammarDerivation } from "../components/GrammarDerivation";
@@ -10,7 +10,6 @@ import { RegexChecker } from "../components/RegexChecker";
 import { regexExercises } from "./regexExercises";
 import { NormalForm3Visualizer } from "../components/NormalForm3Visualizer";
 import { NfaLab } from "../components/NfaLab";
-import { nfaExamples } from "./nfaExamples";
 import { CykVisualizer } from "../components/CykVisualizer";
 import { PdaLab } from "../components/PdaLab";
 import { MinimizerLab } from "../components/MinimizerLab";
@@ -93,6 +92,41 @@ function GrammarModule({ initial }: { initial: Grammer }) {
     </div>
   );
 }
+
+const nfaExamples: NfaExample[] = [
+  {
+    id: "lecture-determinize",
+    title: "Jegyzet: determinizálás",
+    description: "Két kezdőállapot, és több helyen üres halmaz: ebből lesz a csapda.",
+    nfa: {
+      states: ["q0", "q1", "q2"],
+      alphabet: ["a", "b"],
+      starts: ["q0", "q1"],
+      accepting: ["q1", "q2"],
+      transitions: {
+        q0: { a: [], b: ["q1", "q2"] },
+        q1: { a: ["q0"], b: [] },
+        q2: { a: ["q1"], b: ["q2"] },
+      },
+    },
+  },
+  {
+    id: "lecture-3nf",
+    title: "Jegyzet: 3NF-ből NVDA",
+    description: "S → aA | aB | bB | ε, A → bS | bB, B → aS | aA | ε",
+    nfa: {
+      states: ["S", "A", "B"],
+      alphabet: ["a", "b"],
+      starts: ["S"],
+      accepting: ["S", "B"],
+      transitions: {
+        S: { a: ["A", "B"], b: ["B"] },
+        A: { a: [], b: ["S", "B"] },
+        B: { a: ["S", "A"], b: [] },
+      },
+    },
+  },
+];
 
 export const modules: Record<string, () => ReactNode> = {
   "dfa-simulator": () => <DfaSimulator dfa={parityDfa} initialWord="abba" />,

@@ -3,7 +3,6 @@ import { useSyncExternalStore } from "react";
 const VISITED_KEY = "fotoc.visitedTopics";
 const QUIZ_KEY = "fotoc.quizResults";
 
-// --- visited topics ---
 
 const visitedListeners = new Set<() => void>();
 
