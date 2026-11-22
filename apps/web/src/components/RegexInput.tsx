@@ -30,11 +30,15 @@ export function RegexInput({ label, value, onChange, alphabet }: Props) {
 
   return (
     <label className="block space-y-1">
-      <span className="text-sm text-gray-600">{label}</span>
-      <div className="flex gap-2">
+      <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{label}</span>
+      <div className="flex gap-1.5">
         <input
           ref={inputRef}
-          className={`w-full border p-2 font-mono  ${state.ok ? "" : "border-red-400"}`}
+          className={`w-full border rounded p-2 font-mono bg-white text-black dark:bg-gray-800 dark:text-white transition-shadow focus:outline-none ${
+            state.ok
+              ? "border-gray-300 dark:border-gray-600 focus:shadow-[0_0_0_1px_#3b82f6,0_0_12px_3px_rgba(59,130,246,0.35)] dark:focus:shadow-[0_0_0_1px_#60a5fa,0_0_16px_5px_rgba(96,165,250,0.4)]"
+              : "border-red-400 dark:border-red-500 focus:shadow-[0_0_0_1px_#f87171]"
+          }`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           spellCheck={false}
@@ -45,7 +49,7 @@ export function RegexInput({ label, value, onChange, alphabet }: Props) {
               key={symbol}
               type="button"
               onClick={() => insert(symbol)}
-              className="w-8 rounded border bg-gray-50 font-mono hover:bg-brand-50"
+              className="w-8 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-gray-200 font-mono text-sm hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
             >
               {symbol}
             </button>
@@ -53,11 +57,11 @@ export function RegexInput({ label, value, onChange, alphabet }: Props) {
         </div>
       </div>
       {state.ok ? (
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-gray-400 dark:text-gray-500">
           Értelmezés: <span className="font-mono">{regexToString(state.regex)}</span>
         </span>
       ) : (
-        <span className="text-xs text-red-600">{state.message}</span>
+        <span className="text-xs text-red-500 dark:text-red-400">{state.message}</span>
       )}
     </label>
   );

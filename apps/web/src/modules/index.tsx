@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { DfaSimulator } from "../components/DfaSimulator";
 import { GrammarModule, anbnGrammar, equalAbGrammar, anbncnGrammar } from "../components/GrammarModule";
 import { WordPlayground } from "../components/WordPlayground";
-import { LanguageExplorer } from "../components/LanguageExplorer";
 import { ChomskyClassifier } from "../components/ChomskyClassifier";
 import { RegexChecker } from "../components/RegexChecker";
 import { regexExercises } from "./regexExercises";
@@ -20,7 +19,6 @@ export const modules: Record<string, () => ReactNode> = {
   "cf-derivation": () => <GrammarModule initial={equalAbGrammar} />,
   "cs-derivation": () => <GrammarModule initial={anbncnGrammar} />,
   "word-playground": () => <WordPlayground />,
-  "language-explorer": () => <LanguageExplorer />,
   "chomsky-classifier": () => <ChomskyClassifier />,
   "regex-checker": () => <RegexChecker exercises={regexExercises} />,
   "nf3-converter": () => <NormalForm3Visualizer />,

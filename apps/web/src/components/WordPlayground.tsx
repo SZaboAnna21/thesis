@@ -7,7 +7,6 @@ type Props = {
   initialPower?: number;
 };
 
-//ures szo megjelenitese
 function show(word: string): ReactNode {
   return word === "" ? <span className="italic text-gray-400">ε</span> : word;
 }
@@ -65,7 +64,7 @@ export function WordPlayground({ initialWord = "abc", initialOther = "ba", initi
         <label className="block space-y-1">
           <span className="text-sm text-gray-600">Szó (u)</span>
           <input
-            className="border p-2 w-full font-mono"
+            className="border border-gray-300 dark:border-gray-600 p-2 w-full font-mono bg-white text-black dark:bg-gray-800 dark:text-white rounded transition-shadow focus:outline-none focus:shadow-[0_0_0_1px_#3b82f6,0_0_12px_3px_rgba(59,130,246,0.35)] dark:focus:shadow-[0_0_0_1px_#60a5fa,0_0_16px_5px_rgba(96,165,250,0.4)]"
             placeholder="pl. abc (üresen hagyva: ε)"
             value={word}
             onChange={(e) => setWord(e.target.value)}
@@ -76,7 +75,7 @@ export function WordPlayground({ initialWord = "abc", initialOther = "ba", initi
           <label className="block space-y-1 flex-1">
             <span className="text-sm text-gray-600">Második szó (v) a konkatenációhoz</span>
             <input
-              className="border p-2 w-full font-mono"
+              className="border border-gray-300 dark:border-gray-600 p-2 w-full font-mono bg-white text-black dark:bg-gray-800 dark:text-white rounded transition-shadow focus:outline-none focus:shadow-[0_0_0_1px_#3b82f6,0_0_12px_3px_rgba(59,130,246,0.35)] dark:focus:shadow-[0_0_0_1px_#60a5fa,0_0_16px_5px_rgba(96,165,250,0.4)]"
               placeholder="pl. ba"
               value={other}
               onChange={(e) => setOther(e.target.value)}
@@ -89,7 +88,7 @@ export function WordPlayground({ initialWord = "abc", initialOther = "ba", initi
               type="number"
               min={0}
               max={20}
-              className="border p-2 w-full font-mono"
+              className="border border-gray-300 dark:border-gray-600 p-2 w-full font-mono bg-white text-black dark:bg-gray-800 dark:text-white rounded transition-shadow focus:outline-none focus:shadow-[0_0_0_1px_#3b82f6,0_0_12px_3px_rgba(59,130,246,0.35)] dark:focus:shadow-[0_0_0_1px_#60a5fa,0_0_16px_5px_rgba(96,165,250,0.4)]"
               value={n}
               onChange={(e) => setN(Math.max(0, Math.min(20, Number(e.target.value) || 0)))}
             />
