@@ -67,7 +67,11 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
   const player = usePlayer(steps.length || 1);
 
   if (!result)
-    return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
+    return (
+      <div className="rounded-2xl border border-purple-100 bg-purple-50 p-6 text-center text-sm text-purple-400 dark:border-purple-600 dark:bg-purple-900/20">
+        Számítás…
+      </div>
+    );
 
   const step = steps[player.index];
 
@@ -80,16 +84,22 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
 
   return (
     <div
-      className="space-y-4 rounded border bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
+      className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-purple-400 dark:border-purple-600 dark:bg-slate-100"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
       <div>
-        <p className="mb-1 text-xs font-semibold uppercase text-gray-500">A kiinduló DVA</p>
-        <DfaTable dfa={dfa} highlighted={step.kind === "reach" ? reached : []} removed={removedShown ? result.removed : []} />
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
+          A kiinduló DVA
+        </p>
+        <DfaTable
+          dfa={dfa}
+          highlighted={step.kind === "reach" ? reached : []}
+          removed={removedShown ? result.removed : []}
+        />
       </div>
 
-      <div className="rounded border border-brand-200 bg-brand-50 p-3 text-sm">
+      <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 text-sm dark:border-purple-600 dark:bg-purple-900/40">
         {step.kind === "reach" && <ReachExplanation result={result} layer={step.layer} />}
         {step.kind === "remove" && <RemoveExplanation removed={result.removed} />}
         {step.kind === "round" && <RoundExplanation result={result} round={step.round} />}
@@ -99,8 +109,10 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
       {step.kind === "round" && <RoundTable dfa={dfa} result={result} round={step.round} />}
 
       {step.kind === "done" && (
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase text-gray-500">A minimális automata</p>
+        <div className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
+            A minimális automata
+          </p>
           <DfaTable dfa={result.minimal} />
           <AutomatonGraph automaton={dfaToNfa(result.minimal)} active={[]} />
         </div>
@@ -113,13 +125,13 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
 
 function DfaTable({ dfa, highlighted = [], removed = [] }: { dfa: Dfa; highlighted?: State[]; removed?: State[] }) {
   return (
-    <div className="overflow-x-auto rounded border bg-white p-3">
+    <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-slate-200">
       <table className="w-full text-center font-mono text-sm">
         <thead>
-          <tr className="bg-gray-50">
-            <th className="p-1"></th>
+          <tr className="bg-gray-50 dark:bg-slate-100">
+            <th className="p-2"></th>
             {dfa.alphabet.map((letter) => (
-              <th key={letter} className="p-1">
+              <th key={letter} className="p-2 text-gray-600 dark:text-slate-600">
                 {letter}
               </th>
             ))}
@@ -127,21 +139,23 @@ function DfaTable({ dfa, highlighted = [], removed = [] }: { dfa: Dfa; highlight
         </thead>
         <tbody>
           {dfa.states.map((state) => {
-            let rowStyle = "border-t";
-            if (highlighted.includes(state)) {
-              rowStyle += " bg-brand-100 font-semibold";
-            }
-            if (removed.includes(state)) {
-              rowStyle += " text-gray-400 line-through";
-            }
+            const isHighlighted = highlighted.includes(state);
+            const isRemoved = removed.includes(state);
             return (
-              <tr key={state} className={rowStyle}>
-                <td className="p-1 text-left">
-                  <span className="inline-block w-5 text-gray-500">{stateMarker(dfa, state)}</span>
+              <tr
+                key={state}
+                className={
+                  "border-t border-gray-100 dark:border-slate-200 " +
+                  (isHighlighted ? "bg-purple-50 font-semibold dark:bg-purple-900/30 " : "") +
+                  (isRemoved ? "text-gray-300 line-through dark:text-slate-400 " : "")
+                }
+              >
+                <td className="p-2 text-left">
+                  <span className="inline-block w-5 text-gray-400 dark:text-slate-500">{stateMarker(dfa, state)}</span>
                   {state}
                 </td>
                 {dfa.alphabet.map((letter) => (
-                  <td key={letter} className="p-1">
+                  <td key={letter} className="p-2">
                     {dfa.transitions[state][letter]}
                   </td>
                 ))}
@@ -161,8 +175,8 @@ function ReachExplanation({ result, layer }: { result: MinimizeResult; layer: nu
   if (layer === 0) {
     return (
       <>
-        <p className="font-semibold">1. lépés: összefüggővé alakítás</p>
-        <p className="mt-1">
+        <p className="font-semibold text-gray-900 dark:text-slate-900">1. lépés: összefüggővé alakítás</p>
+        <p className="mt-1 text-gray-700 dark:text-slate-700">
           A kezdőállapotból indulunk: <b className="font-mono">H₀ = {showSet(current)}</b>. Minden körben hozzávesszük
           azokat az állapotokat, ahová egy betűvel el lehet jutni.
         </p>
@@ -175,10 +189,10 @@ function ReachExplanation({ result, layer }: { result: MinimizeResult; layer: nu
 
   return (
     <>
-      <p className="font-mono">
+      <p className="font-mono text-gray-900 dark:text-slate-900">
         H<sub>{layer}</sub> = {showSet(current)}
       </p>
-      <p className="mt-1">
+      <p className="mt-1 text-gray-700 dark:text-slate-700">
         Új állapotok: <b className="font-mono">{added.join(", ")}</b>.
         {isLast && (
           <>
@@ -194,10 +208,10 @@ function ReachExplanation({ result, layer }: { result: MinimizeResult; layer: nu
 
 function RemoveExplanation({ removed }: { removed: State[] }) {
   if (removed.length === 0) {
-    return <p>Minden állapot elérhető, nincs mit elhagyni.</p>;
+    return <p className="text-gray-700 dark:text-slate-700">Minden állapot elérhető, nincs mit elhagyni.</p>;
   }
   return (
-    <p>
+    <p className="text-gray-700 dark:text-slate-700">
       A(z) <b className="font-mono">{removed.join(", ")}</b> állapotba semmi nem vezet, ezért az átmeneteivel együtt
       elhagyjuk.
     </p>
@@ -229,18 +243,18 @@ function RoundExplanation({ result, round }: { result: MinimizeResult; round: nu
     <>
       {round === 0 ? (
         <>
-          <p className="font-semibold">2. lépés: ekvivalens állapotok összevonása</p>
-          <p className="mt-1">
-            ∼₀ két osztálya a nem elfogadó és az elfogadó állapotok. Minden állapotnál felírjuk, hogy az egyes betűkre{" "}
+          <p className="font-semibold text-gray-900 dark:text-slate-900">2. lépés: ekvivalens állapotok összevonása</p>
+          <p className="mt-1 text-gray-700 dark:text-slate-700">
+            ∼₀ két osztálya a nem elfogadó és az elfogadó állapotok. Minden állapotban felírjuk, hogy az egyes betűkre{" "}
             <b>melyik osztályba</b> lép.
           </p>
         </>
       ) : (
-        <p className="font-semibold">
+        <p className="font-semibold text-gray-900 dark:text-slate-900">
           ∼<sub>{round}</sub> osztályaival ugyanezt megcsináljuk.
         </p>
       )}
-      <p className="mt-1">
+      <p className="mt-1 text-gray-700 dark:text-slate-700">
         Egy osztályon belül azok maradnak együtt, akiknek a sora megegyezik.{" "}
         {isLast ? (
           <b>
@@ -267,35 +281,37 @@ function RoundTable({ dfa, result, round }: { dfa: Dfa; result: MinimizeResult; 
   const rows = [...current.rows].sort((a, b) => newClassOf(a.state) - newClassOf(b.state));
 
   return (
-    <div className="overflow-x-auto rounded border bg-white p-3">
+    <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-slate-200">
       <table className="w-full text-center font-mono text-sm">
         <thead>
-          <tr className="bg-gray-50">
-            <th className="p-1">
+          <tr className="bg-gray-50 dark:bg-slate-100">
+            <th className="p-2 text-gray-600 dark:text-slate-600">
               ∼<sub>{round}</sub> osztály
             </th>
-            <th className="p-1">állapot</th>
+            <th className="p-2 text-gray-600 dark:text-slate-600">állapot</th>
             {dfa.alphabet.map((letter) => (
-              <th key={letter} className="p-1">
+              <th key={letter} className="p-2 text-gray-600 dark:text-slate-600">
                 {letter}
               </th>
             ))}
-            <th className="p-1">
+            <th className="p-2 text-gray-600 dark:text-slate-600">
               ∼<sub>{round + 1}</sub> osztály
             </th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.state} className="border-t">
-              <td className="p-1">{className(row.classIndex)}</td>
-              <td className="p-1">{row.state}</td>
+            <tr key={row.state} className="border-t border-gray-100 dark:border-slate-200">
+              <td className="p-2">{className(row.classIndex)}</td>
+              <td className="p-2">{row.state}</td>
               {dfa.alphabet.map((letter) => (
-                <td key={letter} className="p-1">
+                <td key={letter} className="p-2">
                   {className(row.signature[letter])}
                 </td>
               ))}
-              <td className="p-1 font-semibold text-brand-700">{showSet(after[newClassOf(row.state)])}</td>
+              <td className="p-2 font-semibold text-purple-700 dark:text-purple-300">
+                {showSet(after[newClassOf(row.state)])}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -307,8 +323,8 @@ function RoundTable({ dfa, result, round }: { dfa: Dfa; result: MinimizeResult; 
 function DoneExplanation({ result, original }: { result: MinimizeResult; original: Dfa }) {
   return (
     <>
-      <p className="font-semibold">Kész a minimális automata!</p>
-      <p className="mt-1">
+      <p className="font-semibold text-gray-900 dark:text-slate-900">Kész a minimális automata!</p>
+      <p className="mt-1 text-gray-700 dark:text-slate-700">
         {original.states.length} állapot helyett {result.minimal.states.length}. Minden osztályból egy állapot lett, és
         mindegy, melyik reprezentánsból olvassuk le az átmeneteket.
       </p>

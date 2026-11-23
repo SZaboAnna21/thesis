@@ -5,7 +5,7 @@ import { SubsetPlayer } from "./SubsetPlayer";
 const defaultExamples: NfaExample[] = [
   {
     id: "lecture-determinize",
-    title: "Determinizálás",
+    title: "Determinálás",
     description: "Két kezdőállapot, és több helyen üres halmaz: ebből lesz a csapda.",
     nfa: {
       states: ["q0", "q1", "q2"],
@@ -46,22 +46,24 @@ export function NfaLab({ examples = defaultExamples }: Props) {
   const example = examples.find((e) => e.id === exampleId)!;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg dark:border-purple-600 dark:bg-slate-100">
       <div className="flex flex-wrap gap-2">
         {examples.map((e) => (
           <button
             key={e.id}
             onClick={() => setExampleId(e.id)}
             className={
-              "rounded border px-3 py-1 text-sm " +
-              (e.id === exampleId ? "border-brand-500 bg-brand-50 text-brand-700" : "bg-white hover:bg-gray-50")
+              "rounded-xl border px-4 py-2 text-sm font-semibold transition-all " +
+              (e.id === exampleId
+                ? "border-purple-500 bg-purple-50 text-purple-700 dark:border-purple-400 dark:bg-purple-900/40 dark:text-purple-200"
+                : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 dark:border-slate-300 dark:bg-slate-50 dark:text-slate-600 dark:hover:bg-slate-100")
             }
           >
             {e.title}
           </button>
         ))}
       </div>
-      <p className="text-sm text-gray-600">{example.description}</p>
+      <p className="text-sm text-gray-600 dark:text-slate-600">{example.description}</p>
 
       <SubsetPlayer key={example.id} nfa={example.nfa} />
     </div>

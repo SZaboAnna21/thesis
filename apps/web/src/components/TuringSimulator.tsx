@@ -32,16 +32,6 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
-      <label className="flex flex-wrap items-center gap-3 text-sm">
-        <span className="font-semibold text-gray-700 dark:text-slate-700">Bemeneti szó:</span>
-        <input
-          value={word}
-          onChange={(e) => changeWord(e.target.value)}
-          placeholder="ε (üres szó)"
-          className="h-10 rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-gray-900 dark:text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
-        />
-      </label>
-
       <TuringGraph tm={tm} activeState={config.state} />
 
       <TapeView tape={config.tape} head={config.head} />
@@ -68,7 +58,7 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
           className={
             "rounded-2xl border p-4 text-sm font-sans " +
             (config.state === tm.acceptState
-              ? "border-green-300 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300"
+              ? "border-green-300 bg-green-50 dark:bg-green-900/20 text-green-900 dark:text-green-300"
               : "border-amber-300 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300")
           }
         >

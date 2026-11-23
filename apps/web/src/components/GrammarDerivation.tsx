@@ -77,11 +77,7 @@ export function GrammarDerivation({ grammer, word }: Props) {
   }
 
   return (
-    <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-white">Grammatika-levezetés</h3>
-      
-
-      <div className="grid gap-6 md:grid-cols-[22rem_1fr]">
+    <div className="grid gap-6 md:grid-cols-[22rem_1fr]">
         <div className="space-y-5">
 
           <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md">
@@ -180,6 +176,5 @@ export function GrammarDerivation({ grammer, word }: Props) {
           </ReactFlow>
         </div>
       </div>
-    </div>
   );
 }

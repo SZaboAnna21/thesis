@@ -23,6 +23,7 @@ type ParseError = { line: number; message: string };
 function parseTransitions(text: string): { transitions: TMTransition[]; errors: ParseError[] } {
   const transitions: TMTransition[] = [];
   const errors: ParseError[] = [];
+  const seen = new Set<string>();
 
   for (const [i, raw] of text.split("\n").entries()) {
     const line = raw.trim();
@@ -40,7 +41,11 @@ function parseTransitions(text: string): { transitions: TMTransition[]; errors: 
       continue;
     }
 
-    transitions.push({ from, read, to, write, dir: dirStr as Direction });
+    const key = `${from}|${read}|${to}|${write}|${dirStr}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      transitions.push({ from, read, to, write, dir: dirStr as Direction });
+    }
   }
 
   return { transitions, errors };
@@ -62,8 +67,12 @@ const DEFAULT_FIELDS: Fields = {
   blankSymbol: "□",
 };
 
+type Snapshot = { tm: TuringMachine; word: string };
+
 export function TuringLab() {
   const [fields, setFields] = useState<Fields>(DEFAULT_FIELDS);
+  const [word, setWord] = useState("");
+  const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
 
   const { transitions, errors } = useMemo(() => parseTransitions(fields.rules), [fields.rules]);
 
@@ -95,6 +104,10 @@ export function TuringLab() {
     setFields((f) => ({ ...f, ...changes }));
   }
 
+  function handleRun() {
+    if (ready) setSnapshot({ tm, word });
+  }
+
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
@@ -103,7 +116,7 @@ export function TuringLab() {
           <div className="grid gap-6 rounded-3xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-8 shadow-lg md:grid-cols-[1fr_14rem]">
             <label className="block">
               <span className="text-sm font-semibold text-gray-700 dark:text-slate-700">Átmenetek</span>
-              <span className="ml-2 text-xs text-gray-500 dark:text-slate-500">soronként „állapot szimbólum → állapot szimbólum irány"</span>
+              <span className="ml-2 text-xs text-gray-500 dark:text-slate-500">soronként „állapot szimbólum → állapot szimbólum irány”</span>
               <textarea
                 value={fields.rules}
                 onChange={(e) => update({ rules: e.target.value })}
@@ -127,17 +140,41 @@ export function TuringLab() {
               ))}
               {ready && (
                 <p className="text-xs text-gray-500 dark:text-slate-500">
-                  Q = {"{" + allStates.join(", ") + "}"} &nbsp;·&nbsp;
+                  Q = {"{" + allStates.join(", ") + "}"} &nbsp;&middot;&nbsp;
                   {transitions.length} átmenet
                 </p>
               )}
             </div>
+
+            {ready && (
+              <label className="flex flex-wrap items-center gap-3 text-sm md:col-span-2">
+                <span className="font-semibold text-gray-700 dark:text-slate-700">Bemeneti szó:</span>
+                <input
+                  value={word}
+                  onChange={(e) => setWord(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleRun(); }}
+                  placeholder="ε (üres szó)"
+                  className="h-10 rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-gray-900 dark:text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
+                />
+              </label>
+            )}
+
+            <div className="md:col-span-2">
+              <button
+                type="button"
+                onClick={handleRun}
+                disabled={!ready}
+                className="rounded-xl bg-purple-600 hover:bg-purple-700 active:bg-purple-800 disabled:opacity-40 disabled:cursor-not-allowed px-10 py-4 text-lg font-bold text-white shadow-lg shadow-purple-200 dark:shadow-purple-900 transition-all"
+              >
+                Futtat
+              </button>
+            </div>
           </div>
         </div>
 
-        {ready && (
+        {snapshot && (
           <div className="min-w-0 flex-1">
-            <TuringSimulator key={JSON.stringify(tm)} tm={tm} />
+            <TuringSimulator key={JSON.stringify(snapshot)} tm={snapshot.tm} initialWord={snapshot.word} />
           </div>
         )}
 

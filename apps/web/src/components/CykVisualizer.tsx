@@ -39,17 +39,29 @@ export function CykVisualizer() {
   const [word, setWord] = useState("aabbcc");
 
   return (
-    <div className="space-y-4">
-      <GrammarInput initial={lectureExample} onChange={setGrammar} />
+    <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+        <div className="lg:w-[36rem] lg:shrink-0 space-y-6">
+          <GrammarInput initial={lectureExample} onChange={setGrammar} />
 
-      <input
-        className="border p-2 w-full font-mono"
-        placeholder="Szó (üresen hagyva ε)"
-        value={word}
-        onChange={(e) => setWord(e.target.value.trim())}
-      />
+          <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-slate-700" htmlFor="cyk-word">
+              Vizsgált szó
+            </label>
+            <input
+              id="cyk-word"
+              className="h-14 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-4 text-lg font-mono text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
+              placeholder="Szó (üresen hagyva ε)"
+              value={word}
+              onChange={(e) => setWord(e.target.value.trim())}
+            />
+          </div>
+        </div>
 
-      <CykResultView key={JSON.stringify(grammar) + word} grammar={grammar} word={word} />
+        <div className="min-w-0 flex-1">
+          <CykResultView key={JSON.stringify(grammar) + word} grammar={grammar} word={word} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -67,11 +79,11 @@ function CykResultView({ grammar, word }: { grammar: Grammer; word: string }) {
     call<CykWorkerResult>("cyk", grammar, word).then(setData);
   }, [grammar, word]);
 
-  if (!data) return <p className="text-sm text-gray-400">Számítás…</p>;
+  if (!data) return <p className="text-sm text-purple-400 dark:text-purple-300">Számítás…</p>;
 
   if (!data.cnf.ok) {
     return (
-      <p className="text-sm text-red-600">
+      <p className="rounded-xl border border-amber-200 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/30 px-4 py-3 text-sm font-semibold text-amber-700 dark:text-amber-400">
         {showRule(data.cnf.rule)}: {data.cnf.reason}
       </p>
     );
@@ -79,7 +91,11 @@ function CykResultView({ grammar, word }: { grammar: Grammer; word: string }) {
 
   const result = data.result!;
   if (!result.ok) {
-    return <p className="text-sm text-red-600">{result.error}</p>;
+    return (
+      <p className="rounded-xl border border-red-200 dark:border-red-600 bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-400">
+        {result.error}
+      </p>
+    );
   }
 
   if (word === "") {
@@ -128,30 +144,30 @@ function CykPlayer({ word, table, steps, accepted, derivation }: PlayerProps) {
   }
 
   return (
-    <div className="space-y-4 rounded border bg-white p-4">
+    <div className="space-y-6 rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md">
       <CykTable word={word} table={table} steps={steps} current={current} selectedH={selectedSplit?.h} />
 
-      <div className="rounded border border-brand-200 bg-brand-50 p-3">
-        <p className="font-semibold">
+      <div className="rounded-xl border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/40 p-4">
+        <p className="font-semibold text-purple-800 dark:text-purple-200">
           H<sub>{step.i + 1},{step.j + 1}</sub> = {showSet(step.result)}
         </p>
 
         {step.i === step.j && (
-          <p className="mt-1 text-sm">
+          <p className="mt-1 text-sm text-purple-700 dark:text-purple-300">
             Azok a nemterminálisok, amelyekből van szabály a(z) <span className="font-mono">{word[step.i]}</span> betűre.
           </p>
         )}
 
         {step.splits.length > 0 && (
-          <div className="mt-2 space-y-1">
-            <p className="text-xs text-gray-500">
+          <div className="mt-3 space-y-1">
+            <p className="text-xs text-purple-500 dark:text-purple-400">
               A részszó minden kettévágását kipróbáljuk. Egy vágásra víve az egeret látszik a hozzá tartozó két cella.
             </p>
             {step.splits.map((split) => (
               <button
                 key={split.h}
                 type="button"
-                className="block w-full rounded border bg-white p-2 text-left font-mono text-sm hover:bg-gray-50"
+                className="block w-full rounded-xl border border-purple-200 dark:border-purple-700 bg-white dark:bg-slate-50 p-3 text-left font-mono text-sm text-purple-800 dark:text-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors"
                 onMouseEnter={() => setSelectedH(split.h)}
                 onMouseLeave={() => setSelectedH(null)}
                 onFocus={() => setSelectedH(split.h)}
@@ -165,10 +181,10 @@ function CykPlayer({ word, table, steps, accepted, derivation }: PlayerProps) {
         )}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <button
           type="button"
-          className="rounded border bg-white px-3 py-1 text-sm hover:bg-gray-50 disabled:opacity-40"
+          className="rounded-xl border border-purple-300 dark:border-purple-600 bg-white dark:bg-slate-50 px-4 py-2 text-sm font-semibold text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           disabled={current === 0}
           onClick={() => goTo(current - 1)}
         >
@@ -176,13 +192,13 @@ function CykPlayer({ word, table, steps, accepted, derivation }: PlayerProps) {
         </button>
         <button
           type="button"
-          className="rounded border border-brand-600 bg-brand-600 px-3 py-1 text-sm text-white disabled:opacity-40"
+          className="rounded-xl bg-purple-600 hover:bg-purple-700 active:bg-purple-800 px-4 py-2 text-sm font-bold text-white shadow-md shadow-purple-200 dark:shadow-purple-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           disabled={current === last}
           onClick={() => goTo(current + 1)}
         >
           Következő ▶
         </button>
-        <span className="text-sm tabular-nums text-gray-600">
+        <span className="rounded-full bg-purple-100 dark:bg-purple-800 px-2 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300 tabular-nums">
           {current + 1} / {steps.length}
         </span>
       </div>
@@ -213,15 +229,15 @@ function CykTable({ word, table, steps, current, selectedH }: TableProps) {
 
   function cellColor(i: number, j: number): string {
     if (i === step.i && j === step.j) {
-      return "bg-brand-600 text-white";
+      return "bg-purple-600 text-white";
     }
     if (selectedH !== undefined && i === step.i && j === selectedH) {
-      return "bg-amber-200";
+      return "bg-amber-200 dark:bg-amber-700/50";
     }
     if (selectedH !== undefined && i === selectedH + 1 && j === step.j) {
-      return "bg-green-200";
+      return "bg-green-200 dark:bg-green-700/50";
     }
-    return "";
+    return "bg-white dark:bg-slate-50 text-gray-900 dark:text-slate-900";
   }
 
   return (
@@ -230,7 +246,7 @@ function CykTable({ word, table, steps, current, selectedH }: TableProps) {
         <tbody>
           {lengths.map((length) => (
             <tr key={length}>
-              <th className="p-2 font-normal text-gray-500">{length}</th>
+              <th className="p-2 font-normal text-purple-400 dark:text-purple-300">{length}</th>
               {columns.map((i) => {
                 const j = i + length - 1;
                 if (j >= n) {
@@ -238,7 +254,7 @@ function CykTable({ word, table, steps, current, selectedH }: TableProps) {
                 }
                 const isDone = doneSteps.some((done) => done.i === i && done.j === j);
                 return (
-                  <td key={i} className={"min-w-16 border p-2 " + cellColor(i, j)}>
+                  <td key={i} className={"min-w-16 border border-purple-200 dark:border-purple-700 p-2 transition-colors " + cellColor(i, j)}>
                     {isDone ? showSet(table[i][j]) : ""}
                   </td>
                 );
@@ -248,7 +264,7 @@ function CykTable({ word, table, steps, current, selectedH }: TableProps) {
           <tr>
             <th />
             {columns.map((i) => (
-              <td key={i} className="p-2 font-semibold">
+              <td key={i} className="p-2 font-bold text-purple-700 dark:text-purple-300">
                 {word[i]}
               </td>
             ))}
@@ -271,16 +287,16 @@ function Answer({ word, accepted, derivation }: AnswerProps) {
 
   if (!accepted) {
     return (
-      <p className="rounded border p-3 text-sm text-red-600">
+      <div className="rounded-xl border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-400">
         {shownWord} ∉ L(G), mert a kezdőszimbólum nincs a csúcson.
-      </p>
+      </div>
     );
   }
 
   return (
-    <div className="rounded border p-3 text-sm">
-      <p className="text-green-700">{shownWord} ∈ L(G)</p>
-      <p className="mt-1 font-mono">{derivation?.join(" ⇒ ")}</p>
+    <div className="rounded-xl border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-3 text-sm">
+      <p className="font-semibold text-green-700 dark:text-green-400">{shownWord} ∈ L(G)</p>
+      {derivation && <p className="mt-1 font-mono text-green-800 dark:text-green-300">{derivation.join(" ⇒ ")}</p>}
     </div>
   );
 }

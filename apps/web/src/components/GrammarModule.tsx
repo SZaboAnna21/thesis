@@ -45,13 +45,19 @@ export function GrammarModule({ initial }: Props) {
   const [grammar, setGrammar] = useState<Grammer>(initial);
 
   return (
-    <div className="space-y-4">
-      <GrammarInput initial={initial} onChange={setGrammar} />
-      <GrammarDerivation
-        key={JSON.stringify(grammar)}
-        grammer={grammar}
-        word={grammar.start}
-      />
+    <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+        <div className="lg:w-[36rem] lg:shrink-0">
+          <GrammarInput initial={initial} onChange={setGrammar} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <GrammarDerivation
+            key={JSON.stringify(grammar)}
+            grammer={grammar}
+            word={grammar.start}
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -26,14 +26,10 @@ export function FormulaLab() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-        <div className="lg:w-[32rem] lg:shrink-0">
-          <FormulaInput label="Formula (¬ ~ !, ∧ &, ∨ |, → ->)" value={source} onChange={setSource} />
-        </div>
+      <div className="flex flex-col gap-8">
+        <FormulaInput label="Formula (&#172; ~ !, &#8743; &amp;, &#8744; |, &#8594; ->)" value={source} onChange={setSource} />
         {parsed.ok && (
-          <div className="min-w-0 flex-1">
-            <FormulaPlayer key={formulaToString(parsed.formula)} formula={parsed.formula} />
-          </div>
+          <FormulaPlayer key={formulaToString(parsed.formula)} formula={parsed.formula} />
         )}
       </div>
     </div>
@@ -67,52 +63,62 @@ function FormulaPlayer({ formula }: { formula: Formula }) {
 
   return (
     <div
-      className="space-y-6 rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+      className="outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
-      <div>
-        <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">Szerkezeti fa</p>
-        <SyntaxTree formula={formula} highlighted={current ? formulaToString(current) : null} />
-      </div>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
 
-      <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 p-4 text-sm text-gray-700 dark:text-slate-700">
-        {step.kind === "tree" && <TreeExplanation formula={formula} />}
-        {step.kind === "column" && <ColumnExplanation column={table.columns[step.column]} />}
-        {step.kind === "done" && <DoneExplanation table={table} />}
-      </div>
+        {/* Bal: fa + magyarázat + vezérlők */}
+        <div className="space-y-4 lg:w-80 lg:shrink-0">
+          <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-4 shadow-md">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">Szerkezeti fa</p>
+            <SyntaxTree formula={formula} highlighted={current ? formulaToString(current) : null} />
+          </div>
 
-      {step.kind === "done" && (
-        <div className="flex flex-wrap gap-2 text-sm">
-          <span className="self-center text-gray-600">Leolvasás:</span>
-          {(["none", "dnf", "knf"] as const).map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setReading(option)}
-              className={
-                "rounded-xl border px-4 py-2 text-sm font-semibold transition-all " +
-                (reading === option
-                  ? "border-purple-600 bg-purple-600 text-white shadow-md"
-                  : "border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 text-gray-700 dark:text-slate-700 hover:bg-purple-50 dark:hover:bg-purple-900/20")
-              }
-            >
-              {option === "none" ? "nincs" : option === "dnf" ? "DNF (igaz sorok)" : "KNF (hamis sorok)"}
-            </button>
-          ))}
+          <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 p-4 text-sm text-gray-700 dark:text-slate-700">
+            {step.kind === "tree" && <TreeExplanation formula={formula} />}
+            {step.kind === "column" && <ColumnExplanation column={table.columns[step.column]} />}
+            {step.kind === "done" && <DoneExplanation table={table} />}
+          </div>
+
+          <PlayerControls player={player} />
         </div>
-      )}
 
-      <TruthTableView
-        table={table}
-        filled={filled}
-        current={step.kind === "column" ? step.column : null}
-        reading={step.kind === "done" ? reading : "none"}
-      />
+        {/* Jobb: táblázat + leolvasás */}
+        <div className="min-w-0 flex-1 space-y-4">
+          {step.kind === "done" && (
+            <div className="flex flex-wrap gap-2 text-sm">
+              <span className="self-center text-gray-600 dark:text-slate-600">Leolvas&#225;s:</span>
+              {(["none", "dnf", "knf"] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setReading(option)}
+                  className={
+                    "rounded-xl border px-4 py-2 text-sm font-semibold transition-all " +
+                    (reading === option
+                      ? "border-purple-600 bg-purple-600 text-white shadow-md"
+                      : "border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 text-gray-700 dark:text-slate-700 hover:bg-purple-50 dark:hover:bg-purple-900/20")
+                  }
+                >
+                  {option === "none" ? "nincs" : option === "dnf" ? "DNF (igaz sorok)" : "KNF (hamis sorok)"}
+                </button>
+              ))}
+            </div>
+          )}
 
-      {step.kind === "done" && reading !== "none" && <ReadingResult table={table} reading={reading} />}
+          <TruthTableView
+            table={table}
+            filled={filled}
+            current={step.kind === "column" ? step.column : null}
+            reading={step.kind === "done" ? reading : "none"}
+          />
 
-      <PlayerControls player={player} />
+          {step.kind === "done" && reading !== "none" && <ReadingResult table={table} reading={reading} />}
+        </div>
+
+      </div>
     </div>
   );
 }

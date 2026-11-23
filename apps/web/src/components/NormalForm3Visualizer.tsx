@@ -40,15 +40,15 @@ export function NormalForm3Visualizer() {
   const [grammar, setGrammar] = useState<Grammer>(lectureExample);
 
   return (
-    <div className="space-y-8">
-      <div className="rounded-3xl bg-gradient-to-br from-purple-600 to-violet-700 px-8 py-10 shadow-lg">
-        <h2 className="text-3xl font-bold text-white">3-as normálforma</h2>
-        <p className="mt-2 text-purple-100">
-          A grammatika lépésről lépésre alakul át: hosszredukció, majd láncmentesítés. Játszd le automatikusan vagy lépj kézzel.
-        </p>
+    <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+        <div className="lg:w-[36rem] lg:shrink-0">
+          <GrammarInput initial={lectureExample} onChange={setGrammar} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <NormalForm3Player key={JSON.stringify(grammar)} grammar={grammar} />
+        </div>
       </div>
-      <GrammarInput initial={lectureExample} onChange={setGrammar} />
-      <NormalForm3Player key={JSON.stringify(grammar)} grammar={grammar} />
     </div>
   );
 }

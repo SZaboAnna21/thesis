@@ -41,23 +41,42 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
 
   return (
     <div
-      className="space-y-4 rounded border bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
+      className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-purple-400 dark:border-purple-600 dark:bg-slate-100"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
-      <label className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-semibold">Bemeneti szó:</span>
-        <input
-          value={word}
-          onChange={(e) => changeWord(e.target.value)}
-          placeholder="ε (üres szó)"
-          className="rounded border px-2 py-1 font-mono"
-        />
-        <span className="text-gray-500">Σ = {showSet(dfa.alphabet)}</span>
-      </label>
+      <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 dark:border-purple-600 dark:bg-purple-900/40">
+        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
+          Mit ismer fel ez az automata?
+        </p>
+        <p className="text-sm text-gray-700 dark:text-slate-700">
+          P&#225;ratlan hossz&#250; szavakat az <span className="font-mono">{"{a, b}"}</span> &#225;bc&#233; felett.
+          P&#233;ld&#225;ul elfogadja: <span className="font-mono">a, b, aab, aba, bba, bbb</span> &#8230;
+          Elutas&#237;tja: <span className="font-mono">&#949;, aa, ab, ba, bb, aaaa</span> &#8230;
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex-1 min-w-48">
+          <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-slate-700">
+            Bemeneti sz&#243;
+          </label>
+          <input
+            value={word}
+            onChange={(e) => changeWord(e.target.value)}
+            placeholder="&#949; (&#252;res sz&#243;)"
+            className="h-14 w-full rounded-xl border border-gray-200 bg-white px-4 font-mono text-lg text-gray-900 shadow-sm transition-shadow focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 dark:border-slate-200 dark:bg-slate-50 dark:text-slate-900 dark:focus:ring-purple-400"
+          />
+        </div>
+        <span className="pb-3 text-sm font-semibold text-gray-500 dark:text-slate-500 font-mono">
+          &#931; = {showSet(dfa.alphabet)}
+        </span>
+      </div>
 
       {run.invalidLetter !== undefined ? (
-        <p className="text-sm text-red-600">A(z) „{run.invalidLetter}” betű nem eleme az ábécének.</p>
+        <p className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+          A(z) &#8222;{run.invalidLetter}&#8221; bet&#369; nem eleme az &#225;b&#233;c&#233;nek.
+        </p>
       ) : (
         <>
           <WordButtons word={word} position={index} onPick={(k) => player.go(k + 1)} />
@@ -70,20 +89,21 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
             takenBefore={taken.slice(0, -1)}
           />
 
-          <div className="rounded border border-brand-200 bg-brand-50 p-3 text-sm">
+          <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 text-sm dark:border-purple-600 dark:bg-purple-900/40">
             {index === 0 ? (
-              <p>
-                <b>Indulás:</b> a kezdőállapotban vagyunk: <b className="font-mono">{state}</b>.
+              <p className="text-gray-900 dark:text-slate-900">
+                <b>Indul&#225;s:</b> a kezdő&#225;llapotban vagyunk:{" "}
+                <b className="font-mono">{state}</b>.
               </p>
             ) : (
-              <p>
-                <b>„{word[index - 1]}” beolvasása:</b>{" "}
+              <p className="text-gray-900 dark:text-slate-900">
+                <b>&#8222;{word[index - 1]}&#8221; beolvas&#225;sa:</b>{" "}
                 <span className="font-mono">
-                  δ({path[index - 1]}, {word[index - 1]}) = <b>{state}</b>
+                  &#948;({path[index - 1]}, {word[index - 1]}) = <b>{state}</b>
                 </span>
               </p>
             )}
-            <p className="mt-1 font-mono text-gray-700">
+            <p className="mt-1 font-mono text-gray-600 dark:text-slate-600">
               {path.map((s, k) => s + word.slice(k)).join(" ⇒ ")}
             </p>
           </div>
@@ -93,15 +113,17 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
           {isLast && (
             <p
               className={
-                "rounded border p-3 text-sm " +
+                "rounded-2xl border p-4 text-sm font-sans " +
                 (run.accepted
-                  ? "border-green-300 bg-green-50 text-green-800"
-                  : "border-amber-300 bg-amber-50 text-amber-800")
+                  ? "border-green-300 bg-green-50 text-green-800 dark:border-green-600 dark:bg-green-900/30 dark:text-green-200"
+                  : "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-600 dark:bg-amber-900/30 dark:text-amber-200")
               }
             >
-              {run.accepted
-                ? <>{state} elfogadó állapot, tehát az automata <b>elfogadja</b> a szót.</>
-                : <>{state} nem elfogadó állapot, tehát az automata <b>elutasítja</b> a szót.</>}
+              {run.accepted ? (
+                <><span className="font-mono">{state}</span> elfogad&#243; &#225;llapot, teh&#225;t az automata <b>elfogadja</b> a sz&#243;t.</>
+              ) : (
+                <><span className="font-mono">{state}</span> nem elfogad&#243; &#225;llapot, teh&#225;t az automata <b>elutas&#237;tja</b> a sz&#243;t.</>
+              )}
             </p>
           )}
         </>
@@ -111,7 +133,7 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
 }
 
 function WordButtons({ word, position, onPick }: { word: string; position: number; onPick: (k: number) => void }) {
-  if (word === "") return <p className="font-mono text-2xl text-gray-500">ε</p>;
+  if (word === "") return <p className="font-mono text-2xl text-gray-500 dark:text-slate-500">&#949;</p>;
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -122,12 +144,12 @@ function WordButtons({ word, position, onPick }: { word: string; position: numbe
           onClick={() => onPick(k)}
           title={`Ugrás a(z) ${k + 1}. betű utánra`}
           className={
-            "h-14 w-14 rounded-lg border-2 font-mono text-2xl transition-colors duration-300 " +
+            "h-14 w-14 rounded-xl border-2 font-mono text-2xl transition-all duration-300 " +
             (k === position - 1
-              ? "scale-110 border-brand-700 bg-brand-600 text-white shadow-md"
+              ? "scale-110 border-purple-700 bg-purple-600 text-white shadow-md dark:border-purple-400 dark:bg-purple-500"
               : k < position - 1
-                ? "border-brand-200 bg-brand-50 text-brand-700"
-                : "border-gray-300 bg-white text-gray-900 hover:bg-gray-50")
+                ? "border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-700 dark:bg-purple-900/40 dark:text-purple-200"
+                : "border-gray-300 bg-white text-gray-900 hover:bg-gray-50 dark:border-slate-300 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-100")
           }
         >
           {letter}

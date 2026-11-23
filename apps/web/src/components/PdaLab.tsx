@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   EPS,
   isDeterministic,
@@ -39,6 +39,26 @@ a q1 b -> q1
 const showStack = (stack: string[]) => (stack.length === 0 ? "ε" : stack.join(""));
 const splitList = (text: string) => text.split(",").map((s) => s.trim()).filter(Boolean);
 const addUnique = (list: string[], extra: string[]) => [...list, ...extra.filter((s) => s && !list.includes(s))];
+
+function dedupMoves(transitions: Pda["transitions"]): Pda["transitions"] {
+  const out: Pda["transitions"] = {};
+  for (const [z, byState] of Object.entries(transitions)) {
+    out[z] = {};
+    for (const [q, byLetter] of Object.entries(byState)) {
+      out[z][q] = {};
+      for (const [letter, moves] of Object.entries(byLetter)) {
+        const seen = new Set<string>();
+        out[z][q][letter] = moves.filter((m) => {
+          const key = m.next + "|" + m.push.join(",");
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+    }
+  }
+  return out;
+}
 
 function showRule(z: string, q: string, letter: string, move: PdaMove) {
   const left = letter === EPS ? `${z} ${q}` : `${z} ${q} ${letter}`;
@@ -87,6 +107,7 @@ export function PdaLab() {
   const pda: Pda = useMemo(
     () => ({
       ...parsed,
+      transitions: dedupMoves(parsed.transitions),
       Zsymbols: addUnique(parsed.Zsymbols, [fields.bottom]),
       Qstates: addUnique(parsed.Qstates, [fields.start, ...splitList(fields.accepting)]),
       z0startsymbol: fields.bottom,
@@ -98,77 +119,105 @@ export function PdaLab() {
 
   const ready = parsed.errors.length === 0 && fields.bottom !== "" && fields.start !== "";
 
+  type RunSnapshot = { pda: Pda; mode: AcceptMode; word: string };
+  const [snapshot, setSnapshot] = useState<RunSnapshot | null>(null);
+
   function update(changes: Partial<Fields>) {
     setFields({ ...fields, ...changes });
   }
 
+  function handleRun() {
+    if (ready) setSnapshot({ pda, mode: fields.mode, word });
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="grid gap-4 rounded border bg-white p-4 md:grid-cols-[1fr_14rem]">
-        <label className="block text-sm">
-          <span className="font-semibold">Szabályok</span>
-          <span className="ml-2 text-gray-500">soronként „z q a -&gt; u p”, ε-átmenetnél „z q -&gt; u p”</span>
-          <textarea
-            value={fields.rules}
-            onChange={(e) => update({ rules: e.target.value })}
-            spellCheck={false}
-            className="mt-1 h-48 w-full rounded border p-2 font-mono text-sm"
-          />
-        </label>
+    <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-center">
 
-        <div className="space-y-3 text-sm">
-          <Field label="Verem alja (z₀)" value={fields.bottom} onChange={(bottom) => update({ bottom: bottom.trim() })} />
-          <Field label="Kezdőállapot (q₀)" value={fields.start} onChange={(start) => update({ start: start.trim() })} />
-          <Field
-            label="Végállapotok (F)"
-            value={fields.accepting}
-            placeholder="q2, q3"
-            onChange={(accepting) => update({ accepting })}
-          />
-          <fieldset>
-            <legend className="font-semibold">Elfogadás</legend>
-            <ModeRadio mode="final-state" current={fields.mode} onChange={(mode) => update({ mode })}>
-              végállapottal, L(A)
-            </ModeRadio>
-            <ModeRadio mode="empty-stack" current={fields.mode} onChange={(mode) => update({ mode })}>
-              üres veremmel, N(A)
-            </ModeRadio>
-          </fieldset>
-        </div>
+        <div className="lg:w-[38rem] lg:shrink-0">
+          <div className="grid gap-6 rounded-3xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-8 shadow-lg md:grid-cols-[1fr_14rem]">
+            <label className="block">
+              <span className="text-sm font-semibold text-gray-700 dark:text-slate-700">Szabályok</span>
+              <span className="ml-2 text-xs text-gray-500 dark:text-slate-500">soronként "z q a -&gt; u p", ε-átmenetnél "z q -&gt; u p"</span>
+              <textarea
+                value={fields.rules}
+                onChange={(e) => update({ rules: e.target.value })}
+                spellCheck={false}
+                className="mt-2 h-48 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 p-3 font-mono text-sm text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400 resize-none"
+              />
+            </label>
 
-        <div className="space-y-1 text-sm md:col-span-2">
-          {parsed.errors.map((error) => (
-            <p key={error.line} className="text-red-600">
-              {error.line}. sor: {error.message}
-            </p>
-          ))}
-          {ready && (
-            <p className="text-gray-600">
-              Z = {showSet(pda.Zsymbols)}, Q = {showSet(pda.Qstates)}, Σ = {showSet(pda.inputSymbols)}.{" "}
-              {isDeterministic(pda) ? (
-                <span className="rounded bg-green-100 px-1.5 py-0.5 text-green-800">determinisztikus</span>
-              ) : (
-                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-800">nemdeterminisztikus</span>
+            <div className="space-y-4">
+              <Field label="Verem alja (z₀)" value={fields.bottom} onChange={(bottom) => update({ bottom: bottom.trim() })} />
+              <Field label="Kezdőállapot (q₀)" value={fields.start} onChange={(start) => update({ start: start.trim() })} />
+              <Field
+                label="Végállapotok (F)"
+                value={fields.accepting}
+                placeholder="q2, q3"
+                onChange={(accepting) => update({ accepting })}
+              />
+              <fieldset>
+                <legend className="text-sm font-semibold text-gray-700 dark:text-slate-700">Elfogadás</legend>
+                <ModeRadio mode="final-state" current={fields.mode} onChange={(mode) => update({ mode })}>
+                  végállapottal, L(A)
+                </ModeRadio>
+                <ModeRadio mode="empty-stack" current={fields.mode} onChange={(mode) => update({ mode })}>
+                  üres veremmel, N(A)
+                </ModeRadio>
+              </fieldset>
+            </div>
+
+            <div className="space-y-1 md:col-span-2">
+              {parsed.errors.map((error) => (
+                <p key={error.line} className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  {error.line}. sor: {error.message}
+                </p>
+              ))}
+              {ready && (
+                <p className="text-xs text-gray-500 dark:text-slate-500">
+                  Z = {showSet(pda.Zsymbols)}, Q = {showSet(pda.Qstates)}, Σ = {showSet(pda.inputSymbols)}.{" "}
+                  {isDeterministic(pda) ? (
+                    <span className="rounded-full bg-green-100 dark:bg-green-900/30 px-2 py-0.5 text-xs font-bold text-green-700 dark:text-green-300">determinisztikus</span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-300">nemdeterminisztikus</span>
+                  )}
+                </p>
               )}
-            </p>
-          )}
-        </div>
-      </div>
+            </div>
 
-      {ready && (
-        <>
-          <label className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="font-semibold">Bemeneti szó:</span>
-            <input
-              value={word}
-              onChange={(e) => setWord(e.target.value.trim())}
-              placeholder="ε (üres szó)"
-              className="rounded border px-2 py-1 font-mono"
-            />
-          </label>
-          <PdaRunView key={JSON.stringify(fields) + "|" + word} pda={pda} mode={fields.mode} word={word} />
-        </>
-      )}
+            {ready && (
+              <label className="flex flex-wrap items-center gap-3 text-sm md:col-span-2">
+                <span className="font-semibold text-gray-700 dark:text-slate-700">Bemeneti szó:</span>
+                <input
+                  value={word}
+                  onChange={(e) => setWord(e.target.value.trim())}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleRun(); }}
+                  placeholder="ε (üres szó)"
+                  className="h-10 rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-gray-900 dark:text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
+                />
+              </label>
+            )}
+
+            <div className="md:col-span-2">
+              <button
+                type="button"
+                onClick={handleRun}
+                disabled={!ready}
+                className="rounded-xl bg-purple-600 hover:bg-purple-700 active:bg-purple-800 disabled:opacity-40 disabled:cursor-not-allowed px-10 py-4 text-lg font-bold text-white shadow-lg shadow-purple-200 dark:shadow-purple-900 transition-all"
+              >
+                Futtat
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {snapshot && (
+          <div className="min-w-0 flex-1">
+            <PdaRunView key={JSON.stringify(snapshot)} pda={snapshot.pda} mode={snapshot.mode} word={snapshot.word} />
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }
@@ -186,12 +235,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="font-semibold">{label}</span>
+      <span className="text-sm font-semibold text-gray-700 dark:text-slate-700">{label}</span>
       <input
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded border px-2 py-1 font-mono"
+        className="mt-1 h-10 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-sm text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
       />
     </label>
   );
@@ -210,7 +259,7 @@ function ModeRadio({
 }) {
   return (
     <label className="mt-1 flex items-center gap-2">
-      <input type="radio" checked={mode === current} onChange={() => onChange(mode)} className="accent-brand-600" />
+      <input type="radio" checked={mode === current} onChange={() => onChange(mode)} className="accent-purple-600" />
       {children}
     </label>
   );
@@ -231,7 +280,7 @@ function PdaRunView({ pda, mode, word }: { pda: Pda; mode: AcceptMode; word: str
   const index = Math.min(player.index, path.length - 1);
 
   if (!pathResult)
-    return <div className="rounded border bg-white p-4 text-center text-sm text-gray-400">Számítás…</div>;
+    return <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md text-center text-sm text-gray-500 dark:text-slate-500">Számítás…</div>;
 
   const config = path[index];
   const position = readCount(path, index);
@@ -242,7 +291,7 @@ function PdaRunView({ pda, mode, word }: { pda: Pda; mode: AcceptMode; word: str
 
   return (
     <div
-      className="space-y-4 rounded border bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
+      className="space-y-6 rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
@@ -263,9 +312,9 @@ function PdaRunView({ pda, mode, word }: { pda: Pda; mode: AcceptMode; word: str
         takenBefore={taken.slice(0, -1)}
       />
 
-      <div className="rounded border border-brand-200 bg-brand-50 p-3 text-sm">
+      <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 p-4 text-sm text-gray-700 dark:text-slate-700">
         <StepExplanation config={config} />
-        <p className="mt-1 break-all font-mono text-gray-700">
+        <p className="mt-1 break-all font-mono text-gray-700 dark:text-slate-700">
           {path
             .slice(0, index + 1)
             .map((c, k) => (c.stack.length === 0 ? "" : c.stack.join("")) + c.state + word.slice(readCount(path, k)))
@@ -295,7 +344,7 @@ function Tape({ word, position }: { word: string; position: number }) {
 
   return (
     <div>
-      <p className="mb-1 text-xs font-semibold uppercase text-gray-500">Bemenet</p>
+      <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">Bemenet</p>
       <div className="flex flex-wrap gap-1">
         {[...word].map((letter, k) => (
           <span
@@ -303,10 +352,10 @@ function Tape({ word, position }: { word: string; position: number }) {
             className={
               "flex h-12 w-12 items-center justify-center rounded-lg border-2 font-mono text-xl transition-colors duration-300 " +
               (k === position
-                ? "border-brand-700 bg-brand-600 text-white shadow-md"
+                ? "border-purple-700 bg-purple-600 text-white shadow-md"
                 : k < position
-                  ? "border-brand-200 bg-brand-50 text-brand-400"
-                  : "border-gray-300 bg-white text-gray-900")
+                  ? "border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/40 text-purple-400 dark:text-purple-300"
+                  : "border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 text-gray-900 dark:text-slate-900")
             }
           >
             {letter}
@@ -320,7 +369,7 @@ function Tape({ word, position }: { word: string; position: number }) {
 function StackView({ stack, bottom }: { stack: string[]; bottom: string }) {
   return (
     <div>
-      <p className="mb-1 text-xs font-semibold uppercase text-gray-500">Verem (alja balra, teteje jobbra)</p>
+      <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">Verem (alja balra, teteje jobbra)</p>
       <div className="flex min-h-12 flex-wrap items-center gap-1">
         {stack.length === 0 && <span className="text-sm text-gray-500">üres a verem</span>}
         {stack.map((symbol, k) => (
@@ -329,10 +378,10 @@ function StackView({ stack, bottom }: { stack: string[]; bottom: string }) {
             className={
               "flex h-12 min-w-12 items-center justify-center rounded border-2 px-2 font-mono text-xl " +
               (k === stack.length - 1
-                ? "border-brand-700 bg-brand-600 text-white"
+                ? "border-purple-700 bg-purple-600 text-white"
                 : k === 0 && symbol === bottom
-                  ? "border-gray-400 bg-gray-100 text-gray-700"
-                  : "border-brand-300 bg-brand-50 text-brand-900")
+                  ? "border-gray-300 dark:border-slate-300 bg-gray-100 dark:bg-slate-200 text-gray-700 dark:text-slate-700"
+                  : "border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/40 text-purple-900 dark:text-purple-100")
             }
           >
             {symbol}
@@ -364,7 +413,7 @@ function StepExplanation({ config }: { config: PdaConfig }) {
   const z = from.stack[from.stack.length - 1];
   return (
     <p>
-      <b>{config.letter === EPS ? "ε-átmenet, nem olvasunk betűt:" : `„${config.letter}” beolvasása:`}</b>{" "}
+      <b>{config.letter === EPS ? "ε-átmenet, nem olvasunk betűt:" : `"${config.letter}" beolvasása:`}</b>{" "}
       <span className="font-mono">{showRule(z, from.state, config.letter, config.move)}</span>. {stackEffect(z, config.move)}
     </p>
   );
@@ -389,7 +438,7 @@ function Verdict({
 }) {
   if (accepted) {
     return (
-      <p className="rounded border border-green-300 bg-green-50 p-3 text-sm text-green-800">
+      <p className="rounded-2xl border border-green-300 bg-green-50 dark:bg-green-900/20 p-4 text-sm text-green-800 dark:text-green-300">
         {mode === "final-state"
           ? <>A szó elfogyott, és {config.state} végállapot, tehát az automata <b>elfogadja</b> a szót.</>
           : <>A szó elfogyott, és a verem üres, tehát az automata <b>elfogadja</b> a szót.</>}
@@ -400,7 +449,7 @@ function Verdict({
 
   if (truncated) {
     return (
-      <p className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+      <p className="rounded-2xl border border-amber-300 bg-amber-50 dark:bg-amber-900/20 p-4 text-sm text-amber-800 dark:text-amber-300">
         Nem sikerült eldönteni: az ε-átmenetek miatt túl nagyra nőtt a keresés (legfeljebb 50 hosszú verem,{" "}
         5000 konfiguráció).
       </p>
@@ -411,7 +460,7 @@ function Verdict({
   let reason: string;
   if (position < word.length) {
     reason =
-      `Minden ág elakadt. A legtovább jutó a(z) ${position + 1}. betűnél („${word[position]}”) állt meg: ` +
+      `Minden ág elakadt. A legtovább jutó a(z) ${position + 1}. betűnél ("${word[position]}") állt meg: ` +
       (top === undefined ? "üres veremmel nincs több lépés." : `${config.state} állapotban, ${top} veremtetővel nincs rá szabály.`);
   } else {
     reason =
@@ -421,7 +470,7 @@ function Verdict({
   }
 
   return (
-    <p className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+    <p className="rounded-2xl border border-amber-300 bg-amber-50 dark:bg-amber-900/20 p-4 text-sm text-amber-800 dark:text-amber-300">
       Az automata <b>elutasítja</b> a szót. {reason}
     </p>
   );
