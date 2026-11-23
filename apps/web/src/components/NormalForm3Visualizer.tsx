@@ -3,7 +3,7 @@ import { showRule, type Grammer, type Nf3Phase, type Nf3Result, type Nf3Step, ty
 import { call } from "../useCore";
 import { GrammarInput } from "./InputGrammer";
 
-// A jegyzet példája: van benne hosszú szabály, A → u szabály és kétlépéses lánc is.
+
 const lectureExample: Grammer = {
   nonterminals: ["S", "B", "V"],
   terminals: ["a", "b"],
@@ -40,7 +40,13 @@ export function NormalForm3Visualizer() {
   const [grammar, setGrammar] = useState<Grammer>(lectureExample);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
+      <div className="rounded-3xl bg-gradient-to-br from-purple-600 to-violet-700 px-8 py-10 shadow-lg">
+        <h2 className="text-3xl font-bold text-white">3-as normálforma</h2>
+        <p className="mt-2 text-purple-100">
+          A grammatika lépésről lépésre alakul át: hosszredukció, majd láncmentesítés. Játszd le automatikusan vagy lépj kézzel.
+        </p>
+      </div>
       <GrammarInput initial={lectureExample} onChange={setGrammar} />
       <NormalForm3Player key={JSON.stringify(grammar)} grammar={grammar} />
     </div>
@@ -55,9 +61,17 @@ function NormalForm3Player({ grammar }: { grammar: Grammer }) {
   }, [grammar]);
 
   if (!result)
-    return <p className="text-sm text-gray-400">Számítás…</p>;
+    return (
+      <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 px-6 py-5 text-sm font-semibold text-purple-400 shadow-md">
+        Számítás…
+      </div>
+    );
   if (!result.ok)
-    return <p className="text-sm text-red-600">{result.message}</p>;
+    return (
+      <div className="rounded-2xl border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-6 py-4 text-sm font-semibold text-red-600 dark:text-red-400 shadow-md">
+        {result.message}
+      </div>
+    );
   return <Player steps={result.steps} />;
 }
 
@@ -77,7 +91,7 @@ function Player({ steps }: { steps: Nf3Step[] }) {
 
   const display = useMemo(() => displayRules(step), [step]);
 
-  // A legutóbbi H(A)-táblázat, hogy a láncmentesítés alatt végig látszódjon.
+
   const chainSets = steps
     .slice(0, i + 1)
     .reverse()
@@ -101,21 +115,22 @@ function Player({ steps }: { steps: Nf3Step[] }) {
 
   return (
     <div
-      className="space-y-4 rounded border bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
+      className="space-y-6 outline-none focus-visible:ring-2 focus-visible:ring-purple-300"
       tabIndex={0}
       onKeyDown={onKeyDown}
     >
-      <ol className="flex flex-wrap gap-1 text-xs">
+      {/* Fázisjelző */}
+      <ol className="flex flex-wrap gap-2">
         {PHASES.map((p, k) => (
           <li
             key={p.label}
             className={
-              "rounded px-2 py-1 " +
+              "rounded-xl px-4 py-2 text-sm font-semibold transition-colors " +
               (k === phaseIndex
-                ? "bg-brand-600 text-white"
+                ? "bg-purple-600 text-white shadow-md shadow-purple-200 dark:shadow-purple-900"
                 : k < phaseIndex
-                  ? "bg-brand-100 text-brand-700"
-                  : "bg-gray-100 text-gray-500")
+                  ? "border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300"
+                  : "border border-gray-200 dark:border-slate-300 bg-white dark:bg-slate-100 text-gray-400 dark:text-slate-500")
             }
           >
             {p.label}
@@ -123,58 +138,61 @@ function Player({ steps }: { steps: Nf3Step[] }) {
         ))}
       </ol>
 
-      <div className="rounded border border-brand-200 bg-brand-50 p-3">
-        <p className="font-semibold">{step.title}</p>
-        <p className="mt-1 text-sm">{step.explanation}</p>
+      {/* Lépés magyarázat */}
+      <div className="rounded-2xl border border-purple-200 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/30 px-6 py-5 shadow-md">
+        <p className="text-base font-bold text-purple-900 dark:text-purple-100">{step.title}</p>
+        <p className="mt-2 text-sm text-purple-800 dark:text-purple-200">{step.explanation}</p>
       </div>
 
-      <div className="space-y-3">
+      {/* Szabályok + lánctábla */}
+      <div className="space-y-4">
         <RuleList grammar={step.grammar} display={display} focus={step.focus} unreachable={step.unreachable} />
         {chainSets && step.phase !== "input" && step.phase !== "length" && (
           <ChainTable chainSets={chainSets} current={step.phase === "chain-closure" ? step.highlight?.[0] : undefined} />
         )}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <Button onClick={() => go(0)} disabled={i === 0} title="Elejére">⏮</Button>
-        <Button onClick={() => go(i - 1)} disabled={i === 0} title="Vissza (←)">◀</Button>
-        <Button onClick={togglePlay} title="Lejátszás / szünet (szóköz)" primary>
-          {isPlaying ? "⏸" : "▶"}
-        </Button>
-        <Button onClick={() => go(i + 1)} disabled={i === last} title="Előre (→)">▶|</Button>
-        <Button onClick={() => go(last)} disabled={i === last} title="Végére">⏭</Button>
+      {/* Vezérlők */}
+      <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 px-6 py-4 shadow-md">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button onClick={() => go(0)} disabled={i === 0} title="Elejére">⏮</Button>
+          <Button onClick={() => go(i - 1)} disabled={i === 0} title="Vissza (←)">◀</Button>
+          <Button onClick={togglePlay} title="Lejátszás / szünet (szóköz)" primary>
+            {isPlaying ? "⏸" : "▶"}
+          </Button>
+          <Button onClick={() => go(i + 1)} disabled={i === last} title="Előre (→)">▶|</Button>
+          <Button onClick={() => go(last)} disabled={i === last} title="Végére">⏭</Button>
 
-        <input
-          type="range"
-          min={0}
-          max={last}
-          value={i}
-          onChange={(e) => go(Number(e.target.value))}
-          className="min-w-24 flex-1 accent-brand-600"
-          aria-label="Lépés"
-        />
-        <span className="text-sm tabular-nums text-gray-600">
-          {i + 1} / {steps.length}
-        </span>
+          <input
+            type="range"
+            min={0}
+            max={last}
+            value={i}
+            onChange={(e) => go(Number(e.target.value))}
+            className="min-w-24 flex-1 accent-purple-600"
+            aria-label="Lépés"
+          />
+          <span className="text-sm tabular-nums font-semibold text-gray-600 dark:text-slate-600">
+            {i + 1} / {steps.length}
+          </span>
 
-        <select
-          className="rounded border p-1 text-sm"
-          value={speed}
-          onChange={(e) => setSpeed(Number(e.target.value))}
-          aria-label="Sebesség"
-        >
-          {SPEEDS.map((s) => (
-            <option key={s.ms} value={s.ms}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+          <select
+            className="rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-700 dark:text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            value={speed}
+            onChange={(e) => setSpeed(Number(e.target.value))}
+            aria-label="Sebesség"
+          >
+            {SPEEDS.map((s) => (
+              <option key={s.ms} value={s.ms}>{s.label}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );
 }
 
-// A lépés utáni szabályok, plusz az ebben a lépésben kiesők (áthúzva).
+
 function displayRules(step: Nf3Step): DisplayRule[] {
   const added = new Set(step.added.map(key));
   const current: DisplayRule[] = step.grammar.rules.map((rule) => ({
@@ -201,29 +219,29 @@ function RuleList({
     .filter((g) => g.rules.length > 0);
 
   return (
-    <div className="rounded border p-3 font-mono text-sm">
+    <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 px-6 py-4 font-mono shadow-md">
       {groups.map(({ n, rules }) => (
         <div
           key={n}
-          className="flex flex-wrap items-baseline gap-x-1 gap-y-1 py-0.5"
-          style={{ opacity: unreachable.includes(n) ? 0.4 : 1 }}
+          className="flex flex-wrap items-baseline gap-x-2 gap-y-1 py-1.5"
+          style={{ opacity: unreachable.includes(n) ? 0.35 : 1 }}
         >
-          <span className="w-10 shrink-0 text-right font-semibold">{n}</span>
-          <span className="text-gray-500">→</span>
+          <span className="w-10 shrink-0 text-right text-base font-bold text-purple-700 dark:text-purple-300">{n}</span>
+          <span className="text-gray-400 dark:text-slate-400">→</span>
           {rules.map((d, k) => {
             const isFocus = focus !== undefined && key(focus) === key(d.rule);
             return (
               <span key={`${key(d.rule)}:${d.status}`} className="flex items-baseline gap-1">
-                {k > 0 && <span className="text-gray-400">|</span>}
+                {k > 0 && <span className="text-gray-300 dark:text-slate-500">|</span>}
                 <span
                   title={showRule(d.rule)}
                   className={
-                    "rounded px-1 transition-colors duration-500 " +
+                    "rounded-lg px-2 py-0.5 text-base transition-colors duration-500 " +
                     (d.status === "added"
-                      ? "nf3-in bg-green-100 text-green-800"
+                      ? "nf3-in bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 font-semibold"
                       : d.status === "removed"
-                        ? "bg-red-50 text-red-600 line-through opacity-70"
-                        : "") +
+                        ? "bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 line-through opacity-60"
+                        : "text-gray-800 dark:text-slate-800") +
                     (isFocus ? " ring-2 ring-amber-400" : "")
                   }
                 >
@@ -244,29 +262,29 @@ function ChainTable({ chainSets, current }: { chainSets: Record<string, string[]
   const width = Math.max(...rows.map(([, layers]) => layers.length));
 
   return (
-    <div className="overflow-x-auto rounded border p-3">
+    <div className="overflow-x-auto rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 shadow-md">
       <table className="w-full text-center font-mono text-sm">
         <thead>
-          <tr className="bg-gray-50">
-            <th className="p-1 text-left">A</th>
+          <tr className="bg-purple-50 dark:bg-purple-900/20">
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-slate-700">A</th>
             {Array.from({ length: width }, (_, k) => (
-              <th key={k} className="p-1">
+              <th key={k} className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-slate-700">
                 H<sub>{k}</sub>
               </th>
             ))}
-            <th className="p-1">H(A)</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-slate-700">H(A)</th>
           </tr>
         </thead>
         <tbody>
           {rows.map(([A, layers]) => (
-            <tr key={A} className={"border-t " + (A === current ? "bg-brand-50" : "")}>
-              <td className="p-1 text-left font-semibold">{A}</td>
+            <tr key={A} className={"border-t border-gray-100 dark:border-slate-300 transition-colors " + (A === current ? "bg-purple-50 dark:bg-purple-900/20" : "hover:bg-gray-50 dark:hover:bg-slate-50/50")}>
+              <td className="px-4 py-3 text-left font-bold text-purple-700 dark:text-purple-300">{A}</td>
               {Array.from({ length: width }, (_, k) => (
-                <td key={k} className="p-1 text-gray-600">
+                <td key={k} className="px-4 py-3 text-gray-600 dark:text-slate-500">
                   {layers[k] ? `{${layers[k].join(",")}}` : ""}
                 </td>
               ))}
-              <td className="p-1 font-semibold">{`{${layers[layers.length - 1].join(",")}}`}</td>
+              <td className="px-4 py-3 font-semibold text-gray-900 dark:text-slate-900">{`{${layers[layers.length - 1].join(",")}}`}</td>
             </tr>
           ))}
         </tbody>
@@ -284,8 +302,10 @@ function Button({
       type="button"
       {...props}
       className={
-        "rounded border px-3 py-1 text-sm disabled:opacity-40 " +
-        (primary ? "border-brand-600 bg-brand-600 text-white" : "bg-white hover:bg-gray-50")
+        "rounded-xl px-4 py-2 text-base font-semibold shadow-sm transition-all disabled:cursor-not-allowed disabled:opacity-40 " +
+        (primary
+          ? "bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white shadow-purple-200 dark:shadow-purple-900"
+          : "border border-gray-200 dark:border-slate-300 bg-white dark:bg-slate-50 text-gray-700 dark:text-slate-700 hover:border-purple-300 hover:bg-purple-50")
       }
     />
   );

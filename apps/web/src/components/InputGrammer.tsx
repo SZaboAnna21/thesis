@@ -70,7 +70,11 @@ export function GrammarInput({ initial, onChange }: Props) {
   });
 
   function update(key: keyof Fields, value: string) {
-    const next = { ...fields, [key]: value };
+    let next = { ...fields, [key]: value };
+    if (key === "nonterminals") {
+      const nts = splitList(value);
+      if (nts.length > 0 && !nts.includes(next.start)) next = { ...next, start: nts[0] };
+    }
     setFields(next);
     const nonterminals = splitList(next.nonterminals);
     const terminals = splitList(next.terminals);
@@ -116,13 +120,15 @@ export function GrammarInput({ initial, onChange }: Props) {
         />
 
         <label className="text-sm font-semibold text-gray-700 dark:text-slate-700" htmlFor="start">Kezdőszimbólum:</label>
-        <input
+        <select
           id="start"
-          className="h-14 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-4 text-lg font-sans text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
-          placeholder="Kezdőszimbólum"
+          className="h-14 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-4 text-lg font-sans text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400 disabled:opacity-40"
           value={fields.start}
+          disabled={nonterminals.length === 0}
           onChange={(e) => update("start", e.target.value)}
-        />
+        >
+          {nonterminals.map(n => <option key={n} value={n}>{n}</option>)}
+        </select>
 
         <label className="self-start pt-4 text-sm font-semibold text-gray-700 dark:text-slate-700" htmlFor="rules">Szabályok:</label>
         <textarea
