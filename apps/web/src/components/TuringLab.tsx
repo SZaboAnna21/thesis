@@ -96,42 +96,52 @@ export function TuringLab() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="grid gap-4 rounded border bg-white p-4 md:grid-cols-[1fr_14rem]">
-        <label className="block text-sm">
-          <span className="font-semibold">Átmenetek</span>
-          <span className="ml-2 text-gray-500">soronként „állapot szimbólum → állapot szimbólum irány"</span>
-          <textarea
-            value={fields.rules}
-            onChange={(e) => update({ rules: e.target.value })}
-            spellCheck={false}
-            className="mt-1 h-52 w-full rounded border p-2 font-mono text-sm"
-          />
-        </label>
+    <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
 
-        <div className="space-y-3 text-sm">
-          <Field label="Kezdőállapot (q₀)" value={fields.startState} onChange={(v) => update({ startState: v.trim() })} />
-          <Field label="Elfogadó állapot (qᵢ)" value={fields.acceptState} onChange={(v) => update({ acceptState: v.trim() })} />
-          <Field label="Elutasító állapot (qₙ)" value={fields.rejectState} onChange={(v) => update({ rejectState: v.trim() })} />
-          <Field label="Blank szimbólum (□)" value={fields.blankSymbol} onChange={(v) => update({ blankSymbol: v.trim() })} />
+        <div className="lg:w-[38rem] lg:shrink-0">
+          <div className="grid gap-6 rounded-3xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-8 shadow-lg md:grid-cols-[1fr_14rem]">
+            <label className="block">
+              <span className="text-sm font-semibold text-gray-700 dark:text-slate-700">Átmenetek</span>
+              <span className="ml-2 text-xs text-gray-500 dark:text-slate-500">soronként „állapot szimbólum → állapot szimbólum irány"</span>
+              <textarea
+                value={fields.rules}
+                onChange={(e) => update({ rules: e.target.value })}
+                spellCheck={false}
+                className="mt-2 h-52 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 p-3 font-mono text-sm text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400 resize-none"
+              />
+            </label>
+
+            <div className="space-y-4">
+              <Field label="Kezdőállapot (q₀)" value={fields.startState} onChange={(v) => update({ startState: v.trim() })} />
+              <Field label="Elfogadó állapot (qᵢ)" value={fields.acceptState} onChange={(v) => update({ acceptState: v.trim() })} />
+              <Field label="Elutasító állapot (qₙ)" value={fields.rejectState} onChange={(v) => update({ rejectState: v.trim() })} />
+              <Field label="Blank szimbólum (□)" value={fields.blankSymbol} onChange={(v) => update({ blankSymbol: v.trim() })} />
+            </div>
+
+            <div className="space-y-1 md:col-span-2">
+              {errors.map((e) => (
+                <p key={e.line} className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  {e.line}. sor: {e.message}
+                </p>
+              ))}
+              {ready && (
+                <p className="text-xs text-gray-500 dark:text-slate-500">
+                  Q = {"{" + allStates.join(", ") + "}"} &nbsp;·&nbsp;
+                  {transitions.length} átmenet
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-1 text-sm md:col-span-2">
-          {errors.map((e) => (
-            <p key={e.line} className="text-red-600">
-              {e.line}. sor: {e.message}
-            </p>
-          ))}
-          {ready && (
-            <p className="text-gray-500">
-              Q = {"{" + allStates.join(", ") + "}"} &nbsp;·&nbsp;
-              {transitions.length} átmenet
-            </p>
-          )}
-        </div>
+        {ready && (
+          <div className="min-w-0 flex-1">
+            <TuringSimulator key={JSON.stringify(tm)} tm={tm} />
+          </div>
+        )}
+
       </div>
-
-      {ready && <TuringSimulator key={JSON.stringify(tm)} tm={tm} />}
     </div>
   );
 }
@@ -144,12 +154,12 @@ function Field({ label, value, onChange, placeholder }: {
 }) {
   return (
     <label className="block">
-      <span className="font-semibold">{label}</span>
+      <span className="text-sm font-semibold text-gray-700 dark:text-slate-700">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="mt-0.5 w-full rounded border px-2 py-1 font-mono text-sm"
+        className="mt-1 h-10 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-sm text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
       />
     </label>
   );

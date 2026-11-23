@@ -28,17 +28,17 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
 
   return (
     <div
-      className="space-y-4 rounded border bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-brand-200"
+      className="space-y-6 rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
-      <label className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-semibold">Bemeneti szó:</span>
+      <label className="flex flex-wrap items-center gap-3 text-sm">
+        <span className="font-semibold text-gray-700 dark:text-slate-700">Bemeneti szó:</span>
         <input
           value={word}
           onChange={(e) => changeWord(e.target.value)}
           placeholder="ε (üres szó)"
-          className="rounded border px-2 py-1 font-mono"
+          className="h-10 rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-3 font-mono text-gray-900 dark:text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
         />
       </label>
 
@@ -46,7 +46,7 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
 
       <TapeView tape={config.tape} head={config.head} />
 
-      <div className="rounded border border-brand-200 bg-brand-50 p-3 font-mono text-sm">
+      <div className="rounded-2xl border border-purple-100 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 p-4 font-mono text-sm text-gray-700 dark:text-slate-700">
         {player.index === 0 ? (
           <span>Kezdőállapot: <b>{config.state}</b></span>
         ) : appliedTransition ? (
@@ -66,10 +66,10 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
       {isLast && (
         <p
           className={
-            "rounded border p-3 text-sm " +
+            "rounded-2xl border p-4 text-sm font-sans " +
             (config.state === tm.acceptState
-              ? "border-green-300 bg-green-50 text-green-800"
-              : "border-amber-300 bg-amber-50 text-amber-800")
+              ? "border-green-300 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300"
+              : "border-amber-300 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300")
           }
         >
           {config.state === tm.acceptState ? (
@@ -85,15 +85,15 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
 
 function TapeView({ tape, head }: { tape: string[]; head: number }) {
   return (
-    <div className="flex gap-1 overflow-x-auto rounded border bg-gray-50 p-3">
+    <div className="flex gap-2 overflow-x-auto rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-4">
       {tape.map((cell, i) => (
         <div
           key={i}
           className={
-            "flex h-12 w-12 shrink-0 items-center justify-center rounded border-2 font-mono text-xl transition-colors duration-300 " +
+            "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-xl transition-colors duration-300 " +
             (i === head
-              ? "border-brand-700 bg-brand-600 text-white shadow-md"
-              : "border-gray-300 bg-white text-gray-900")
+              ? "border-purple-700 bg-purple-600 text-white shadow-md"
+              : "border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 text-gray-900 dark:text-slate-900")
           }
         >
           {cell}
