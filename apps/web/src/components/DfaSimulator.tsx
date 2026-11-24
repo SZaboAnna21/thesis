@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { dfaToNfa, runDfa, type Dfa } from "@fotoc/automata-core";
 import { AutomatonGraph } from "./AutomatonGraph";
 import { PlayerControls } from "./PlayerControls";
@@ -21,9 +21,10 @@ const defaultDfa: Dfa = {
 type Props = {
   dfa?: Dfa;
   initialWord?: string;
+  description?: ReactNode;
 };
 
-export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
+export function DfaSimulator({ dfa = defaultDfa, initialWord = "", description }: Props) {
   const [word, setWord] = useState(initialWord);
   const automaton = useMemo(() => dfaToNfa(dfa), [dfa]);
   const run = useMemo(() => runDfa(dfa, word), [dfa, word]);
@@ -40,22 +41,15 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
   }
 
   return (
+    <>
+      {description && (
+        <p className="mb-6 text-muted-foreground">{description}</p>
+      )}
     <div
       className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-purple-400 dark:border-purple-600 dark:bg-slate-100"
       tabIndex={0}
       onKeyDown={player.onKeyDown}
     >
-      <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 dark:border-purple-600 dark:bg-purple-900/40">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-400">
-          Mit ismer fel ez az automata?
-        </p>
-        <p className="text-sm text-gray-700 dark:text-slate-700">
-          P&#225;ratlan hossz&#250; szavakat az <span className="font-mono">{"{a, b}"}</span> &#225;bc&#233; felett.
-          P&#233;ld&#225;ul elfogadja: <span className="font-mono">a, b, aab, aba, bba, bbb</span> &#8230;
-          Elutas&#237;tja: <span className="font-mono">&#949;, aa, ab, ba, bb, aaaa</span> &#8230;
-        </p>
-      </div>
-
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex-1 min-w-48">
           <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-slate-700">
@@ -129,6 +123,7 @@ export function DfaSimulator({ dfa = defaultDfa, initialWord = "" }: Props) {
         </>
       )}
     </div>
+    </>
   );
 }
 

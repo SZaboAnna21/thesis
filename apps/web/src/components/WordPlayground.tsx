@@ -77,6 +77,7 @@ export function WordPlayground({ initialWord = "abc", initialOther = "ba", initi
   return (
     <div className="max-w-7xl mx-auto space-y-8 px-4 py-8">
         <h1 className="text-4xl font-extrabold tracking-tight font-sans">Szóműveletek</h1>
+        <p className="text-muted-foreground">Adj meg két szót és egy kitevőt, majd számítsd ki az összefűzésüket, hatványukat, tükörképüket és hosszukat.</p>
 
       <div className="rounded-3xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-8 shadow-lg">
         <form

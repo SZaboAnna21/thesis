@@ -22,7 +22,7 @@ export const theory: ContentBlock[] = [
   {
     type: "warning",
     text: {
-      hu: "A Church–Turing-tézis nem tétel, nem bizonyítható formálisan egyszerűen nem adtunk precíz definíciót az 'algoritmus' fogalmára. Elfogadásának indoka, hogy minden ismert algoritmikus modell ekvivalens a Turing-géppel.",
+      hu: "A Church–Turing-tézis nem tétel, nem bizonyítható formálisan egyszerűen nem adtunk precíz definíciót az 'algoritmus' fogalmára. Elfogadásának indoka, hogy minden ismert algoritmikus modell ekvivalens vagy gyengébb a Turing-géppel.",
     },
   },
   {

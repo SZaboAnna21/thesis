@@ -46,9 +46,9 @@ export function ChomskyClassifier() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Adj meg egy nyelvtant, majd checkold hogy melyik Chomsky-osztályba (0–3) tartozik, szabályonként kiértékelve!</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
 
-        {/* Bal: GrammarInput + KES */}
         <div className="lg:w-[36rem] lg:shrink-0 space-y-6">
           <GrammarInput initial={slideExample} onChange={setGrammer} />
 
@@ -73,7 +73,6 @@ export function ChomskyClassifier() {
           )}
         </div>
 
-        {/* Jobb: Eredmény + Szabályok */}
         <div className="min-w-0 flex-1 space-y-6">
           {!result.ok && (
             <div className="rounded-2xl border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-6 py-4 text-sm font-semibold text-red-600 dark:text-red-400">

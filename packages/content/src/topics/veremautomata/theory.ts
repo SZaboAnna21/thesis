@@ -186,11 +186,11 @@ export const theory: ContentBlock[] = [
     type: "list",
     ordered: true,
     items: [
-      { hu: "Döntsd el, mit számol vagy mit jegyez meg a verem (pl. a még pár nélküli betűket)." },
-      { hu: "A fázisokat állapotokkal különítsd el (pl. „még $a$-kat olvasunk” „már $b$-ket”)." },
-      { hu: "Minden (verem teteje, állapot, betű) hármasra írd fel, mi történjen, ami nem kell, arra ne legyen szabály." },
-      { hu: "A végén $\\varepsilon$-lépéssel ürítsd a vermet vagy lépj végállapotba, amikor a $z_0$ kerül felülre." },
-      { hu: "Ellenőrizd egy elfogadott és egy elutasított szóval." },
+      { hu: "Döntsd el, milyen információt tároljon a verem." },
+      { hu: "A feldolgozás különböző szakaszait külön állapotokkal jelöld." },
+      { hu: "Add meg az átmeneteket az aktuális állapot, a bemeneti jel és a verem teteje alapján." },
+      { hu: "A szó végén ürítsd ki a vermet vagy juss egy elfogadó állapotba." },
+      { hu: "Ellenőrizd a működést egy elfogadott és egy elutasított példán." },
     ],
   },
   {
@@ -199,7 +199,7 @@ export const theory: ContentBlock[] = [
       hu: "$\\{u \\in \\{a, b\\}^* \\mid N_a(u) = N_b(u)\\}$, üres veremmel",
     },
     content: {
-      hu: "A verem a pár nélküli betűket tárolja: ha a teteje ugyanaz a betű vagy $\\#$, pakolunk, ha a másik betű, levesszük. Minden $t \\in \\{a, b\\}$-re: $\\#qt \\to \\#tq$, $tqt \\to ttq$, $aqb \\to q$, $bqa \\to q$, és a végén $\\#q \\to q$. Ha egy betűhöz kettőt kell párosítani (pl. $N_a(u) = 2 \\cdot N_b(u)$), egy $b$-nél két $a$-t veszünk le, vagy két jelet pakolunk.",
+      hu: "yelvnél a verem a még ki nem párosított betűket tárolja. Ha egy betű megegyezik a verem tetejével, eltároljuk; ha a másik betű található felül, akkor levesszük azt. Így a verem mindig azokat a betűket tartalmazza, amelyekből eddig több szerepelt. A bemenet végén a szó pontosan akkor fogadható el, ha a verem kiürül.",
     },
   },
   {

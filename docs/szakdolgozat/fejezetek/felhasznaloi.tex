@@ -1,24 +1,15 @@
 \chapter{Felhasználói dokumentáció}
 \label{ch:user}
 
-\section{A program célja} A webalkalmazás a Számításelmélet
-tantárgy hallgatói és a téma iránt érdeklődők számára készült. 
-Célja, hogy interaktív vizualizációk és eszközök segítségével támogassa
-a tananyag megértését. 
-Ez a fejezet a rendszer használatát a felhasználó szemszögéből 
-mutatja be, bemutatja a hozzáférés módját,
-az esetleges telepítési lépéseket, 
-valamint az egyes funkciók használatát példákon keresztül.
-A fejezet végül bemutatja a lehetséges hibaelhárítási lépéseket kontakinfókat
- és az alkalmazás ismert korlátozásait.
-
+\section{A program célja} 
+Ez a fejezet a rendszer használatát mutatja be a felhasználó szemszögéből. Ismerteti az alkalmazás elérésének és telepítésének módját, bemutatja a főbb funkciókat, valamint segítséget nyújt azok használatához. A fejezet végén az ismert korlátozások, az elérhetőségi információk és a hibaelhárítással kapcsolatos tudnivalók találhatók.
 \mbox{}
 
 \section{Rendszerkövetelmények és indítás}
 \subsection{Rendszerkövetelmények}
 A rendszer online eléréséhez nincs különösebb hardverigény.
 Támogatott böngészők: Google Chrome, Microsoft Edge és Mozilla Firefox.
-Az online elérés internetkapcsolatot igényel, helyi futtatás esetén csak böngésző megléte a szükséges.
+z online változat használatához internetkapcsolat és egy támogatott böngésző szükséges. A helyi futtatáshoz ezen felül a 2.2.3 fejezetben ismertetett szoftverek telepítése is szükséges.
 
 \mbox{}
 
@@ -31,36 +22,109 @@ Az alkalmazás GitHub Pages-en van közzétéve, és az alábbi linken érhető 
 \mbox{}
 
 \subsection{Helyi futtatás}
-A felület online hálozati elérés nélkül, lokálisan a felhasználó gépén is futtatható.
+A felület internetkapcsolat nélkül, lokálisan is futtatható a felhasználó számítógépén.
 
-Előkövetelmények a hoston:
+A futtatáshoz az alábbi szoftverek szükségesek:
 \begin{itemize}
-  \item \textbf{Node.js 24} (\url{https://nodejs.org})
-  \item \textbf{pnpm 12.6}: \texttt{npm install -g pnpm@12.6.0}
-\end{itemize}
+  \item \textbf{Node.js 24} (\url{https://nodejs.org}), amely lehetővé teszi a JavaScript alapú alkalmazások futtatását a számítógépen.
+  \item 
+  \item \textbf{pnpm 12.6}: \texttt{npm install -g pnpm@12.6.0}, amely automatikusan telepíti és kezeli az alkalmazás működéséhez szükséges csomagokat.
 
-Ha az előkövetelményekben felsorolt 2 elem, már elérhető a host számítógépen a futtatás lépései a következők:
+Hogyha ezek már telepítve vannak, az alkalmazás az alábbi lépésekkel indítható el:
+
 \begin{enumerate}
-  \item A repository letöltése: \texttt{git clone <repository\_url>}
-  \item Függőségek telepítése a projekt gyökérkönyvtárából: \texttt{pnpm install}
-  \item Fejlesztői szerver indítása szintén a gyökérkönyvtárából: \texttt{pnpm -{}-filter web dev}
-  \item Az alkalmazás a böngészőben a \texttt{http://localhost:5173} címen érhető el.
+  \item A projekt forráskódjának letöltése: 
+  \begin{lstlisting} 
+    git clone https://github.com/SZaboAnna21/thesis.git
+  \end{lstlisting} 
+
+  \item Belépés a projekt könyvtárába: 
+  \begin{lstlisting} 
+    cd thesis/Fotoc-helper
+  \end{lstlisting} 
+  \item Az alkalmazás működéséhez szükséges csomagok telepítése:
+  \begin{lstlisting} 
+    pnpm install
+  \end{lstlisting} 
+  Ez a lépés automatikusan letölti a program futtatásához szükséges kiegészítő könyvtárakat.
+  \item Indítás: 
+  \begin{lstlisting} 
+    ppnpm --filter web dev
+  \end{lstlisting}  
+  \item A sikeres indítást követően az alkalmazás a böngészőből a \texttt{http://localhost:5173} címen érhető el.
 \end{enumerate}
 
 \mbox{}
+A helyi futtatás elsősorban fejlesztői vagy tesztelési célokat szolgál. 
+Azoknak a felhasználóknak, akik kizárólag használni szeretnék az alkalmazást, 
+elegendő az online változat megnyitása a 2.2.2 fejezetben szereplő címen.
 
 \section{A felület áttekintése}
 
 \subsection{Főoldal és navigáció}
-A fenti Az alkalmazás elérése szekcióban a link Az oldal főoldalára navigálja a felhasznalókat.
-Főoldal tartalmazza a rovid bemutato szoveget a fejlecben talalhatoak a navigacios menu. 
-Az oldal 2 db lenyilo menu-t tartalmaz. A  temakorok oldalak pedig ezen kereszul erhetoek, a szamitaselm 1 alatt a targy elso feleves anyagai talalhatoak a 2ben pedig a targy masodik feleves
-mint az eloadas elorehaladasat kovetik.
-A lenyilo listaban a pipajel jeloli a mar meglatogagott oldalt. Alul pedig a haladast mutatja x oldal a 16bol megnyitva pl.
-A szamitas elm alatt a kovetkezo oldala: \dots
-A szamitas elm 2 alatt pedig:
-A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic pagek kis haziko ikont jelnitenek meg ami a fore navigal vissza
+A fenti „Az alkalmazás elérése” szekcióban bemutatott hivatkozás a rendszer főoldalára navigálja a felhasználót.
+ A főoldal rövid ismertetőt tartalmaz az alkalmazás céljáról és használatáról, valamint innen indulva érhető el az összes témakör.
+A navigációt a lap tetején elhelyezett, minden oldalon elérhető fejléc biztosítja. 
+A fejléc bal oldalán található a házikó ikon, amely a főoldalra vezet vissza.
+ Mellette kettő lenyíló menü érhető el: 
+ \begin{itemize}
 
+    \item Számításelmélet I
+    \item Számításelmélet II.
+
+ \end{itemize}
+
+
+A Számításelmélet I menü az első féléves anyagot, míg a Számításelmélet II menü a második félév témaköreit tartalmazza.
+ A témakörök a menün belüli sorrendje az előadások haladását követik,
+ így a hallgatók a tananyag felépítésének megfelelően ezt szépen követve, járhatják be az egyes fejezeteket.
+
+ A lenyíló listában pici pipa jelöli azokat az oldalakat,
+  amelyeket a felhasználó már megnyitott.
+ A menü alján egy számláló mutatja a haladást, „Megnyitva: 3 / 16”, tájékoztatást adva arról, hogy az adott menüből, (számításelmélet I. vagy II. csoportból ) hány oldala került már megtekintésre/feldolgozásra.
+\begin{figure}[H] \centering \fbox{ \includegraphics[width=0.5\textwidth]{images/userdoksi_haladas.png} } \caption{A témakörválasztó menü haladáskövető funkciója} \label{fig:menu_haladas} \end{figure}
+
+
+\newpage
+A két menü által lefedett témakörök, interaktív moduljaik és kvízeik összefoglalása az alábbi táblázatban látható:
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{0.46\textwidth} p{0.46\textwidth}}
+\toprule
+\textbf{Számításelmélet I} & \textbf{Számításelmélet II} \\
+\midrule
+Alapok 1: ábécé, szavak, műveletek        & Nulladrendű és elsőrendű logika \\
+Alapok 2: nyelvek és műveleteik           & Turing-gépek \\
+Generatív grammatikák                     & Számosság és eldönthetetlenség \\
+Chomsky-hierarchia                        & Bonyolultsági osztályok \\
+Lineáris grammatikák és a 3-as normálforma & NP-teljesség \\
+Reguláris kifejezések                     & \\
+Determinisztikus véges automata           & \\
+Nemdeterminisztikus véges automata        & \\
+Minimális automata és Myhill--Nerode tétel & \\
+Reguláris kifejezések és automaták        & \\
+Kis Bar-Hillel lemma                      & \\
+Redukált grammatika és Chomsky-normálforma & \\
+CYK algoritmus                            & \\
+Veremautomata                             & \\
+Nagy Bar-Hillel lemma                     & \\
+Környezetfüggő és 0-típusú nyelvek        & \\
+\bottomrule
+\end{tabular}
+\caption{Az alkalmazásban elérhető témakörök}
+\label{tab:temakorok}
+\end{table}
+
+A fejlécben lévő ház ikonra kattintva a user bármikor, bármely oldalról, visszatérhet a főoldalra, így a navigáció a rendszer minden pontján egyszerűen elérhető.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/userdoksi_fooldal1.png}
+    \caption{Főoldal és megnyitott témakörválasztó menü (A Számításelmélet I)}
+    \label{fig:főoldal menü1}
+\end{figure}
 % Mit mutass be:
 %   - ragadós fejléc: FOTOC logó/ikon (home link), két lenyíló menü (Számításelmélet I / II), sötét–világos mód kapcsoló
 %   - a lenyíló lista: témakörök neve, pipajel (✓) a már megnyitottaknál, "Megnyitva: X / Y" számláló alul
@@ -77,21 +141,174 @@ A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic p
 %   - "Teszteld magad!" szekció – kvízkérdések (nem minden témakörnek van)
 % Kérdések: Milyen típusú tartalmak jelennek meg az elméleti részben? Mi történik ha nincs modul / nincs kvíz?
 % Képernyőkép: egy teljes témakör oldal (pl. DFA), jelölve a három részt
+
+A témakörök oldalai nagyjából mind egységes felépítést követnek.
+Az oldal tetején egy úgynevezett morzsaútvonal (breadcrumb) segíti a tájékozódást,
+ amely megmutatja, hogy a felhasználó a tananyag mely részén jár.
+ 
+A fejlécben található navigációs elemek a témakörök oldalain is elérhetők.
+ Segítségükkel a felhasználó bármikor visszatérhet a főoldalra, vagy átválthat egy másik témakörre.
+Az oldal fő részét az elméleti összefoglaló alkotja. 
+Ez tartalmazza az adott témakör megértéséhez szükséges definíciókat, tételeket, példákat, valamint matematikai képleteket és jelöléseket.
+
+Az elméleti tartalom célja, hogy röviden összefoglalja az előadások legfontosabb fogalmait, és alapot biztosítson az interaktív feladatok használatához.
+
+Egyes témakörök esetén az elméleti rész alatt egy „Próbáld ki!” szekció is megjelenik.
+
+Ez egy interaktív szimulációt vagy vizualizációt tartalmaz, amely lehetővé teszi a tananyag valamilyen gyakorlati kipróbálását.
+Egyes szimulációk saját példák megadását is lehetővé teszik, így a felhasználó a tananyag működését tetszőleges bemeneteken is kipróbálhatja, módosíthatja a bemenetet, és lépésről lépésre követheti az algoritmusok/automaták működését.
+
+Azoknál a témaköröknél, ahol ellenőrző kérdések állnak rendelkezésre, az oldal alján egy „Teszteld magad!” szekció található. A kvízkérdések segítségével a hallgató azonnali visszajelzést kaphat arról, hogy mennyire sajátította el az adott témakör anyagát.
+A kvízek elsősorban a szimulációval nehezebben szemléltethető, elméletibb témaköröknél jelennek meg
+. Minden témakör legalább egy kiegészítő elemet tartalmaz, amely vagy interaktív szimuláció, vagy kvíz formájában segíti a tanulást.
+
+
+A \ref{tab:temakorok}. táblázat összefoglalja az egyes témakörökhöz tartozó interaktív modulokat és kvízeket.
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{0.52\textwidth} p{0.26\textwidth} c}
+\toprule
+\textbf{Témakör} & \textbf{Interaktív modul} & \textbf{Kvíz} \\
+\midrule
+\multicolumn{3}{l}{\textit{Számításelmélet I}} \\
+\midrule
+Alapok 1: ábécé, szavak, műveletek        & Szójáték              & ---         \\
+Alapok 2: nyelvek és műveleteik           & Nyelvfelfedező        & \checkmark  \\
+Generatív grammatikák                     & Grammatikai levezetés & ---         \\
+Chomsky-hierarchia                        & Chomsky-osztályozó    & ---         \\
+Lineáris grammatikák és a 3-as normálforma & 3-as normálforma      & ---         \\
+Reguláris kifejezések                     & Regex ellenőrző       & ---         \\
+Determinisztikus véges automata           & DVA szimulátor        & ---         \\
+Nemdeterminisztikus véges automata        & NVDA labor            & ---         \\
+Minimális automata és Myhill--Nerode tétel & Minimalizáló          & ---         \\
+Reguláris kifejezések és automaták        & ---                   & \checkmark  \\
+Kis Bar-Hillel lemma                      & ---                   & \checkmark  \\
+Redukált grammatika és Chomsky-normálforma & CF levezetés          & \checkmark  \\
+CYK algoritmus                            & CYK vizualizátor      & ---         \\
+Veremautomata                             & Veremautomata labor   & ---         \\
+Nagy Bar-Hillel lemma                     & ---                   & \checkmark  \\
+Környezetfüggő és 0-típusú nyelvek        & ---                   & \checkmark  \\
+\midrule
+\multicolumn{3}{l}{\textit{Számításelmélet II}} \\
+\midrule
+Nulladrendű és elsőrendű logika           & Logika labor          & ---         \\
+Turing-gépek                              & Turing-gép szimulátor & ---         \\
+Számosság és eldönthetetlenség            & ---                   & \checkmark  \\
+Bonyolultsági osztályok                   & ---                   & \checkmark  \\
+NP-teljesség                              & ---                   & \checkmark  \\
+\bottomrule
+\end{tabular}
+\caption{Az alkalmazásban elérhető témakörök interaktív moduljaikkal és kvízeikkel}
+\label{tab:temakorok}
+\end{table}
+
 \mbox{}
 
-\subsection{Haladás és témaváltás}
-% FIGYELEM: a kódban nincs nyelvváltás, csak sötét/világos mód váltás (ThemeToggle) – a szekciócimet érdemes javítani!
-% Mit mutass be:
-%   - a látogatás-követés működése: ha megnyitsz egy témakört, az automatikusan "megnyitottnak" jelölődik (localStorage)
-%   - a pipajel (✓) és a számláló a lenyíló menüben mutatja az előrehaladást
-%   - a sötét/világos mód gomb a fejlécben (nap/hold ikon), állapota szintén localStorage-ban tárolódik
-%   - az előrehaladás nem kötött bejelentkezéshez, csak böngészőhöz
-% Kérdések: Mikor tűnik fel a pipa? Mi történik ha másik böngészőben nyitom meg? Lehet-e alaphelyzetbe állítani?
+\subsection{Haladáskövetés és megjelenés} 
+Az alkalmazás automatikusan nyomon követi, hogy a felhasználó melyik témaköröket nyitotta már meg. 
+Egy témakör első megnyitását követően a navigációs menüben egy pipa jelenik meg az adott oldal mellett a lenyíló mneüben.
+ A menü alján található számláló megmutatja, hogy az adott témakörcsoportból hány oldal került már megnyitásra.
+  Ez segítséget nyújt a tananyag feldolgozásának követésében. 
+  A fejléc jobb oldalán található nap/hold ikon segítségével a felhasználó bármikor válthat a világos és a sötét megjelenési mód között.
+ A választott beállítást az alkalmazás megjegyzi, ezért a következő megnyitáskor is ugyanaz a téma jelenik meg.
+  A haladási adatok és a megjelenési mód beállításai az adott böngészőben kerülnek tárolásra. 
+  Emiatt másik böngésző, incognito mód vagy eszköz használata esetén ezek az adatok nem kerülnek automatikusan átvitelre. 
+  A tárolt adatok a böngésző helyi adatainak törlésével visszaállíthatók alaphelyzetbe.
 \mbox{}
 
-\section{A modulok használata}
-% Minden modulnál: mire jó, milyen bemenetet vár, milyen kimenet/vizualizáció jelenik meg, egy rövid példán keresztül.
-% Képernyőkép minden modulhoz ajánlott.
+\section{Interakív modulok használata}
+Az alkalmazás több témakörhöz interaktív modult biztosít.
+ Ezek a modulok, az adott témakörhöz kapcsolódó automaták, algoritmusok és egyéb számításelméleti 
+ modellek kipróbálását biztosítja.
+A következő alfejezetekben az egyes interaktív modulok használata olvasható,
+ beleértve a megadható bemeneteket, a vezérlési lehetőségeket és az eredmények értelmezését.
+ 
+\newpage 
+\subsection{Szóműveletek}
+% Mit mutass be: (LanguageExplorer + WordPlayground komponensek)
+%   - LanguageExplorer: automata vagy grammatika által generált/elfogadott szavak böngészése,
+%     szűrés hossz szerint, példaszavak listázása
+%   - WordPlayground: szabad szó-tesztelés – adott automatán vagy grammatikán próbálhat szavakat
+% Kérdések: Véges vagy végtelen szólistát mutat? Hogyan lehet szűrni? Mi a különbség a két almodul között?
+Az első és talán a legegyszerűbb modul a legelső, vagyis az "Alapok 1: ábécé, szavak, műveletek" témát egészíti ki. 
+A modul az alábbi szóműveletek eredményét jeleníti meg egy megadott szó alapján: \begin{itemize} \item hossz ($|u|$), \item tükörkép ($u^R$), \item konkatenáció egy másik szóval ($uv$), \item hatványozás ($u^n$), \item prefixek és valódi prefixek, \item szuffixek és valódi szuffixek. \end{itemize}
+Mindkét szó és a kitevő input szövegmezőkben adható meg az eredmény a \emph{Számol} gombra frissül.
+ Az mintán az első szó \texttt{abc},
+ a második szó \texttt{ba}, a kitevő pedig \texttt{2}. 
+ A második szó csak a konkatenáció művelet eredményét befolyásolja. 
+ \begin{figure}[H] \centering 
+  \includegraphics[width=0.5\textwidth]{images/userdoksi_szomuveletek1.png} 
+  \caption{Példa bemenet a szóműveletek modulban} 
+  \label{fig:szomuveletek_input} 
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/userdoksi_szomuveletek2.png}
+\caption{A megadott bemenethez tartozó eredmények}
+    \label{fig:főoldal menü1}
+\end{figure}
+
+\newpage
+\subsection{Grammatikai levezetés}
+% Mit mutass be: (GrammarModule = GrammarInput + GrammarDerivation)
+%   - grammatika megadása: nemterminálisok, terminálisok, szabályok (pl. S → aSb | ε)
+%   - levezetés lépésenkénti megjelenítése egy adott szóra
+%   - három előre beállított példa: reguláris, CF és CS grammatika
+% Kérdések: Milyen formátumban kell megadni a szabályokat? Mi történik ha a szó nem vezethető le?
+
+A grammatikai levezetés modul a generatív grammatikák témakör gyakorlását segíti. A felhasználó saját nyelvtant adhat meg,
+szerkesztése során megadhatók a szabályok, a terminális és nemterminális szimbólumok halmaza, valamint a kezdőszimbólum. A szabályokat \texttt{A -> x | y} formában kell megadni, ahol a \texttt{->} jelöliA levezetés során a felhasználó kiválaszt egy alkalmazható szabályt, majd megadja, hogy az aktuális szó melyik előfordulására szeretné alkalmazni. Az aktuális szó minden lépés után frissül. A jobb oldali panelen a teljes levezetés gráfként követhető nyomon, ahol a csomópontok a közbülső szavakat jelölik. 
+Ha az aktuális szó már csak terminális szimbólumokat tartalmaz, a modul jelzi, hogy a levezetés befejeződött.
+A \emph{Vissza} gombbal az utolsó lépés visszavonható, az \emph{Újrakezdés} gombbal pedig a levezetés a kezdőszimbólumtól indítható újra.
+ \begin{figure}[H] \centering 
+  \includegraphics[width=1.0\textwidth]{images/userdoksi_grammatika.png} 
+  \caption{Grammatika module} 
+  \label{fig:szomuveletek_input} 
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/userdoksi_grammatika2.png}
+\caption{A levezetés menete}
+    \label{fig:főoldal menü1}
+\end{figure}
+
+
+
+\subsection{Chomsky-osztályozó}
+% Mit mutass be: (ChomskyClassifier komponens)
+%   - grammatika bevitele (szabályok)
+%   - automatikus osztályba sorolás (0–3-as típus) az összes Chomsky-feltétel ellenőrzésével
+%   - visszajelzés: melyik feltétel teljesül / nem teljesül
+% Kérdések: Milyen szabályformátumot fogad el? Megjeleníti-e a nem-teljesített feltételt?
+
+A Chomsky-osztályozó modul egy megadott grammatikáról állapítja meg, hogy melyik Chomsky-típusba
+ sorolható.
+
+A grammatika megadásának formátuma azonos a grammatikai levezetés modulnál leírtakkal a szabályok
+ (\texttt{A -> x | y}).
+A beírt grammatikát a modul azonnal elemzi: 
+minden egyes szabályhoz egy táblázatban mutatja meg, h
+ogy az a 0-s, 1-es, 2-es és 3-as típus feltételeit teljesíti-e ($\checkmark$ jel), vagy sem (--).
+
+Az 1-es típus (környezetérzékeny) esetén a modul a szabályokra rámutatva megjeleníti 
+a talált $u_1 A u_2 \to u_1 v u_2$ felbontást is (az egér ráhúzásával látható).
+Különleges esetet jelent a korlátozott $\varepsilon$-szabály (KES): 
+ha van $S \to \varepsilon$ szabály, 
+a modul külön ellenőrzi, hogy $S$ nem szerepel-e semmilyen szabály jobb oldalán; ha igen, a KES sérül, és a grammatika nem sorolható az 1-es típusba.
+Ezt a vizsgálatot egy külön sávban, szöveges magyarázattal mutatja be.
+
+Végeredményként a modul kiírja a grammatika típusát (pl. $\mathcal{G}_2$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/chomsky.png}
+\caption{Chomsky module a példabemenetre}
+    \label{fig:főoldal menü1}
+\end{figure}
+
 
 \subsection{Determinisztikus véges automata szimulátor}
 % Mit mutass be: (DfaSimulator komponens)
@@ -100,7 +317,20 @@ A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic p
 %   - az aktuális állapot kiemelése a gráfon (AutomatonGraph), átmenetek animálása
 %   - elfogad/elutasít eredmény megjelenítése
 % Kérdések: Hogyan adható meg a bemeneti szó? Mit jelent a zöld/piros kiemelés? Hány lépésig megy vissza?
-\mbox{}
+
+A modul egy determinisztikus véges automata (DVA) szimulátora, amely az automata futását lépésenkénti animációval jeleníti meg.
+A bemeneti szót egy szövegmezőbe kell beírni; az elfogadott ábécé ($\Sigma$) a mező mellett olvasható.
+Üres szó megadásához elegendő üresen hagyni a mezőt (az automata az $\varepsilon$ szóra is futtatható).
+
+A szimulátorban a bemeneti szó betűi nagy kattintható gombként jelennek meg, amelyek segítségével tetszőleges lépésre lehet ugrani.
+Az automata állapotát az állapotgráfon kiemelés jelzi: a már bejárt átmenetek halvány kékkel, az éppen aktuális átmenet élénk kékkel, az aktuális állapot pedig felemelt nézettel látható.
+Az aktuálisan feldolgozott betű és az átmenet $\delta(q, a) = q'$ formában egy információs sávban is megjelenik, illetve a teljes eddigi levezetési sor ($q_0 a_1 \Rightarrow q_1 a_2 \Rightarrow \ldots$) is folyamatosan frissül.
+
+A lejátszásvezérlő gombokkal (lépés előre, lépés hátra, lejátszás/megállítás, elejére/végére ugrás) az animáció tetszőlegesen irányítható; a billentyűzetről a bal/jobb nyílgombokkal is léptethető, szóközzel pedig lejátszható.
+Visszalépni tetszőleges korábbi lépésig lehet: a modul az összes lépést eltárolja, így nincs korlát.
+
+A leolvasás végén a modul zöld háttérrel jelzi az elfogadást (az utolsó állapot elfogadó), sárga háttérrel az elutasítást (az utolsó állapot nem elfogadó).
+Ha a beírt szóban ábécén kívüli betű szerepel, hibaüzenet jelenik meg, és a szimuláció nem indul el.
 
 \subsection{Nemdeterminisztikus véges automata}
 % Mit mutass be: (NfaLab komponens)
@@ -108,23 +338,18 @@ A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic p
 %   - szó vizsgálata: az összes lehetséges futás megjelenítése (SubsetPlayer / NfaTable)
 %   - különbség a DFA-hoz képest: párhuzamos ágak, ε-átmenetek
 % Kérdések: Hogyan jelenik meg a nemdeterminizmus a vizualizációban? Hogyan kezeli az ε-átmeneteket?
-\mbox{}
 
-\subsection{Grammatikai levezetés}
-% Mit mutass be: (GrammarModule = GrammarInput + GrammarDerivation)
-%   - grammatika megadása: nemterminálisok, terminálisok, szabályok (pl. S → aSb | ε)
-%   - levezetés lépésenkénti megjelenítése egy adott szóra
-%   - három előre beállított példa: reguláris, CF és CS grammatika
-% Kérdések: Milyen formátumban kell megadni a szabályokat? Mi történik ha a szó nem vezethető le?
-\mbox{}
+Ez a modul a nemdeterminisztikus véges automata (NDVA) és a részhalmazos determinizálás ($2^Q$-módszer) vizualizálására szolgál.
+Az oldal tetején előre beállított példák közül lehet választani gombokkal; minden példa más-más jelenséget emel ki (pl. $\varepsilon$-átmenetek, párhuzamos ágak).
 
-\subsection{Chomsky-osztályozó}
-% Mit mutass be: (ChomskyClassifier komponens)
-%   - grammatika bevitele (szabályok)
-%   - automatikus osztályba sorolás (0–3-as típus) az összes Chomsky-feltétel ellenőrzésével
-%   - visszajelzés: melyik feltétel teljesül / nem teljesül
-% Kérdések: Milyen szabályformátumot fogad el? Megjeleníti-e a nem-teljesített feltételt?
-\mbox{}
+A nemdeterminizmus vizualizálása a részhalmazos konstrukció lépésenkénti bemutatásával történik.
+Felül az NDVA átmeneti táblázata látható, kiemelve az éppen feldolgozott állapothalmazt.
+Alatta egy sor jelzi a még feldolgozásra váró részhalmazokat; a sor elejéről kivett halmaz a következő lépés kiindulópontja.
+A készülő DVA táblázata fokozatosan épül fel: minden lépésnél az új sor zölden jelenik meg, az újonnan felfedezett (eddig ismeretlen) részhalmazok pedig külön „új" felirattal vannak megjelölve.
+
+Az $\varepsilon$-átmeneteket a modul automatikusan kezeli: az állapothalmazhoz mindig hozzáveszi az $\varepsilon$-lezártat, és ez a lezárási lépés szöveges magyarázatban is megjelenik.
+A determinizálás végén összefoglaló üzenet mutatja, hány állapottal sikerült megoldani a feladatot az elméleti maximumhoz ($2^n$) képest, és ha volt csapdaállapot (üres halmaz), arra is felhívja a figyelmet.
+
 
 \subsection{3-as normálformára hozás}
 % Mit mutass be: (NormalForm3Visualizer komponens, Chomsky Normal Form / 3NF)
@@ -132,7 +357,21 @@ A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic p
 %   - az átalakítás lépéseinek vizualizálása (ε-szabályok, egységszabályok, hosszú szabályok eliminálása)
 %   - végeredmény: CNF-grammatika
 % Kérdések: Milyen lépésekre bontja az átalakítást? Melyik CNF-variánst használja a program?
-\mbox{}
+
+A normálforma-vizualizáló modul egy környezetfüggetlen grammatikát alakít Chomsky-normálformára (CNF), és az átalakítás minden közbülső lépését megmutatja.
+
+A grammatika bevitele a többi modulnál leírt formátumban történik.
+Az átalakítás két fő fázisra van bontva, amelyek a képernyő tetején lévő haladásjelzőn is követhetők:
+\begin{enumerate}
+  \item \textbf{Hosszredukció:} a háromszimbólumnál hosszabb jobb oldalak rövidítése segédnemterminálisok bevezetésével.
+  \item \textbf{Láncmentesítés:} az $A \to B$ alakú egységszabályok eltávolítása az $H(A)$ lánchalmazok kiszámításával, majd az örökölt szabályok bevezetésével és végül az egységszabályok törlésével.
+\end{enumerate}
+Minden lépésnél szöveges magyarázat írja le, mi történt; az újonnan bekerülő szabályok zöld kiemeléssel, az eltávolítottak áthúzva jelennek meg.
+A láncmentesítés alatt egy táblázat mutatja a $H_0(A), H_1(A), \ldots, H(A)$ halmazsorozatot minden nemterminálisra.
+
+A lejátszást a vezérlőgombokkal (elejére, vissza, lejátszás/megállítás, előre, végére) és a csúszkával lehet irányítani; a lejátszás sebessége is állítható (lassú/közepes/gyors).
+A végeredménynél az elérhetetlen nemterminálisok kiszürkítve látszanak, majd a végső CNF-grammatika marad a képernyőn.
+A program az előadáson tanított, lépéssorrend szerinti 3NF-variánst alkalmazza (hosszredukció, majd láncmentesítés).
 
 \subsection{Reguláris kifejezés ellenőrző}
 % Mit mutass be: (RegexChecker komponens, regexExercises feladatsorral)
@@ -140,15 +379,25 @@ A lenyilo menu minden oldalon elerheto, ha a user nem a fooldalon van, a topic p
 %   - ellenőrzés: a beírt regex illeszkedik-e a megadott elfogadott/elutasított szavakra
 %   - vizuális visszajelzés helyes/helytelen megoldásra
 % Kérdések: Milyen regex szintaxist fogad el? Hogyan néz ki egy konkrét feladat?
-\mbox{}
 
-\subsection{Nyelvfelfedező és szójáték}
-% Mit mutass be: (LanguageExplorer + WordPlayground komponensek)
-%   - LanguageExplorer: automata vagy grammatika által generált/elfogadott szavak böngészése,
-%     szűrés hossz szerint, példaszavak listázása
-%   - WordPlayground: szabad szó-tesztelés – adott automatán vagy grammatikán próbálhat szavakat
-% Kérdések: Véges vagy végtelen szólistát mutat? Hogyan lehet szűrni? Mi a különbség a két almodul között?
-\mbox{}
+A reguláris kifejezés ellenőrző modulban előre megírt feladatokra kell reguláris kifejezéssel megadni a leírt nyelvet.
+A feladatok között a képernyő tetején lévő sorszámozott gombokkal lehet váltani.
+
+A modulban az elméleti reguláris kifejezés szintaxisa érvényes: unió (\texttt{+}), lezárás (\texttt{*}), konkatenáció (egymás mellé írás), zárójelek csoportosításhoz.
+Példa: az $\{w \in \{a,b\}^* \mid w \text{ ``ab''-vel kezdődik}\}$ nyelv leírható az \texttt{ab(a+b)*} kifejezéssel.
+
+Az ellenőrzés nem mintaillesztéssel, hanem automatás módszerrel történik: a beírt kifejezésből és a referenciamegoldásból automatát épít a rendszer, majd megvizsgálja, hogy a kettő ugyanazt a nyelvet fogadja-e el.
+Ennek köszönhetően bármelyik ekvivalens kifejezés helyes megoldásnak minősül.
+Az ellenőrzés eredménye:
+\begin{itemize}
+  \item \textbf{Helyes:} a két kifejezés pontosan ugyanazt a nyelvet írja le.
+  \item \textbf{Nagyon valószínű, hogy helyes:} ha a feladatban a nyelv feltétellel van megadva (nem véges automataként), a rendszer csak adott hosszig tud ellenőrizni; ha eddig nem talált különbséget, ezt jelzi.
+  \item \textbf{Ellenpélda:} ha a kifejezés hibás, a rendszer megmutatja a legrövidebb szót, amelyben a jelölt és a helyes megoldás eltér, és leírja, hogy a jelölt kifejezés elfogadja-e azt a szót, miközben nem kellene, vagy fordítva.
+\end{itemize}
+Szintaktikai hiba esetén hibaüzenet jelenik meg.
+A feladathoz tipp és egy lehetséges megoldás is kérhető.
+
+
 
 \section{Kvíz és önellenőrzés}
 % Mit mutass be: (QuizView komponens)
