@@ -21,11 +21,6 @@ export function TuringSimulator({ tm, initialWord = "" }: Props) {
     ? tm.transitions.find((t) => t.from === prevConfig.state && t.read === prevConfig.tape[prevConfig.head]) ?? null
     : null;
 
-  function changeWord(value: string) {
-    setWord(value);
-    player.reset();
-  }
-
   return (
     <div
       className="space-y-6 rounded-2xl border border-purple-100 dark:border-purple-600 bg-white dark:bg-slate-100 p-6 shadow-md outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
