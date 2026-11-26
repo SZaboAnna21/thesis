@@ -96,6 +96,7 @@ export function RegexChecker({ exercises }: Props) {
 
   return (
     <div className="space-y-8">
+      <p className="text-muted-foreground">Válassz feladatot, majd próbáld meg reguláris kifejezéssel megadni a leírt nyelvet, amit a feladat kér!</p>
       <div className="flex flex-wrap gap-2">
         {exercises.map((ex, i) => (
           <button

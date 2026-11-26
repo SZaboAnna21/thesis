@@ -17,7 +17,7 @@ export const modules: Record<string, () => ReactNode> = {
   "dfa-simulator": () => (
     <DfaSimulator
       initialWord="abba"
-      description={<>Adj meg egy szót, és kövesd lépésről lépésre, ahogy az automata feldolgozza. Ez az automata páratlan hosszú szavakat ismer fel az <span className="font-mono">{"{a, b}"}</span> ábécé felett — pl. elfogadja: <span className="font-mono">a, aab, bbb</span>; elutasítja: <span className="font-mono">ε, aa, abba</span>.</>}
+      description={<>Adj meg egy szót, és kövesd lépésről lépésre, ahogy az automata feldolgozza. Ez az automata páratlan hosszú szavakat ismer fel az <span className="font-mono">{"{a, b}"}</span> ábécé felett!</>}
     />
   ),
   "grammar-derivation": () => <GrammarModule initial={anbnGrammar} />,

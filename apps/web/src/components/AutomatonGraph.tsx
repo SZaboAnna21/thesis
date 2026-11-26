@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   ReactFlow,
+  Controls,
   Handle,
   Position,
   BaseEdge,
@@ -146,7 +147,9 @@ export function AutomatonGraph({ automaton, active, visited = [], viaEps = [], t
         elementsSelectable={false}
         zoomOnScroll={false}
         preventScrolling={false}
-      />
+      >
+        <Controls showInteractive={false} showFitView={false} />
+      </ReactFlow>
     </div>
   );
 }

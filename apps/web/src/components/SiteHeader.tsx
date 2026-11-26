@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { topics, type Topic } from "@fotoc/content";
 import { useVisitedTopics } from "../progress";
 import { toggleTheme, useTheme } from "../theme";
@@ -68,14 +68,17 @@ function TopicDropdown({ label, items }: DropdownProps) {
               <ul className="max-h-[70vh] overflow-y-auto">
                 {items.map((topic) => (
                   <li key={topic.meta.id}>
-                    <Link to={`/topics/${topic.meta.id}`}
+                    <NavLink to={`/topics/${topic.meta.id}`}
                       onClick={() => setOpen(false)}
-                      className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-brand-50 hover:text-brand-700">
+                      className={({ isActive }) =>
+                        "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-brand-50 hover:text-brand-700 " +
+                        (isActive ? "bg-brand-100 text-brand-700 font-medium" : "text-slate-700")
+                      }>
                       {topic.meta.title.hu}
                       {visited.includes(topic.meta.id) && (
                         <span className="text-brand-600" title="Már megnyitottad">✓</span>
                       )}
-                    </Link>
+                    </NavLink>
                   </li>
                 ))}
               </ul>

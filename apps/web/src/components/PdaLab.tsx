@@ -132,6 +132,7 @@ export function PdaLab() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Add meg a veremautomata szabályait soronként, a veremalapot, a kezdőállapotot és az elfogadás módját (végállapot vagy üres verem), majd futtasd le a szimulációt a vizsgált szóra.</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-center">
 
         <div className="lg:w-[38rem] lg:shrink-0">

@@ -46,7 +46,7 @@ export function ChomskyClassifier() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
-      <p className="mb-6 text-muted-foreground">Adj meg egy nyelvtant, majd checkold hogy melyik Chomsky-osztályba (0–3) tartozik, szabályonként kiértékelve!</p>
+      <p className="mb-6 text-muted-foreground">Adj meg egy nyelvtant, majd checkold, hogy melyik Chomsky-osztályba (0–3) tartozik, szabályonként kiértékelve!</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
 
         <div className="lg:w-[36rem] lg:shrink-0 space-y-6">

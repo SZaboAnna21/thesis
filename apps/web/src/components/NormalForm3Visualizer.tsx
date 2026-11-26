@@ -41,6 +41,7 @@ export function NormalForm3Visualizer() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Adj meg egy környezetfüggetlen nyelvtant, és kövesd lépésről lépésre a 3-as normálformára-ra hozást: hosszredukciót, majd láncmentesítést.</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
         <div className="lg:w-[36rem] lg:shrink-0">
           <GrammarInput initial={lectureExample} onChange={setGrammar} />

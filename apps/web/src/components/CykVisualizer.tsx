@@ -40,6 +40,7 @@ export function CykVisualizer() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Konfigurálj grammatikát Chomsky-normálformában és add meg a vizsgált szót. Az algoritmus mutatja meg, hogy levezethető-e a szó a grammatikából!</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
         <div className="lg:w-[36rem] lg:shrink-0 space-y-6">
           <GrammarInput initial={lectureExample} onChange={setGrammar} />
@@ -53,8 +54,12 @@ export function CykVisualizer() {
               className="h-14 w-full rounded-xl border border-gray-200 dark:border-slate-200 bg-white dark:bg-slate-50 px-4 text-lg font-mono text-gray-900 dark:text-slate-900 shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:focus:ring-purple-400"
               placeholder="Szó (üresen hagyva ε)"
               value={word}
-              onChange={(e) => setWord(e.target.value.trim())}
+              maxLength={10}
+              onChange={(e) => setWord(e.target.value.trim().slice(0, 10))}
             />
+            {word.length >= 10 && (
+              <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">Maximum 10 karakter</p>
+            )}
           </div>
         </div>
 

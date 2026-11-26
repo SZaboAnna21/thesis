@@ -26,6 +26,7 @@ export function FormulaLab() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Írd be a logikai formulát (¬ ~ vagy !, ∧ &amp;, ∨ |, → -&gt;), majd kövesd lépésről lépésre az igazságtábla felépítését. A végén leolvashatod a formula osztályát (tautológia / kielégíthető / ellentmondás), valamint a DNF és KNF alakot.</p>
       <div className="flex flex-col gap-8">
         <FormulaInput label="Formula (&#172; ~ !, &#8743; &amp;, &#8744; |, &#8594; ->)" value={source} onChange={setSource} />
         {parsed.ok && (

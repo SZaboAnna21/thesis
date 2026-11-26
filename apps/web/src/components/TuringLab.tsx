@@ -110,6 +110,7 @@ export function TuringLab() {
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-[min(100vw,80rem)] px-4 sm:px-6">
+      <p className="mb-6 text-muted-foreground">Add meg az átmeneteket soronként (állapot szimbólum → állapot szimbólum irány), a kezdő- és elfogadó állapotokat, majd add meg a vizsgált szót és indítsd el a szimulációt. A szalag tartalma és a fej pozíciója lépésről lépésre követhető.</p>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
 
         <div className="lg:w-[38rem] lg:shrink-0">

@@ -83,6 +83,9 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
   const removedShown = step.kind !== "reach";
 
   return (
+    <div>
+     <p className="text-muted-foreground">A DVA minimalizálása két lépésben: 1. elérhetetlen állapotok elhagyása, 2. ekvivalens állapotok összevonása (Myhill–Nerode-tétel alapján). A ← → gombokkal vagy bal/jobb nyíllal léphetsz a lépések között.</p>
+
     <div
       className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-purple-400 dark:border-purple-600 dark:bg-slate-100"
       tabIndex={0}
@@ -119,6 +122,7 @@ export function MinimizerLab({ dfa = defaultDfa }: { dfa?: Dfa }) {
       )}
 
       <PlayerControls player={player} />
+    </div>
     </div>
   );
 }

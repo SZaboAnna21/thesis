@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
   ReactFlow,
+  Panel,
+  useReactFlow,
   Handle,
   Position,
   BaseEdge,
@@ -118,7 +120,7 @@ export function TuringGraph({ tm, activeState }: Props) {
   }));
 
   return (
-    <div className="h-72 rounded border bg-gray-50">
+    <div className="h-[26rem] rounded border bg-gray-50">
       <ReactFlow
         nodes={shownNodes}
         edges={buildEdges(tm, activeState, EDGE_STYLES[theme])}
@@ -134,7 +136,9 @@ export function TuringGraph({ tm, activeState }: Props) {
         elementsSelectable={false}
         zoomOnScroll={false}
         preventScrolling={false}
-      />
+      >
+        <ZoomControls />
+      </ReactFlow>
     </div>
   );
 }
@@ -216,6 +220,30 @@ function TmTransitionEdgeView({ source, target, data, markerEnd }: EdgeProps<TmT
         </div>
       </EdgeLabelRenderer>
     </>
+  );
+}
+
+function ZoomControls() {
+  const { zoomIn, zoomOut } = useReactFlow();
+  return (
+    <Panel position="bottom-right">
+      <div className="flex gap-1 mb-1 mr-1">
+        <button
+          type="button"
+          onClick={() => zoomIn({ duration: 200 })}
+          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 bg-white text-base font-bold text-gray-600 shadow-sm hover:bg-gray-100"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          onClick={() => zoomOut({ duration: 200 })}
+          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 bg-white text-base font-bold text-gray-600 shadow-sm hover:bg-gray-100"
+        >
+          −
+        </button>
+      </div>
+    </Panel>
   );
 }
 

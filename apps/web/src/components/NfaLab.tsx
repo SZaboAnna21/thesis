@@ -6,7 +6,7 @@ const defaultExamples: NfaExample[] = [
   {
     id: "lecture-determinize",
     title: "Determinálás",
-    description: "Két kezdőállapot, és több helyen üres halmaz: ebből lesz a csapda.",
+    description: "Általános NFA determinizálása: két kezdőállapotból és üres átmenetekből a részhalmaz-konstrukció egy csapdaállapotot is létrehoz.",
     nfa: {
       states: ["q0", "q1", "q2"],
       alphabet: ["a", "b"],
@@ -22,7 +22,7 @@ const defaultExamples: NfaExample[] = [
   {
     id: "lecture-3nf",
     title: "3NF-ből NVDA",
-    description: "S → aA | aB | bB | ε, A → bS | bB, B → aS | aA | ε",
+    description: "Reguláris grammatikából (3NF) épített NFA: az állapotok a nemterminálisok, az átmenetek a szabályokból jönnek — szemlélteti, hogy a 3-as Chomsky-osztály és a véges automaták ekvivalensek.",
     nfa: {
       states: ["S", "A", "B"],
       alphabet: ["a", "b"],
@@ -46,6 +46,8 @@ export function NfaLab({ examples = defaultExamples }: Props) {
   const example = examples.find((e) => e.id === exampleId)!;
 
   return (
+    <>
+    <p className="mb-6 text-muted-foreground">Válassz egy NFA példát, majd kövesd lépésről lépésre a részhalmaz-konstrukciót, ahogy a nemdeterminisztikus automatából determinisztikus lesz.</p>
     <div className="space-y-6 rounded-3xl border border-purple-100 bg-white p-8 shadow-lg dark:border-purple-600 dark:bg-slate-100">
       <div className="flex flex-wrap gap-2">
         {examples.map((e) => (
@@ -67,5 +69,6 @@ export function NfaLab({ examples = defaultExamples }: Props) {
 
       <SubsetPlayer key={example.id} nfa={example.nfa} />
     </div>
+    </>
   );
 }
