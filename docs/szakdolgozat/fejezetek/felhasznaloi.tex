@@ -9,7 +9,7 @@ Ez a fejezet a rendszer használatát mutatja be a felhasználó szemszögéből
 \subsection{Rendszerkövetelmények}
 A rendszer online eléréséhez nincs különösebb hardverigény.
 Támogatott böngészők: Google Chrome, Microsoft Edge és Mozilla Firefox.
-z online változat használatához internetkapcsolat és egy támogatott böngésző szükséges. A helyi futtatáshoz ezen felül a 2.2.3 fejezetben ismertetett szoftverek telepítése is szükséges.
+Az online változat használatához internetkapcsolat és egy támogatott böngésző szükséges. A helyi futtatáshoz ezen felül a 2.2.3 fejezetben ismertetett szoftverek telepítése is szükséges.
 
 \mbox{}
 
@@ -23,14 +23,12 @@ Az alkalmazás GitHub Pages-en van közzétéve, és az alábbi linken érhető 
 
 \subsection{Helyi futtatás}
 A felület internetkapcsolat nélkül, lokálisan is futtatható a felhasználó számítógépén.
-
 A futtatáshoz az alábbi szoftverek szükségesek:
 \begin{itemize}
-  \item \textbf{Node.js 24} (\url{https://nodejs.org}), amely lehetővé teszi a JavaScript alapú alkalmazások futtatását a számítógépen.
-  \item 
+  \item \textbf{Node.js 24} (\url{https://nodejs.org}), amely lehetővé teszi a JavaScript alapú alkalmazások futtatását a számítógépen. 
   \item \textbf{pnpm 12.6}: \texttt{npm install -g pnpm@12.6.0}, amely automatikusan telepíti és kezeli az alkalmazás működéséhez szükséges csomagokat.
 
-Hogyha ezek már telepítve vannak, az alkalmazás az alábbi lépésekkel indítható el:
+Hogyha, ezek már telepítve vannak, az alkalmazás az alábbi lépésekkel indítható el:
 
 \begin{enumerate}
   \item A projekt forráskódjának letöltése: 
@@ -76,7 +74,7 @@ A fejléc bal oldalán található a házikó ikon, amely a főoldalra vezet vis
 
 
 A Számításelmélet I menü az első féléves anyagot, míg a Számításelmélet II menü a második félév témaköreit tartalmazza.
- A témakörök a menün belüli sorrendje az előadások haladását követik,
+ A témakörök menün belüli sorrendje az előadások haladását követik,
  így a hallgatók a tananyag felépítésének megfelelően ezt szépen követve, járhatják be az egyes fejezeteket.
 
  A lenyíló listában pici pipa jelöli azokat az oldalakat,
@@ -86,7 +84,7 @@ A Számításelmélet I menü az első féléves anyagot, míg a Számításelm�
 
 
 \newpage
-A két menü által lefedett témakörök, interaktív moduljaik és kvízeik összefoglalása az alábbi táblázatban látható:
+A két menü által lefedett témakörök összefoglalása az alábbi táblázatban látható:
 
 
 \begin{table}[H]
@@ -160,7 +158,7 @@ Egyes szimulációk saját példák megadását is lehetővé teszik, így a fel
 
 Azoknál a témaköröknél, ahol ellenőrző kérdések állnak rendelkezésre, az oldal alján egy „Teszteld magad!” szekció található. A kvízkérdések segítségével a hallgató azonnali visszajelzést kaphat arról, hogy mennyire sajátította el az adott témakör anyagát.
 A kvízek elsősorban a szimulációval nehezebben szemléltethető, elméletibb témaköröknél jelennek meg
-. Minden témakör legalább egy kiegészítő elemet tartalmaz, amely vagy interaktív szimuláció, vagy kvíz formájában segíti a tanulást.
+. Minden témakör legalább egy kiegészítő elemet tartalmaz, amely vagy interaktív szimuláció, vagy kvíz formájában jelenik meg.
 
 
 A \ref{tab:temakorok}. táblázat összefoglalja az egyes témakörökhöz tartozó interaktív modulokat és kvízeket.
@@ -174,8 +172,8 @@ A \ref{tab:temakorok}. táblázat összefoglalja az egyes témakörökhöz tarto
 \multicolumn{3}{l}{\textit{Számításelmélet I}} \\
 \midrule
 Alapok 1: ábécé, szavak, műveletek        & Szójáték              & ---         \\
-Alapok 2: nyelvek és műveleteik           & Nyelvfelfedező        & \checkmark  \\
-Generatív grammatikák                     & Grammatikai levezetés & ---         \\
+Alapok 2: nyelvek és műveleteik           & ---                    & \checkmark  \\
+Generatív grammatikák                     & Grammatika levezető    & ---         \\
 Chomsky-hierarchia                        & Chomsky-osztályozó    & ---         \\
 Lineáris grammatikák és a 3-as normálforma & 3-as normálforma      & ---         \\
 Reguláris kifejezések                     & Regex ellenőrző       & ---         \\
@@ -206,14 +204,16 @@ NP-teljesség                              & ---                   & \checkmark 
 \mbox{}
 
 \subsection{Haladáskövetés és megjelenés} 
-Az alkalmazás automatikusan nyomon követi, hogy a felhasználó melyik témaköröket nyitotta már meg. 
+Az alkalmazás automatikusan nyomon követi, 
+hogy a felhasználó melyik témaköröket nyitotta már meg. 
 Egy témakör első megnyitását követően a navigációs menüben egy pipa jelenik meg az adott oldal mellett a lenyíló mneüben.
  A menü alján található számláló megmutatja, hogy az adott témakörcsoportból hány oldal került már megnyitásra.
   Ez segítséget nyújt a tananyag feldolgozásának követésében. 
-  A fejléc jobb oldalán található nap/hold ikon segítségével a felhasználó bármikor válthat a világos és a sötét megjelenési mód között.
- A választott beállítást az alkalmazás megjegyzi, ezért a következő megnyitáskor is ugyanaz a téma jelenik meg.
+  A fejléc jobb oldalán található nap/hold ikon, ennek segítségével a felhasználó bármikor válthat a világos és a sötét megjelenési mód között.
+ A választott beállításokat és haladást az alkalmazás megjegyzi, ezért a következő megnyitáskor is megmaradnak. 
   A haladási adatok és a megjelenési mód beállításai az adott böngészőben kerülnek tárolásra. 
-  Emiatt másik böngésző, incognito mód vagy eszköz használata esetén ezek az adatok nem kerülnek automatikusan átvitelre. 
+  Emiatt másik böngésző vagy eszköz használata esetén vagy incognito módban ezek az adatok
+  nem kerülnek automatikusan átvitelre. 
   A tárolt adatok a böngésző helyi adatainak törlésével visszaállíthatók alaphelyzetbe.
 \mbox{}
 
@@ -258,9 +258,16 @@ Mindkét szó és a kitevő input szövegmezőkben adható meg az eredmény a \e
 %   - három előre beállított példa: reguláris, CF és CS grammatika
 % Kérdések: Milyen formátumban kell megadni a szabályokat? Mi történik ha a szó nem vezethető le?
 
-A grammatikai levezetés modul a generatív grammatikák témakör gyakorlását segíti. A felhasználó saját nyelvtant adhat meg,
-szerkesztése során megadhatók a szabályok, a terminális és nemterminális szimbólumok halmaza, valamint a kezdőszimbólum. A szabályokat \texttt{A -> x | y} formában kell megadni, ahol a \texttt{->} jelöliA levezetés során a felhasználó kiválaszt egy alkalmazható szabályt, majd megadja, hogy az aktuális szó melyik előfordulására szeretné alkalmazni. Az aktuális szó minden lépés után frissül. A jobb oldali panelen a teljes levezetés gráfként követhető nyomon, ahol a csomópontok a közbülső szavakat jelölik. 
-Ha az aktuális szó már csak terminális szimbólumokat tartalmaz, a modul jelzi, hogy a levezetés befejeződött.
+A grammatikai levezetés modul a generatív grammatikák és a Redukált grammatika és Chomsky-normálforma témakörök gyakorlását segíti. A felhasználó saját nyelvtant adhat meg,
+szerkesztése során megadhatók a szabályok, a terminális és nemterminális szimbólumok halmaza, valamint a kezdőszimbólum. 
+A szabályokat \texttt{A -> x} formában kell megadni, a \texttt{->} baloldalán a kiinduló szímbolum, jobb oldalán pedig az a szimbólumsorozat szerepel, amelyre az adott nemterminális átírható. 
+A levezetés során a felhasználó kiválaszt egy alkalmazható szabályt, 
+majd megadja, hogy az aktuális szó melyik előfordulására szeretné alkalmazni.
+ Az aktuális szó minden lépés után frissül. A 
+ jobb oldali panelen a teljes levezetés gráfként követhető nyomon,
+  ahol a csomópontok a közbülső szavakat jelölik. 
+Ha az aktuális szó már csak terminális szimbólumokat tartalmaz, 
+a modul jelzi, hogy a levezetés befejeződött.
 A \emph{Vissza} gombbal az utolsó lépés visszavonható, az \emph{Újrakezdés} gombbal pedig a levezetés a kezdőszimbólumtól indítható újra.
  \begin{figure}[H] \centering 
   \includegraphics[width=1.0\textwidth]{images/userdoksi_grammatika.png} 
@@ -287,8 +294,8 @@ A \emph{Vissza} gombbal az utolsó lépés visszavonható, az \emph{Újrakezdés
 A Chomsky-osztályozó modul egy megadott grammatikáról állapítja meg, hogy melyik Chomsky-típusba
  sorolható.
 
-A grammatika megadásának formátuma azonos a grammatikai levezetés modulnál leírtakkal a szabályok
- (\texttt{A -> x | y}).
+A grammatika megadásának formátuma azonos a grammatikai levezetés modulnál 
+leírtakkal.
 A beírt grammatikát a modul azonnal elemzi: 
 minden egyes szabályhoz egy táblázatban mutatja meg, h
 ogy az a 0-s, 1-es, 2-es és 3-as típus feltételeit teljesíti-e ($\checkmark$ jel), vagy sem (--).
@@ -297,7 +304,8 @@ Az 1-es típus (környezetérzékeny) esetén a modul a szabályokra rámutatva 
 a talált $u_1 A u_2 \to u_1 v u_2$ felbontást is (az egér ráhúzásával látható).
 Különleges esetet jelent a korlátozott $\varepsilon$-szabály (KES): 
 ha van $S \to \varepsilon$ szabály, 
-a modul külön ellenőrzi, hogy $S$ nem szerepel-e semmilyen szabály jobb oldalán; ha igen, a KES sérül, és a grammatika nem sorolható az 1-es típusba.
+a modul külön ellenőrzi, hogy $S$ nem szerepel-e semmilyen szabály jobb oldalán,
+ ha igen, a KES sérül, és a grammatika nem sorolható az 1-es típusba.
 Ezt a vizsgálatot egy külön sávban, szöveges magyarázattal mutatja be.
 
 Végeredményként a modul kiírja a grammatika típusát (pl. $\mathcal{G}_2$).
@@ -310,6 +318,59 @@ Végeredményként a modul kiírja a grammatika típusát (pl. $\mathcal{G}_2$).
 \end{figure}
 
 
+
+\subsection{3-as normálformára hozás} 
+
+A modul egy környezetfüggetlen grammatikát alakít 3-as normálformára,
+ miközben az átalakítás minden lépése nyomon követhető.
+ A grammatika megadásának menete az előzőekben leírtakkal azonos.
+ 
+ Az átalakítás két fő szakaszból áll: \begin{enumerate} \item \textbf{Hosszredukció:} a hosszú 
+  jobb oldalak felbontása segédnemterminálisok segítségével. 
+  \item \textbf{Láncmentesítés:} az $A \to B$ alakú egységszabályok eltávolítása. 
+\end{enumerate} 
+
+Minden lépéshez rövid magyarázat tartozik, az új szabályok kiemelve, a törölt szabályok áthúzva jelennek meg.
+ A láncmentesítés során a program megjeleníti a kiszámított lánchalmazokat is.
+A lejátszást a vezérlőgombokkal (elejére, vissza, lejátszás/megállítás, előre, végére)
+ és a csúszkával lehet irányítani, a lejátszás sebessége is állítható (lassú/közepes/gyors).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/normal3kezdo.png}
+\caption{3-as normálformára hozó module}
+    \label{fig:főoldal menü1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/normal3form2.png}
+\caption{3-as normálformára hozó module működés közben}
+    \label{fig:főoldal menü1}
+\end{figure}
+
+\subsection{Reguláris kifejezés ellenőrző}
+
+A Reguláris kifejezések kiegészítő modulja, előre elkészített feladatokon keresztül segíti a reguláris 
+kifejezések gyakorlását.
+ A felhasználónak a megadott nyelvekhez kell reguláris kifejezéseket készítenie.
+A feladatok között a felület tetején található sorszámozott gombokkal lehet váltani.
+
+A modulban az elméleti reguláris kifejezés szintaxisa érvényes.
+ Az input szintaxis beírásához, a billentyűzet mellett gombok egészítik a kifejezések
+bevitelét.
+Az ellenőrzés eredménye háromféle lehet:
+\begin{itemize} 
+  \item \textbf{Helyes}, ha a két kifejezés ugyanazt a nyelvet írja le. 
+  \item \textbf{Nagyon valószínű, hogy helyes}, ha a feladat szöveges nyelvleírás alapján csak korlátozott hosszúságú szavakig ellenőrizhető, és ezen a tartományon belül nem található eltérés. 
+  \item \textbf{Ellenpélda}, ha a megadott kifejezés nem a megfelelő nyelvet írja le. Ilyenkor a rendszer kiadja a legrövidebb olyan szót, amelynél már eltérés mutatkozik. \end{itemize}
+Hibás szintaxis esetén a rendszer hibaüzenetet jelenít meg. A feladatokhoz emellett tipp és egy lehetséges megoldás is megtekinthető.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/regularis1.png}
+\caption{Reguláris kifejezés ellenőrző modul: egy bemenet ellenőrzése}
+    \label{fig:főoldal menü1}
+\end{figure}
+
+
 \subsection{Determinisztikus véges automata szimulátor}
 % Mit mutass be: (DfaSimulator komponens)
 %   - előre betöltött DFA (pl. paritásautomata {a,b} felett)
@@ -318,114 +379,281 @@ Végeredményként a modul kiírja a grammatika típusát (pl. $\mathcal{G}_2$).
 %   - elfogad/elutasít eredmény megjelenítése
 % Kérdések: Hogyan adható meg a bemeneti szó? Mit jelent a zöld/piros kiemelés? Hány lépésig megy vissza?
 
-A modul egy determinisztikus véges automata (DVA) szimulátora, amely az automata futását lépésenkénti animációval jeleníti meg.
-A bemeneti szót egy szövegmezőbe kell beírni; az elfogadott ábécé ($\Sigma$) a mező mellett olvasható.
+A determinisztikus véges automata témakörhöz tartozó modul egy (DVA) szimulátora,
+ amely az automata futását lépésenkénti animációval jeleníti meg egy user által állítható bemenetre.
+A bemeneti szót egy szövegmezőbe kell beírni az elfogadott ábécé ($\Sigma$) a mező mellett olvasható.
 Üres szó megadásához elegendő üresen hagyni a mezőt (az automata az $\varepsilon$ szóra is futtatható).
+A szimulátorban a bemeneti szó betűi külön gombként jelennek meg, így a felhasználó tetszőleges lépésre 
+ugorhat. Az állapotgráfon kiemelés jelzi a már bejárt útvonalat, az aktuális átmenetet és az aktuális 
+állapotot. A lejátszásvezérlő gombokkal vagy a billentyűzet segítségével a 
+szimuláció lépésenként vagy automatikusan is végigkövethető. Korábbi lépésekhez bármikor vissza lehet 
+térni. A leolvasás végén a modul egyértelműen jelzi, hogy a szó elfogadásra vagy elutasításra került. 
+Ábécén kívüli karakter esetén a szimuláció nem indítható el.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nemdet.png}
+\caption{(DVA) szimulátor menet közben}
+    \label{fig:főoldal menü1}
+\end{figure}
 
-A szimulátorban a bemeneti szó betűi nagy kattintható gombként jelennek meg, amelyek segítségével tetszőleges lépésre lehet ugrani.
-Az automata állapotát az állapotgráfon kiemelés jelzi: a már bejárt átmenetek halvány kékkel, az éppen aktuális átmenet élénk kékkel, az aktuális állapot pedig felemelt nézettel látható.
-Az aktuálisan feldolgozott betű és az átmenet $\delta(q, a) = q'$ formában egy információs sávban is megjelenik, illetve a teljes eddigi levezetési sor ($q_0 a_1 \Rightarrow q_1 a_2 \Rightarrow \ldots$) is folyamatosan frissül.
-
-A lejátszásvezérlő gombokkal (lépés előre, lépés hátra, lejátszás/megállítás, elejére/végére ugrás) az animáció tetszőlegesen irányítható; a billentyűzetről a bal/jobb nyílgombokkal is léptethető, szóközzel pedig lejátszható.
-Visszalépni tetszőleges korábbi lépésig lehet: a modul az összes lépést eltárolja, így nincs korlát.
-
-A leolvasás végén a modul zöld háttérrel jelzi az elfogadást (az utolsó állapot elfogadó), sárga háttérrel az elutasítást (az utolsó állapot nem elfogadó).
-Ha a beírt szóban ábécén kívüli betű szerepel, hibaüzenet jelenik meg, és a szimuláció nem indul el.
-
-\subsection{Nemdeterminisztikus véges automata}
-% Mit mutass be: (NfaLab komponens)
-%   - NFA megadása vagy példák közül választás (nfaExamples)
-%   - szó vizsgálata: az összes lehetséges futás megjelenítése (SubsetPlayer / NfaTable)
-%   - különbség a DFA-hoz képest: párhuzamos ágak, ε-átmenetek
-% Kérdések: Hogyan jelenik meg a nemdeterminizmus a vizualizációban? Hogyan kezeli az ε-átmeneteket?
-
-Ez a modul a nemdeterminisztikus véges automata (NDVA) és a részhalmazos determinizálás ($2^Q$-módszer) vizualizálására szolgál.
-Az oldal tetején előre beállított példák közül lehet választani gombokkal; minden példa más-más jelenséget emel ki (pl. $\varepsilon$-átmenetek, párhuzamos ágak).
-
-A nemdeterminizmus vizualizálása a részhalmazos konstrukció lépésenkénti bemutatásával történik.
-Felül az NDVA átmeneti táblázata látható, kiemelve az éppen feldolgozott állapothalmazt.
-Alatta egy sor jelzi a még feldolgozásra váró részhalmazokat; a sor elejéről kivett halmaz a következő lépés kiindulópontja.
-A készülő DVA táblázata fokozatosan épül fel: minden lépésnél az új sor zölden jelenik meg, az újonnan felfedezett (eddig ismeretlen) részhalmazok pedig külön „új" felirattal vannak megjelölve.
-
-Az $\varepsilon$-átmeneteket a modul automatikusan kezeli: az állapothalmazhoz mindig hozzáveszi az $\varepsilon$-lezártat, és ez a lezárási lépés szöveges magyarázatban is megjelenik.
-A determinizálás végén összefoglaló üzenet mutatja, hány állapottal sikerült megoldani a feladatot az elméleti maximumhoz ($2^n$) képest, és ha volt csapdaállapot (üres halmaz), arra is felhívja a figyelmet.
-
-
-\subsection{3-as normálformára hozás}
-% Mit mutass be: (NormalForm3Visualizer komponens, Chomsky Normal Form / 3NF)
-%   - CF grammatika bevitele
-%   - az átalakítás lépéseinek vizualizálása (ε-szabályok, egységszabályok, hosszú szabályok eliminálása)
-%   - végeredmény: CNF-grammatika
-% Kérdések: Milyen lépésekre bontja az átalakítást? Melyik CNF-variánst használja a program?
-
-A normálforma-vizualizáló modul egy környezetfüggetlen grammatikát alakít Chomsky-normálformára (CNF), és az átalakítás minden közbülső lépését megmutatja.
-
-A grammatika bevitele a többi modulnál leírt formátumban történik.
-Az átalakítás két fő fázisra van bontva, amelyek a képernyő tetején lévő haladásjelzőn is követhetők:
-\begin{enumerate}
-  \item \textbf{Hosszredukció:} a háromszimbólumnál hosszabb jobb oldalak rövidítése segédnemterminálisok bevezetésével.
-  \item \textbf{Láncmentesítés:} az $A \to B$ alakú egységszabályok eltávolítása az $H(A)$ lánchalmazok kiszámításával, majd az örökölt szabályok bevezetésével és végül az egységszabályok törlésével.
-\end{enumerate}
-Minden lépésnél szöveges magyarázat írja le, mi történt; az újonnan bekerülő szabályok zöld kiemeléssel, az eltávolítottak áthúzva jelennek meg.
-A láncmentesítés alatt egy táblázat mutatja a $H_0(A), H_1(A), \ldots, H(A)$ halmazsorozatot minden nemterminálisra.
-
-A lejátszást a vezérlőgombokkal (elejére, vissza, lejátszás/megállítás, előre, végére) és a csúszkával lehet irányítani; a lejátszás sebessége is állítható (lassú/közepes/gyors).
-A végeredménynél az elérhetetlen nemterminálisok kiszürkítve látszanak, majd a végső CNF-grammatika marad a képernyőn.
-A program az előadáson tanított, lépéssorrend szerinti 3NF-variánst alkalmazza (hosszredukció, majd láncmentesítés).
-
-\subsection{Reguláris kifejezés ellenőrző}
-% Mit mutass be: (RegexChecker komponens, regexExercises feladatsorral)
-%   - feladatsor: adott feltételnek megfelelő reguláris kifejezés megadása
-%   - ellenőrzés: a beírt regex illeszkedik-e a megadott elfogadott/elutasított szavakra
-%   - vizuális visszajelzés helyes/helytelen megoldásra
-% Kérdések: Milyen regex szintaxist fogad el? Hogyan néz ki egy konkrét feladat?
-
-A reguláris kifejezés ellenőrző modulban előre megírt feladatokra kell reguláris kifejezéssel megadni a leírt nyelvet.
-A feladatok között a képernyő tetején lévő sorszámozott gombokkal lehet váltani.
-
-A modulban az elméleti reguláris kifejezés szintaxisa érvényes: unió (\texttt{+}), lezárás (\texttt{*}), konkatenáció (egymás mellé írás), zárójelek csoportosításhoz.
-Példa: az $\{w \in \{a,b\}^* \mid w \text{ ``ab''-vel kezdődik}\}$ nyelv leírható az \texttt{ab(a+b)*} kifejezéssel.
-
-Az ellenőrzés nem mintaillesztéssel, hanem automatás módszerrel történik: a beírt kifejezésből és a referenciamegoldásból automatát épít a rendszer, majd megvizsgálja, hogy a kettő ugyanazt a nyelvet fogadja-e el.
-Ennek köszönhetően bármelyik ekvivalens kifejezés helyes megoldásnak minősül.
-Az ellenőrzés eredménye:
-\begin{itemize}
-  \item \textbf{Helyes:} a két kifejezés pontosan ugyanazt a nyelvet írja le.
-  \item \textbf{Nagyon valószínű, hogy helyes:} ha a feladatban a nyelv feltétellel van megadva (nem véges automataként), a rendszer csak adott hosszig tud ellenőrizni; ha eddig nem talált különbséget, ezt jelzi.
-  \item \textbf{Ellenpélda:} ha a kifejezés hibás, a rendszer megmutatja a legrövidebb szót, amelyben a jelölt és a helyes megoldás eltér, és leírja, hogy a jelölt kifejezés elfogadja-e azt a szót, miközben nem kellene, vagy fordítva.
+\subsection{Nemdeterminisztikus véges automata témakör moduleja}
+Ez a modul a nemdeterminisztikus véges automaták determinizálását szemlélteti a részhalmazos konstrukció
+ segítségével. Az oldal tetején előre definiált 2 példa közül lehet választani, amelyek különböző eseteket 
+ mutatnak be.
+ \begin{itemize} 
+  \item \textbf{Determinizálás}: egy általános NDVA példáján mutatja be a részhalmazos konstrukció működését, 
+  beleértve az $\varepsilon$-átmenetek kezelését is. 
+  \item \textbf{3NF-ből NDVA}: egy reguláris grammatikából felépített NDVA-t szemléltet, 
+  bemutatva a reguláris nyelvtanok és a véges automaták közötti megfeleltetést. 
 \end{itemize}
-Szintaktikai hiba esetén hibaüzenet jelenik meg.
-A feladathoz tipp és egy lehetséges megoldás is kérhető.
+
+A user interakció a navigációra szűkül ennél a példák közüli válsztás után.
+A lejátszást a vezérlőgombokkal (elejére, vissza, lejátszás/megállítás, előre, végére) és a csúszkával lehet irányítani,a sebessége is állítható (lassú/közepes/gyors).
+A folyamat végén összefoglaló jelenik meg az elkészült DVA állapotainak számáról 
+  és az esetleges csapdaállapotról.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/nemdeter.png}
+\caption{determinizáló module}
+    \label{fig:főoldal menü1}
+\end{figure}
 
 
 
-\section{Kvíz és önellenőrzés}
-% Mit mutass be: (QuizView komponens)
-%   - kérdések két nehézségi szinten: "Könnyű" és "Nehezebb" csoportokba rendezve
-%   - egyszerű feleletválasztós kérdések (A/B/C/D gombok), egyszeri válasz lehetséges
-%   - azonnali visszajelzés: helyes válasz zölddel, helytelen piros + a helyes kiemelve
-%   - magyarázat szöveg minden kérdés után
-%   - összesítő sor: "Eredmény: X / N" + "Újrakezdés" gomb
-%   - eredmény localStorage-ban tárolódik, újra megnyitáskor visszatöltődik
-% Kérdések: Hány kérdés jelenik meg általában? Be lehet-e fejezni félúton és visszatérni?
-\mbox{}
+\subsection{Minimalizáló}
+
+A DFA-minimalizáló modul egy determinisztikus véges automata minimalizálásának folyamatát mutatja be lépésről lépésre. A modul egy előre betöltött automatával indul, amelynek átalakítását a felhasználó animált formában nézheti végig.
+A levezetés lépései között a vezérlőgombokkal lehet navigálni.
+ Lehetséges egyesével előre, hátra haladni, közvetlenül az első vagy utolsó lépésre ugrani,
+  illetve a folyamat automatikus lejátszását elindítani. Az animáció sebessége pedig három fokozatban állítható.
+
+Az algoritmus két fő szakaszból áll:
+
+\begin{enumerate} \item \textbf{Elérhetőségi elemzés:} a modul megmutatja, hogy a kezdőállapotból mely állapotok érhetők el,
+   majd eltávolítja a nem elérhető állapotokat.
+
+\item \textbf{Particionálás:} a Myhill--Nerode-tételen alapuló algoritmus iteratív lépésekben finomítja
+ az állapotok ekvivalenciaosztályait.
+\end{enumerate}
+A folyamat végén a modul megjeleníti az elkészült minimális automatát, 
+amely az ekvivalenciaosztályokból létrehozott új állapotokat tartalmazza.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/mini.png}
+\caption{DFA-minimalizáló modul működés közben}
+    \label{fig:főoldal menü1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/minimegoldas.png}
+\caption{DFA-minimalizáló modul eredménye}
+    \label{fig:főoldal menü1}
+\end{figure}
+
+\subsection{CYK vizualizátor}
+
+A CYK-vizualizátor a Cocke–Younger–Kasami algoritmus működését szemlélteti: megmutatja, hogy egy adott szó levezethető-e 
+egy környezetfüggetlen grammatikából.
+
+\textbf{Bemenet:}
+\begin{itemize}
+  \item \textbf{Grammatika:} az előző modulokhoz hasonló szerkesztőben adható meg. Fontos, hogy az algoritmus Chomsky-normálformát (CNF) vár, szóval amennyiben a grammatika nem CNF-alakú, a modul jelzi a sértő szabályt.
+  \item \textbf{Vizsgált szó:} a jobb oldalon a grammatika input alatt, egy külön szövegmezőbe írható, üresen hagyva az $\varepsilon$ szóra fut.
+\end{itemize}
+
+Az algoritmus folyamatát és végül az eredménye egy háromszög alakú táblázatban jelenik meg:
+ minden cella tartalmazza azon nemterminálisok halmazát, amelyek az adott részszóból levezethetők. A
+  modul kiírja, hogy a teljes szó levezethető-e (vagyis a kezdőszimbólum szerepel-e a csúcscellában),
+   és ha igen, megad egy lehetséges levezetést is.
+
+Működés közben kiirásra kerül, hogy az adott részszóra melyik kettévágásokat próbálta ki az algoritmus,
+egy vágásra víve az egeret látszik a hozzá tartozó két cella.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/cykmuk.png}
+\caption{CYK-vizualizátor module}
+    \label{fig:főoldal menü1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/cyk.png}
+\caption{CYK-vizualizátor levezetés közben}
+    \label{fig:főoldal menü1}
+\end{figure}
+\subsection{Veremautomata labor}
+
+A modul egy konfigurálható veremautomatának szimulációját mutatja be, egy bementeti szóra futtatva
+lépésenkénti animációval.
+
+\textbf{Bal oldali konfigurációs panel:}
+\begin{itemize}
+  \item \textbf{Szabályok:} soronként egy átmenet adható meg a következő formátumban: \texttt{z q a -> u p}, ahol \texttt{z} a verem tetején lévő szimbólum, \texttt{q} az aktuális állapot, \texttt{a} a beolvasott betű (elhagyható $\varepsilon$-átmenetnél: \texttt{z q -> u p}), \texttt{u} a veremre írt szimbólumsorozat (balról jobbra, üres: \texttt{u} elhagyható), \texttt{p} a következő állapot.
+  \item \textbf{Verem alja ($z_0$):} a verem aljaszimbóluma, alapértelmezetten \texttt{\#}.
+  \item \textbf{Kezdőállapot ($q_0$)}: az automata induló állapota.
+  \item \textbf{Végállapotok ($F$):} vesszővel elválasztva adhatók meg (végállapotos elfogadáshoz).
+  \item \textbf{Elfogadás módja:} választható végállapotos ($L(A)$) vagy üres vermes ($N(A)$) elfogadás.
+\end{itemize}
+
+A panel alatt megjelenik az automatikusan leolvasott állapot, a veremszimbólum és ábécének a készletei,
+ valamint egy jelzés arról, hogy az automata determinisztikus-e vagy nem.
+
+A bemeneti szót a \emph{Bemeneti szó} mezőbe kell beírni,
+ majd a \textbf{Futtat} gombra kattintani.
+ 
+ A jobb oldali panelen az állapotgráf, az aktuális veremtartalom és az egyes lépések 
+ részletei jelennek meg, és a lejátszásvezérlővel lépésenként 
+ vagy automatikusan követhető a futás. 
+ A leolvasás végén a modul jelzi, hogy a szó elfogadásra vagy elutasításra került.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/vereminput.png}
+\caption{Veremautomata bemeneti modulja, példabemenettel}
+    \label{fig:főoldal menü1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/cyk.png}
+\caption{Veremaoutmata futtatás közben}
+    \label{fig:főoldal menü1}
+\end{figure} 
+
+\subsection{Turing-gép szimulátor}
+
+A Turing-gép szimulátor modul lehetővé teszi tetszőleges Turing-gépek futásának vizsgálatát. 
+A felhasználó megadhatja a gép szabályait és a bemeneti szót.
+A futást animálva tudja végigkövetni.
+
+\textbf{Bal oldali konfigurációs panel:}
+\begin{itemize}
+  \item \textbf{Átmenetek:} soronként egy szabály adható meg: \texttt{állapot szimbólum -> állapot szimbólum irány}, ahol az irány \texttt{L} (bal), \texttt{R} (jobb) vagy \texttt{S} (helyben). A \texttt{\#} jellel kezdődő sorok megjegyzések.
+  \item \textbf{Kezdőállapot ($q_0$):} az indulási állapot.
+  \item \textbf{Elfogadó állapot ($q_i$):} ebbe az állapotba kerülve a gép elfogadja a szót.
+  \item \textbf{Elutasító állapot ($q_n$):} ebbe az állapotba kerülve a gép elutasítja a szót.
+  \item \textbf{Blank szimbólum ($\square$):} az üres cellák szimbóluma, alapértelmezetten \texttt{□}.
+\end{itemize}
+
+A panel alatt megjelenik az állapotok halmaza és az átmenetek száma. 
+A bemeneti szót a \emph{Bemeneti szó} mezőbe kell beírni, 
+majd a \textbf{Futtat} gombra kattintani. 
+A jobb oldali panelen a szalag aktuális tartalma 
+és a fej helyzete jelenik meg, az egyes lépések részletezésével. 
+A lejátszásvezérlővel lépésenként vagy automatikusan követhető a futás. 
+A gép megállása után egyértelműen jelzi, hogy elfogadta vagy elutasította-e a szót.
+
+\subsection{Logika modul}
+
+A logika modul egy inputként beadott logikai formula igazságtáblázatát építi fel lépésről lépésre, és lehetőséget ad a DNF, illetve KNF olvasat megjelenítésére.
+
+\textbf{Bemenet:} a formula egy szövegmezőbe írható a következő operátorokkal:
+\begin{itemize}
+  \item tagadás: \texttt{\textasciitilde} vagy \texttt{!} (jelölés: $\lnot$)
+  \item konjunkció: \texttt{\&} (jelölés: $\land$)
+  \item diszjunkció: \texttt{|} (jelölés: $\lor$)
+  \item implikáció: \texttt{->} (jelölés: $\to$)
+  \item zárójelek csoportosításhoz
+\end{itemize}
+Példa: \texttt{y -> x \& \textasciitilde{}y | \textasciitilde{}z}.
+
+A bal oldali panelen a formula szerkezeti fája jelenik meg,
+ kiemelve az éppen kiértékelt részformulát. Az animáció a teljes fa megjelenítésétől indul, 
+ majd oszloponként tölti fel az igazságtáblázatot.
+  A lejátszásvezérlővel lépésenként vagy automatikusan követhető a kiértékelés. 
+  Az elkészült táblázat alapján a modul kigombra megjeleníti a formula \textbf{DNF} és \textbf{KNF} alakját is.
+
+\section{Kvízek}
+Néhány témakörhöz  önellenőrző kvíz tartozik, amely segít a tananyag elsajátításának
+ ellenőrzésében. 
+ A kérdések két nehézségi szintre vannak bontva: 
+ \textit{Könnyű} és \textit{Nehezebb} feladatokra. 
+ A felhasználó feleletválasztós kérdések segítségével tesztelheti tudását, ahol 
+ minden kérdéshez négy lehetséges válasz (A, B, C) tartozik.
+A válasz kiválasztása után a rendszer azonnal visszajelzést ad. 
+Helyes válasz esetén a kiválasztott lehetőség zöld színnel jelenik meg, 
+hibás válasz esetén pedig piros színnel. Minden válasz után rövid magyarázat 
+olvasható, amely segít megérteni a helyes vgay helytelen megoldás mögött álló elméleti hátteret.
+A kvíz végén összesítő eredmény jelenik meg az elért pontszámmal. 
+Az \textit{Újrakezdés} gomb segítségével a teszt bármikor újra kitölthető. 
+Az aktuális állapot és az eredmények a böngésző helyi tárhelyén tárolódnak, 
+így az oldal későbbi megnyitásakor a korábban elért eredmények visszatölthetők.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/kviz.png}
+\caption{Kvízek kiértékelése}
+    \label{fig:főoldal menü1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/kviz2.png}
+\caption{Kvízek az összesítő eredménye és az Újrakezdés gomb }
+    \label{fig:főoldal menü1}
+\end{figure} 
+
+
+
 
 \section{Jelölések}
-% Mit mutass be: az alkalmazásban használt beviteli konvenciók, amelyek eltérhetnek a papíros jelöléstől
-%   - üres szó (ε): a programban általában üres mezőként vagy "eps"/"epsilon" szövegként adható meg – pontosítsd!
-%   - ábécé megadása: vesszővel elválasztott karakterek (pl. a,b)
-%   - állapotok: tetszőleges szöveges azonosítók (pl. q0, q1)
-%   - átmenetek: táblázatos megadás vagy felsorolás – pontosítsd a konkrét formátumot!
-%   - matematikai kifejezések (KaTeX): hogyan jelennek meg a képletek a kérdésekben/elméletben
-% Kérdések: Hol fogad el ε-t a program? Hol kell pontosan a beviteli szintaxist bemutatni?
-\mbox{}
+
+Az alkalmazásban vannak olyan beviteli szintaxisok, amik eltérnek a papíros jelöléstől. Az alábbi táblázat összefoglalja a főbb konvenciókat.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{0.30\textwidth} p{0.30\textwidth} p{0.30\textwidth}}
+\toprule
+\textbf{Fogalom} & \textbf{Papíros jelölés} & \textbf{Beviteli formátum} \\
+\midrule
+Üres szó & $\varepsilon$ & üres mező (semmit sem kell beírni) \\
+Nemterminálisok & $\{S, A, B\}$ & \texttt{S,A,B} (vesszővel elválasztva) \\
+Terminálisok & $\{a, b\}$ & \texttt{a,b} (vesszővel elválasztva) \\
+Grammatikaszabály & $A \to BC$ & \texttt{A->BC} (soronként egy szabály) \\
+$\varepsilon$-szabály & $S \to \varepsilon$ & \texttt{S->} (jobb oldal üres marad) \\
+Turing-átmenet & $\delta(q_0, a) = (q_1, b, R)$ & \texttt{q0 a -> q1 b R} (soronként) \\
+Logikai tagadás & $\lnot p$ & \texttt{\textasciitilde{}p} vagy \texttt{!p} \\
+Logikai konjunkció & $p \land q$ & \texttt{p \& q} \\
+Logikai diszjunkció & $p \lor q$ & \texttt{p | q} \\
+Logikai implikáció & $p \to q$ & \texttt{p -> q} \\
+\bottomrule
+\end{tabular}
+\caption{Beviteli konvenciók az alkalmazásban}
+\label{tab:jeloelesek}
+\end{table}
+
+Az állapotok neve tetszőleges szöveges azonosító lehet (pl.\ \texttt{q0}, \texttt{q\_accept}, \texttt{START}). A Turing-gép átmenetibeállító mezőjében a \texttt{\#} karakterrel kezdődő sorok megjegyzésnek számítanak és figyelmen kívül maradnak. Az irány értéke \texttt{L} (bal), \texttt{R} (jobb) vagy \texttt{S} (helyben) lehet.
+
+Az elméleti összefoglalókban és egyes feladatokban megjelenő matematikai képleteket a rendszer KaTeX segítségével rendereli,
+ ezért azok a tankönyvekben megszokott matematikai formában jelennek meg.
 
 \section{Hibaüzenetek és hibaelhárítás}
-% Mit mutass be:
-%   - tipikus felhasználói hibák: érvénytelen grammatikaszabály, nem letisztázott automata, üres mező
-%   - mit jelenít meg ilyenkor az alkalmazás (hibaüzenet szövege, piros keret stb.) – pontosítsd futtatással!
-%   - ha az oldal nem töltődik be: ellenőrizze az internetkapcsolatot (online), ill. a node/pnpm verziót (lokális)
-%   - ismert korlátok: nagyon nagy automaták lassabb megjelenítése, mobilon korlátozott élmény
-%   - kapcsolattartás / hibajelentés (GitHub Issues link vagy e-mail)
-% Kérdések: Vannak-e konkrét dobott hibaüzenetek a kódban? Milyen edge case-ek okoznak csöndes hibát?
-\mbox{}
+
+\subsection{Tipikus beviteli hibák}
+
+Az alkalmazás a legtöbb beviteli hibát azonnal, az érintett mező alatt jelzi.
+
+\begin{itemize}
+  \item \textbf{Érvénytelen grammatikaszabály:} ha egy szabály bal vagy jobb oldala olyan szimbólumot tartalmaz, amely nincs felsorolva a nemterminálisok vagy terminálisok között, az alkalmazás sárga figyelmeztető szöveget jelenít meg (pl.\ \textit{„\texttt{S->XY}: jobb oldal ismeretlen szimbólumot tartalmaz"}).
+  \item \textbf{Grammatika nem CNF-alakú (CYK modul):} ha a beírt grammatika nem Chomsky-normálformában van, piros keretes hibaüzenet jelenik meg, megnevezve a sértő szabályt és az okot.
+  \item \textbf{Helytelen Turing-átmenet:} ha egy sor nem tartalmazza a \texttt{->} elválasztót, vagy az irány érvénytelen, a modul sárga szöveggel jelzi az érintett sor számát és a várt formátumot (\textit{„Helytelen formátum -- várt: állapot szimbólum -> állapot szimbólum irány"}).
+  \item \textbf{Üres kötelező mező:} ha a Turing-gépen a kezdő-, elfogadó vagy elutasító állapot nincs kitöltve, a „Futtat" gomb inaktív marad.
+\end{itemize}
+
+\subsection{Ismert korlátok}
+
+\begin{itemize}
+  \item A CYK modul legfeljebb \textbf{10 karakteres} bemeneti szót fogad el, mivel ennél hosszabb szavaknál a háromszög-táblázat áttekinthetetlenné válik.
+  \item Nagyon sok átmenetet tartalmazó automatáknál a gráf megjelenítése lassabb lehet.
+  \item Az alkalmazás mobileszközön korlátozottan használható: a kisebb képernyőn egyes interaktív elemek (pl.\ a gráf mozgatása, az átmenettábla) szűk területen jelennek meg.
+\end{itemize}
+
+\subsection{Ha az oldal nem töltődik be}
+
+Online verzió esetén ellenőrizze az internetkapcsolatot, és töltse újra az oldalt. Helyi futtatásnál ellenőrizze, 
+hogy a \texttt{pnpm --filter web dev} parancs hiba nélkül elindult-e, és a \texttt{http://localhost:5173} cím elérhető-e a böngészőből. 
+A szükséges szoftverek verziójára vonatkozó előírások a \ref{ch:user}. fejezet elején vannak felsorolva.
+
+\subsection{Hibajelentés}
+
+Hibák és javaslatok jelezhetők a projekt GitHub-oldalán az Issues felületen:
+\begin{center}
+  \url{https://github.com/SZaboAnna21/thesis/issues}
+\end{center}
